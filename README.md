@@ -16,12 +16,41 @@
 
 ### [Instructions]
 - Download all the model files:
-- First ```cd src/phishpedia```
-``` wget https://drive.google.com/file/d/1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS/view?usp=sharing```
-``` wget https://drive.google.com/file/d/1_C8NSQYWkpW_-tW8WzFaBr8vDeBAWQ87/view?usp=sharing```
-``` wget https://drive.google.com/file/d/1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1/view?usp=sharing```
-- Then ```cd src/detectron2_pedia/output/rcnn_2```
-```wget https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing```
+- First 
+```
+cd src/phishpedia
+```
+``` 
+wget https://drive.google.com/file/d/1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS/view?usp=sharing
+```
+``` 
+wget https://drive.google.com/file/d/1_C8NSQYWkpW_-tW8WzFaBr8vDeBAWQ87/view?usp=sharing
+```
+``` 
+wget https://drive.google.com/file/d/1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1/view?usp=sharing
+```
+
+- Then 
+```
+cd src/detectron2_pedia/output/rcnn_2
+```
+```
+wget https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing
+```
+
+- Afterwards 
+```
+cd src/siamese_retrain
+```
+```
+wget https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing
+```
+```
+wget https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=sharing
+```
+```
+wget https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing
+```
 
 - For phish discovery experiment:
 ```
@@ -36,6 +65,10 @@ python -m src.pipeline_eval --data-dir datasets/phish_sample_30k --mode phish --
 python -m src.pipeline_eval --data-dir datasets/benign_sample_30k --mode benign --write-txt output_benign.txt --ts [threshold for siamese]
 ```
 - For adversarial attack on Siamese, download all files [[here]()] and put them under **datasets/**:
+
+
+### [Training the model]
+
 
 ### [Project structure]
 - src
