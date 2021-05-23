@@ -246,9 +246,7 @@ class DAGAttacker:
             # Apply perturbation on image
             with torch.no_grad():
                 # Normalize grad
-                image_perturb = (
-                                        self.gamma / image_grad.norm(float("inf"))
-                                ) * image_grad
+                image_perturb = ( self.gamma / image_grad.norm(float("inf")) ) * image_grad
                 images.tensor += image_perturb
 
             # Zero gradients
