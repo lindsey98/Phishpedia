@@ -30,7 +30,7 @@
 
        
 ## Requirements
-Linux environment 
+Linux machine equipped with GPU 
 python=3.7
 torch=1.5.1
 torchvision=0.6.0

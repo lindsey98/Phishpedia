@@ -1,5 +1,6 @@
 torch==1.5.1
 torchvision==0.6.0
+torchsummary
 scipy
 tldextract
 opencv-python
@@ -15,6 +16,9 @@ pathlib
 fvcore
 pycocotools
 errno
+scikit-learn
+advertorch
+
 
 
 
