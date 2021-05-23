@@ -1,4 +1,7 @@
-from selenium.common.exceptions import NoSuchElementException, TimeoutException, MoveTargetOutOfBoundsException, StaleElementReferenceException
+from selenium.common.exceptions import (NoSuchElementException,
+                                        TimeoutException,
+                                        MoveTargetOutOfBoundsException,
+                                        StaleElementReferenceException)
 import helium
 import time
 import requests
