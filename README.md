@@ -38,43 +38,28 @@ Install Detectron2, see the official installation [[guide](https://detectron2.re
 
 ### Instructions
 1. Download all the model files:
-- First 
-```
-cd src/phishpedia
-wget https://drive.google.com/file/d/1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS/view?usp=sharing
-wget https://drive.google.com/file/d/1_C8NSQYWkpW_-tW8WzFaBr8vDeBAWQ87/view?usp=sharing
-wget https://drive.google.com/file/d/1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1/view?usp=sharing
-```
+- First download [[Siamese model weights](https://drive.google.com/file/d/1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS/view?usp=sharing)],
+[[Logo targetlist](https://drive.google.com/file/d/1_C8NSQYWkpW_-tW8WzFaBr8vDeBAWQ87/view?usp=sharing)],
+[[Brand domain dictionary](https://drive.google.com/file/d/1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1/view?usp=sharing)], put them under **src/phishpedia**
 
-- Then 
-```
-cd src/detectron2_pedia/output/rcnn_2
-wget https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing
-```
+- Then download [[Object detector weights](wget https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing)],
+put it under **src/detectron2_pedia/output/rcnn_2**
 
-- Afterwards 
-```
-cd src/siamese_retrain
-wget https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing
-wget https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=sharing
-wget https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing
-```
+- (Optional, if you want to train siamese yourself) In addition, download [[siamese training list](https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing)], 
+[[siamese testing list](https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=sharing)],
+[[siamese database](https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing)],
+put them under **src/siamese_retrain**
 
 2. Download all data files
-- Download phish30k, benign30k dataset:
-```
-cd datasets
-wget https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing
-wget https://drive.google.com/file/d/1yORUeSrF5vGcgxYrsCoqXcpOUHt-iHq_/view?usp=sharing
-```
-- Download labelled benign30k dataset (optional, if you want to train Faster-RCNN yourself):
-```
-cd datasets
-wget https://drive.google.com/file/d/1L3KSWEXcnWzYdJ4hPrNEUvC8jaaNOiBa/view?usp=sharing
-```
+- Download [[phish 30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing)], 
+[[benign30k](https://drive.google.com/file/d/1yORUeSrF5vGcgxYrsCoqXcpOUHt-iHq_/view?usp=sharing)] dataset,
+unzip and move them to **datasets/**
+
+- Download [[labelled benign30k](https://drive.google.com/file/d/1L3KSWEXcnWzYdJ4hPrNEUvC8jaaNOiBa/view?usp=sharing)] dataset (optional, if you want to train Faster-RCNN yourself),
+unzip and move them to **datasets/**
 
 3. Run experiment 
-- For phish discovery experiment, the data folder should be organized in [[this](https://sites.google.com/view/phishpedia-site/home?authuser=0)] format (see Database Readme):
+- For phish discovery experiment, the data folder should be organized in [[this format(see Database Readme)](https://sites.google.com/view/phishpedia-site/home?authuser=0)]:
 ```
 python phishpedia_main.py --folder [data folder you want to test] --results [xxx.txt]
 ```
