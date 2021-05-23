@@ -15,7 +15,7 @@
 
 
 ### [Instructions]
-- Download all the model files:
+1. Download all the model files:
 - First 
 ```
 cd src/phishpedia
@@ -51,12 +51,24 @@ wget https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=
 ```
 wget https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing
 ```
-
+2. Download all data files
+- Download phish30k, benign30k dataset:
+```
+cd datasets
+wget https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing
+wget https://drive.google.com/file/d/1yORUeSrF5vGcgxYrsCoqXcpOUHt-iHq_/view?usp=sharing
+```
+- Download labelled benign30k dataset (optional, if you want to train Faster-RCNN yourself):
+```
+cd datasets
+wget 
+```
+3. Run experiment 
 - For phish discovery experiment:
 ```
 python phishpedia_main.py --folder [data folder you want to test] --results [xxx.txt]
 ```
-- For general experiment, download [[phishing_30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing)] and [[benign_30k](https://drive.google.com/file/d/1yORUeSrF5vGcgxYrsCoqXcpOUHt-iHq_/view?usp=sharing)] dataset, put them under **datasets/**:
+- For general experiment: 
 please run evaluation scripts
 ```
 python -m src.pipeline_eval --data-dir datasets/phish_sample_30k --mode phish --write-txt output_phish.txt --ts [threshold for siamese]
