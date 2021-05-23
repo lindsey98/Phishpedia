@@ -12,7 +12,21 @@
 - Step 2: Enter <b>Deep Siamese Model</b>
     - If Siamese report no target, ```Return  Benign, None```
     - Else Siamese report a target, ```Return Phish, Phishing target``` 
+    
+### Project structure
+```
+- src
+    - siamese_retrain: training script for siamese
+    - detectron2_peida: training script for object detector
+    - phishpedia: inference script for siamese
+    - util: other scripts (chromedriver utilities)
+    - siamese.py: main script for siamese
+    - pipeline_eval.py: evaluation script for general experiment
+    - phishpedia_main.py: script for phish-discovery experiment 
+```
 
+
+       
 ### Requirements
 Linux environment 
 ```
@@ -132,14 +146,4 @@ python -m src.siamese_retrain.bit_pytorch.train \
 - Launch adversarial attack on siamese:
 Run src/adv_attack/gradient masking siamese.ipynb 
 
-### Project structure
-- src
-    - siamese_retrain: training script for siamese
-    - detectron2_peida: training script for object detector
-    - phishpedia: inference script for siamese
-    - util: other scripts (chromedriver utilities)
-    - siamese.py: main script for siamese
-    - pipeline_eval.py: evaluation script for general experiment
-    - phishpedia_main.py: script for phish-discovery experiment 
-
-        
+ 
