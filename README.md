@@ -108,7 +108,7 @@ python -m src.detectron2_pedia.run_DAG \
 ```
 wget https://storage.googleapis.com/bit_models/BiT-M-R50x1.npz
 ```
-This command runs the pre-training on the downloaded model:
+- This command runs the pre-training on the downloaded model:
 ```
 python -m src.siamese_retrain.bit_pytorch.train \
     --name {exp_name} \  # Name of this run. Used for monitoring and checkpointing.
@@ -116,7 +116,7 @@ python -m src.siamese_retrain.bit_pytorch.train \
     --logdir {log_dir} \  # Where to log training info.
     --dataset logo_2k \  # Name of custom dataset as specified and self-implemented above.
 ```
-Saving and utilizing the weights in the previous step, I finetune the model on our logo targetlist dataset:
+- Saving and utilizing the weights in the previous step, I finetune the model on our logo targetlist dataset:
 Download [[siamese training list](https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing)], 
 [[siamese testing list](https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=sharing)],
 [[siamese datadict](https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing)],
