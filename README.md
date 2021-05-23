@@ -2,7 +2,7 @@
 
 - This is the official implementation of "Phishpedia: A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages" USENIX'21 [[paper](https://www.usenix.org/conference/usenixsecurity21/presentation/lin)]
     
-### Framework
+## Framework
     
 <img src="big_pic/pic.png" style="width:2000px;height:350px"/>
 
@@ -13,7 +13,7 @@
     - If Siamese report no target, ```Return  Benign, None```
     - Else Siamese report a target, ```Return Phish, Phishing target``` 
     
-### Project structure
+## Project structure
 ```
 - src
     - siamese_retrain: training script for siamese
@@ -29,14 +29,14 @@
 
 
        
-### Requirements
+## Requirements
 Linux environment 
 ```
 pip install -r requirements.txt
 ```
 Install Detectron2, see the official installation [[guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html)]. 
 
-### Instructions
+## Instructions
 1. Download all the model files:
 - First download [[Siamese model weights](https://drive.google.com/file/d/1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS/view?usp=sharing)],
 [[Logo targetlist](https://drive.google.com/file/d/1_C8NSQYWkpW_-tW8WzFaBr8vDeBAWQ87/view?usp=sharing)],
@@ -70,7 +70,7 @@ python -m src.pipeline_eval --data-dir datasets/phish_sample_30k --mode phish --
 python -m src.pipeline_eval --data-dir datasets/benign_sample_30k --mode benign --write-txt output_benign.txt --ts [threshold for siamese]
 ```
 
-### Training the model (Optional)
+## Training the model (Optional)
 1. If you want to train object detection faster-rcnn model yourself, 
 - First dowonload training data
 ```
