@@ -13,44 +13,37 @@
     - If Siamese report no target, ```Return  Benign, None```
     - Else Siamese report a target, ```Return Phish, Phishing target``` 
 
+### Requirements
+Linux environment 
+```
+pip install -r requirements.txt
+```
+Install Detectron2, see the official installation [[guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html)]. 
 
 ### Instructions
 1. Download all the model files:
 - First 
 ```
 cd src/phishpedia
-```
-``` 
 wget https://drive.google.com/file/d/1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS/view?usp=sharing
-```
-``` 
 wget https://drive.google.com/file/d/1_C8NSQYWkpW_-tW8WzFaBr8vDeBAWQ87/view?usp=sharing
-```
-``` 
 wget https://drive.google.com/file/d/1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1/view?usp=sharing
 ```
 
 - Then 
 ```
 cd src/detectron2_pedia/output/rcnn_2
-```
-```
 wget https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing
 ```
 
 - Afterwards 
 ```
 cd src/siamese_retrain
-```
-```
 wget https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing
-```
-```
 wget https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=sharing
-```
-```
 wget https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing
 ```
+
 2. Download all data files
 - Download phish30k, benign30k dataset:
 ```
@@ -61,23 +54,20 @@ wget https://drive.google.com/file/d/1yORUeSrF5vGcgxYrsCoqXcpOUHt-iHq_/view?usp=
 - Download labelled benign30k dataset (optional, if you want to train Faster-RCNN yourself):
 ```
 cd datasets
-wget 
+wget https://drive.google.com/file/d/1L3KSWEXcnWzYdJ4hPrNEUvC8jaaNOiBa/view?usp=sharing
 ```
+
 3. Run experiment 
-- For phish discovery experiment:
+- For phish discovery experiment, the data folder should be organized in [[this](https://sites.google.com/view/phishpedia-site/home?authuser=0)] format (see Database Readme):
 ```
 python phishpedia_main.py --folder [data folder you want to test] --results [xxx.txt]
 ```
-- For general experiment: 
+- For general experiment on phish30k and benign30k: 
 please run evaluation scripts
 ```
 python -m src.pipeline_eval --data-dir datasets/phish_sample_30k --mode phish --write-txt output_phish.txt --ts [threshold for siamese]
-```
-```
 python -m src.pipeline_eval --data-dir datasets/benign_sample_30k --mode benign --write-txt output_benign.txt --ts [threshold for siamese]
 ```
-- For adversarial attack on Siamese, download all files [[here]()] and put them under **datasets/**:
-
 
 ### Training the model (Optional)
 1. If you want to train object detection faster-rcnn model yourself, 
