@@ -1,7 +1,5 @@
 import os
 
-# os.environ["CUDA_VISIBLE_DEVICES"] = "0"  # use all devices
-
 from tqdm import tqdm
 import time
 from src.siamese import *

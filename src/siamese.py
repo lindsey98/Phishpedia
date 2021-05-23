@@ -94,7 +94,7 @@ def phishpedia_classifier_logo(logo_boxes,
 
             # domain matcher to avoid FP
             if (target_this is not None) and (tldextract.extract(url).domain not in domain_this):
-                # avoid fp due to godaddy domain parking, ignore webmail provider (ambiguous)
+                # FIXME: avoid fp due to godaddy domain parking, ignore webmail provider (ambiguous)
                 if target_this == 'GoDaddy' or target_this == "Webmail Provider":
                     target_this = None  # ignore the prediction
                     this_conf = None
