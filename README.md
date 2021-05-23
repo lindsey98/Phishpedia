@@ -22,7 +22,9 @@
     - util: other scripts (chromedriver utilities)
     - siamese.py: main script for siamese
     - pipeline_eval.py: evaluation script for general experiment
-    - phishpedia_main.py: script for phish-discovery experiment 
+
+- phishpedia_config.py: config script for phish-discovery experiment 
+- phishpedia_main.py: main script for phish-discovery experiment 
 ```
 
 
