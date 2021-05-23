@@ -1,0 +1,24 @@
+######### If you are using windows, Windows configure detectron2 ########################################
+# conda create -n myenv python=3.7
+# conda activate myenv
+# conda install pytorch==1.6.0 torchvision==0.7.0 cudatoolkit=10.1 -c pytorch
+# pip install cython
+# pip install "git+https://github.com/philferriere/cocoapi.git#egg=pycocotools&subdirectory=PythonAPI"
+# git clone https://github.com/DGMaxime/detectron2-windows.git
+# cd detectron2-windows
+# pip install -e .
+################################################################################
+# if you are using Linux
+torch==1.5.1
+torchvision==0.6.0
+detectron2==0.1.3
+scipy
+tldextract
+opencv-python
+selenium
+helium
+selenium-wire
+webdriver-manager
+pandas
+numpy
+
