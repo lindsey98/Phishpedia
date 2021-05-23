@@ -1,4 +1,4 @@
-# Phishpedia
+# Phishpedia A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages
 
 - This is the official implementation of "Phishpedia: A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages" USENIX'21 [[paper](https://www.usenix.org/conference/usenixsecurity21/presentation/lin)]
     
