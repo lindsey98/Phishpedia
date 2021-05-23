@@ -42,7 +42,7 @@ Install Detectron2, see the official installation [[guide](https://detectron2.re
 [[Logo targetlist](https://drive.google.com/file/d/1_C8NSQYWkpW_-tW8WzFaBr8vDeBAWQ87/view?usp=sharing)],
 [[Brand domain dictionary](https://drive.google.com/file/d/1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1/view?usp=sharing)], put them under **src/phishpedia**
 
-- Then download [[Object detector weights](wget https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing)],
+- Then download [[Object detector weights](https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing)],
 put it under **src/detectron2_pedia/output/rcnn_2**
 
 - (Optional, if you want to train siamese yourself) In addition, download [[siamese training list](https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing)], 
