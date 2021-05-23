@@ -48,11 +48,6 @@ Install Detectron2, see the official installation [[guide](https://detectron2.re
 - Then download [[Object detector weights](https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing)],
 put it under **src/detectron2_pedia/output/rcnn_2**
 
-- (Optional, if you want to train siamese yourself) In addition, download [[siamese training list](https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing)], 
-[[siamese testing list](https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=sharing)],
-[[siamese datadict](https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing)],
-put them under **src/siamese_retrain**
-
 2. Download all data files
 - Download [[phish 30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing)], 
 [[benign30k](https://drive.google.com/file/d/1yORUeSrF5vGcgxYrsCoqXcpOUHt-iHq_/view?usp=sharing)] dataset,
@@ -122,6 +117,11 @@ python -m src.siamese_retrain.bit_pytorch.train \
     --dataset logo_2k \  # Name of custom dataset as specified and self-implemented above.
 ```
 Saving and utilizing the weights in the previous step, I finetune the model on our logo targetlist dataset:
+Download [[siamese training list](https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing)], 
+[[siamese testing list](https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=sharing)],
+[[siamese datadict](https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing)],
+put them under **src/siamese_retrain**.
+Run
 ```
 python -m src.siamese_retrain.bit_pytorch.train \
     --name {exp_name} \  # Name of this run. Used for monitoring and checkpointing.
