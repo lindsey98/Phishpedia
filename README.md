@@ -105,7 +105,7 @@ python -m src.detectron2_pedia.run_DAG \
 ```
 
 2. If you want to train siamese
-- I first pretrained on the Logos2k [[download here](https://drive.google.com/open?id=1PTA24UTZcsnzXPN1gmV0_lRg3lMHqwp6)] dataset, using a pretrained BiT-M ResNet50x1 model, which we have to download first:
+- I first pretrained on the Logos2k [[download here](https://drive.google.com/file/d/1IFDF7gyjnnyrns4Fm-Ui8sMloBsNY1EO/view?usp=sharing)] dataset, using a pretrained BiT-M ResNet50x1 model, which we have to download first:
 ```
 wget https://storage.googleapis.com/bit_models/BiT-M-R50x1.npz
 ```
