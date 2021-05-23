@@ -62,7 +62,7 @@ unzip and move them to **datasets/**
 unzip and move them to **datasets/**
 
 3. Run experiment 
-- For phish discovery experiment, the data folder should be organized in [[this format(see Database Readme)](https://sites.google.com/view/phishpedia-site/home?authuser=0)]:
+- For phish discovery experiment, the data folder should be organized in [[this format](https://github.com/lindsey98/Phishpedia/tree/main/datasets/test_sites)]:
 ```
 python phishpedia_main.py --folder [data folder you want to test] --results [xxx.txt]
 ```
