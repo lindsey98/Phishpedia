@@ -58,9 +58,6 @@ put them under **src/siamese_retrain**
 [[benign30k](https://drive.google.com/file/d/1yORUeSrF5vGcgxYrsCoqXcpOUHt-iHq_/view?usp=sharing)] dataset,
 unzip and move them to **datasets/**
 
-- Download [[labelled benign30k](https://drive.google.com/file/d/1L3KSWEXcnWzYdJ4hPrNEUvC8jaaNOiBa/view?usp=sharing)] dataset (optional, if you want to train Faster-RCNN yourself),
-unzip and move them to **datasets/**
-
 3. Run experiment 
 - For phish discovery experiment, the data folder should be organized in [[this format](https://github.com/lindsey98/Phishpedia/tree/main/datasets/test_sites)]:
 ```
