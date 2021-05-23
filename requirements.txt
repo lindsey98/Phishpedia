@@ -10,6 +10,12 @@ webdriver-manager
 pandas
 numpy
 tqdm
+Pillow
+pathlib
+fvcore
+pycocotools
+errno
+
 
 
 
