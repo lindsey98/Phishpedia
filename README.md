@@ -61,8 +61,8 @@ python phishpedia_main.py --folder [data folder you want to test] --results [xxx
 - For general experiment on phish30k and benign30k: 
 please run evaluation scripts
 ```
-python -m src.pipeline_eval --data-dir datasets/phish_sample_30k --mode phish --write-txt output_phish.txt --ts [threshold for siamese]
-python -m src.pipeline_eval --data-dir datasets/benign_sample_30k --mode benign --write-txt output_benign.txt --ts [threshold for siamese]
+python -m src.pipeline_eval --data-dir datasets/phish_sample_30k --mode phish --write-txt output_phish.txt --ts [threshold for siamese, 0.83 is suggested]
+python -m src.pipeline_eval --data-dir datasets/benign_sample_30k --mode benign --write-txt output_benign.txt --ts [threshold for siamese, 0.83 is suggested]
 ```
 
 ## Training the model (Optional)
