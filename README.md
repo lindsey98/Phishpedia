@@ -50,7 +50,7 @@ put it under **src/detectron2_pedia/output/rcnn_2**
 
 - (Optional, if you want to train siamese yourself) In addition, download [[siamese training list](https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing)], 
 [[siamese testing list](https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=sharing)],
-[[siamese database](https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing)],
+[[siamese datadict](https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing)],
 put them under **src/siamese_retrain**
 
 2. Download all data files
