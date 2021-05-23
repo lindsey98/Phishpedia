@@ -31,6 +31,8 @@
        
 ## Requirements
 Linux environment 
+torch==1.5.1
+torchvision==0.6.0
 ```
 pip install -r requirements.txt
 ```
