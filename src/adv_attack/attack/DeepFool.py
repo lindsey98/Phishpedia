@@ -4,10 +4,8 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.autograd.gradcheck import zero_gradients
 from torch.autograd import Variable
-
 import numpy as np
 import copy
-
 
 def deepfool(model, num_classes, image, label, I, overshoot=0.02, max_iter=100, clip_min=-1.0, clip_max=1.0):
     '''

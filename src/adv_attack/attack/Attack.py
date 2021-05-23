@@ -2,10 +2,8 @@ from .FGSM import fgsm
 from .JSMA import jsma
 from .DeepFool import deepfool
 from .CWL2 import cw
-
 import os
 import numpy as np
-
 import torch
 import torch.nn as nn
 from tqdm import tqdm
@@ -123,37 +121,3 @@ class adversarial_attack():
         # Return the accuracy and an adversarial example
         return final_acc, adv_examples
             
-    
-# if __name__ == '__main__':
-    
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument("--method", help="Attack method you want to use", required=True)
-#     parser.add_argument("--save", help="Whether to save adversarial and normal data", default='False')
-#     args = parser.parse_args()
-    
-#     '''load cifar10 dataset'''
-#     trainloader, testloader, classes = load_cifar_data()
-
-#     '''define model'''
-#     print("CUDA Available: ", torch.cuda.is_available())
-#     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-#     criterion = nn.CrossEntropyLoss()
-
-#     # Initialize the network
-#     model = VGG11()
-#     model.to(device)
-
-#     '''load saved model'''
-#     model.load_state_dict(torch.load('./checkpoints/model.th')['state_dict'])
-#     model = model.eval()
-#     print("Successfully load pre-trained model")
-    
-#     print("Start attack with method: {}".format(args.method))
-#     if args.save == 'True':
-#         check = adversarial_attack(method=args.method, model=model, dataloader=testloader, device=device, num_classes=10, save_data=True)
-#     else:
-#         check = adversarial_attack(method=args.method, model=model, dataloader=testloader, device=device, num_classes=10)
-        
-#     check.batch_attack()
-    
-#     print("Finish attack")

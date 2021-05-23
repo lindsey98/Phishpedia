@@ -4,10 +4,8 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.autograd.gradcheck import zero_gradients
 from torch.autograd import Variable
-
 import numpy as np
 import copy
-
 
 def compute_jacobian(model, num_classes, inputs, output):
     '''

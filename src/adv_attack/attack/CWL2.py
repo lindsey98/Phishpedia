@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.optim as optim
 
 
-
 def cw(model, device, image, label, target_cls, c=1, kappa=0, max_iter=1000, learning_rate=0.05, verbose=1) :
     '''
     Implementation of C&W L2 targeted attack, Modified from https://github.com/Harry24k/CW-pytorch

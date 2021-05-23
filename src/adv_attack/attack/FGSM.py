@@ -4,11 +4,8 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.autograd.gradcheck import zero_gradients
 from torch.autograd import Variable
-
 import numpy as np
 import copy
-
-
 
 def fgsm(model, method, image, label, criterion, max_iter=100, epsilon=0.05, clip_min=-1.0, clip_max=1.0):
     '''
