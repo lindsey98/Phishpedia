@@ -68,12 +68,8 @@ python -m src.pipeline_eval --data-dir datasets/benign_sample_30k --mode benign 
 
 ## Training the model (Optional)
 1. If you want to train object detection faster-rcnn model yourself, 
-- First dowonload training data
-```
-cd datasets
-wget https://drive.google.com/file/d/1L3KSWEXcnWzYdJ4hPrNEUvC8jaaNOiBa/view?usp=sharing
-unzip data.zip -d . 
-```
+- First dowonload training [[data](https://drive.google.com/file/d/1L3KSWEXcnWzYdJ4hPrNEUvC8jaaNOiBa/view?usp=sharing)] to **datasets/**
+
 - Then start training 
 To train on a single gpu:
 ```
