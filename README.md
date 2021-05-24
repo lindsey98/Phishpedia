@@ -1,6 +1,6 @@
 # Phishpedia A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages
 
-- This is the official implementation of "Phishpedia: A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages" USENIX'21 [[paper](https://www.usenix.org/conference/usenixsecurity21/presentation/lin)]
+- This is the official implementation of "Phishpedia: A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages" USENIX'21 [paper](https://www.usenix.org/conference/usenixsecurity21/presentation/lin)
 - The contributions of our paper:
    - [x] We propose a phishing identification system Phishpedia, which has high identification accuracy and low runtime overhead, outperforming the relevant state-of-the-art identification approaches. 
    - [x] Our system provides explainable annotations which increases users' confidence in model prediction
@@ -133,7 +133,7 @@ python -m src.siamese_retrain.bit_pytorch.train \
     --dataset targetlist \  # Name of custom dataset as specified and self-implemented above.
     --weights_path {weights_path} \  # Path to weights saved in the previous step, i.e. bit.pth.tar.
 ```
-- Launch adversarial attack ([i-FGSM](https://arxiv.org/pdf/1412.6572.pdf)), [i-StepLL](https://arxiv.org/pdf/1611.01236.pdf), [DeepFool](https://arxiv.org/pdf/1511.04599.pdf), [C&W L2](https://arxiv.org/pdf/1608.04644.pdf), [BPDA with Linf-PGD](https://arxiv.org/pdf/1802.00420.pdf)) on siamese:
+- Launch adversarial attack ([i-FGSM](https://arxiv.org/pdf/1412.6572.pdf), [i-StepLL](https://arxiv.org/pdf/1611.01236.pdf), [DeepFool](https://arxiv.org/pdf/1511.04599.pdf), [C&W L2](https://arxiv.org/pdf/1608.04644.pdf), [BPDA with Linf-PGD](https://arxiv.org/pdf/1802.00420.pdf)) on siamese:
 Run src/adv_attack/gradient masking siamese.ipynb 
 
 ## To cite
