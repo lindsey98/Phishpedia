@@ -1,7 +1,11 @@
 # Phishpedia A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages
 
 - This is the official implementation of "Phishpedia: A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages" USENIX'21 [[paper](https://www.usenix.org/conference/usenixsecurity21/presentation/lin)]
-    
+- The contributions of our paper:
+   - [x] We propose a phishing identification system Phishpedia, which has high identification accuracy and low runtime overhead, outperforming the relevant state-of-the-art identification approaches. 
+   - [x] Our system provides explainable annotations which increases users' confidence in model prediction
+   - [x] We conduct phishing discovery experiment on emerging domains fed from CertStream and discovered 1,704 real phishing, out of which 1133 are zero-days   
+
 ## Framework
     
 <img src="big_pic/pic.png" style="width:2000px;height:350px"/>
