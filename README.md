@@ -47,7 +47,7 @@ pip install -r requirements.txt
 - Install Detectron2 manually, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). 
 
 ## Instructions
-1. ### Download all the model files:
+### 1. Download all the model files:
 - First download [Siamese model weights](https://drive.google.com/file/d/1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS/view?usp=sharing),
 [Logo targetlist](https://drive.google.com/file/d/1_C8NSQYWkpW_-tW8WzFaBr8vDeBAWQ87/view?usp=sharing),
 [Brand domain dictionary](https://drive.google.com/file/d/1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1/view?usp=sharing), put them under **src/phishpedia**
@@ -55,12 +55,12 @@ pip install -r requirements.txt
 - Then download [Object detector weights](https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing),
 put it under **src/detectron2_pedia/output/rcnn_2**
 
-2. ### Download all data files
+### 2. Download all data files
 - Download [Phish 30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing), 
 [Benign 30k](https://drive.google.com/file/d/1yORUeSrF5vGcgxYrsCoqXcpOUHt-iHq_/view?usp=sharing) dataset,
 unzip and move them to **datasets/**
 
-3. ### Run experiment 
+### 3. Run experiment 
 - For phish discovery experiment, the data folder should be organized in [this format](https://github.com/lindsey98/Phishpedia/tree/main/datasets/test_sites):
 ```
 python phishpedia_main.py --folder [data folder you want to test] --results [xxx.txt]
@@ -73,9 +73,8 @@ python -m src.pipeline_eval --data-dir datasets/benign_sample_30k --mode benign 
 ```
 
 ## Training the model (Optional)
-1. If you want to train object detection faster-rcnn model yourself, 
+### 1. If you want to train object detection faster-rcnn model yourself, 
 - First dowonload [training data](https://drive.google.com/file/d/1L3KSWEXcnWzYdJ4hPrNEUvC8jaaNOiBa/view?usp=sharing) to **datasets/**
-
 - Second step is to create folder to save trained weights and log:
 ```
 mkdir src/detectron2_pedia/output
@@ -110,7 +109,7 @@ python -m src.detectron2_pedia.run_DAG \
     --vis-save-dir saved
 ```
 
-2. If you want to train siamese
+### 2. If you want to train siamese
 Our training has two stages: In first stage, we use the dataset [Logo2K+](https://arxiv.org/abs/1911.07924) published in AAAI'20 to pretrain; in second stage we finetune the model on our logo targetlist
 - I first pretrained on the [Logos2k data](https://drive.google.com/file/d/1zAIp97e8VlFHLwtuZU3Sg1OlvuOPUJJW/view?usp=sharing), [Logo2k training list](https://drive.google.com/file/d/19NuNiy9yv6jDyPruce5MLSQDhFVkcbav/view?usp=sharing), [logo2k testing list](https://drive.google.com/file/d/1-uTDQT_f0nC4lrVf-0Rfz2c9ZyZnhqjz/view?usp=sharing), [logo2k labeldict](https://drive.google.com/file/d/1adCjkccF2gpPvvbkBu3MUvEmfAVcNpOL/view?usp=sharing) dataset, using a pretrained BiT-M ResNet50x1 model, which we have to download first:
 ```
@@ -141,7 +140,7 @@ python -m src.siamese_retrain.bit_pytorch.train \
 - Launch adversarial attack ([i-FGSM](https://arxiv.org/pdf/1412.6572.pdf), [i-StepLL](https://arxiv.org/pdf/1611.01236.pdf), [DeepFool](https://arxiv.org/pdf/1511.04599.pdf), [C&W L2](https://arxiv.org/pdf/1608.04644.pdf), [BPDA with Linf-PGD](https://arxiv.org/pdf/1802.00420.pdf)) on siamese:
 Run src/adv_attack/gradient masking siamese.ipynb 
 
-## To cite
+## Reference 
 If you find our work useful in your research, please consider citing our paper by:
 ```
 @inproceedings{lin2021phishpedia,
@@ -152,4 +151,5 @@ If you find our work useful in your research, please consider citing our paper b
 }
 ```
 
-## 
+## Acknowledgement 
+
