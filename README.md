@@ -36,24 +36,24 @@ torchvision=0.6.0
 ```
 pip install -r requirements.txt
 ```
-- Install Detectron2 manually, see the official installation [[guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html)]. 
+- Install Detectron2 manually, see the official installation [guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). 
 
 ## Instructions
 1. Download all the model files:
-- First download [[Siamese model weights](https://drive.google.com/file/d/1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS/view?usp=sharing)],
-[[Logo targetlist](https://drive.google.com/file/d/1_C8NSQYWkpW_-tW8WzFaBr8vDeBAWQ87/view?usp=sharing)],
-[[Brand domain dictionary](https://drive.google.com/file/d/1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1/view?usp=sharing)], put them under **src/phishpedia**
+- First download [Siamese model weights](https://drive.google.com/file/d/1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS/view?usp=sharing),
+[Logo targetlist](https://drive.google.com/file/d/1_C8NSQYWkpW_-tW8WzFaBr8vDeBAWQ87/view?usp=sharing),
+[Brand domain dictionary](https://drive.google.com/file/d/1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1/view?usp=sharing), put them under **src/phishpedia**
 
-- Then download [[Object detector weights](https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing)],
+- Then download [Object detector weights](https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing),
 put it under **src/detectron2_pedia/output/rcnn_2**
 
 2. Download all data files
-- Download [[phish 30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing)], 
-[[benign30k](https://drive.google.com/file/d/1yORUeSrF5vGcgxYrsCoqXcpOUHt-iHq_/view?usp=sharing)] dataset,
+- Download [phish 30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing), 
+[benign30k](https://drive.google.com/file/d/1yORUeSrF5vGcgxYrsCoqXcpOUHt-iHq_/view?usp=sharing) dataset,
 unzip and move them to **datasets/**
 
 3. Run experiment 
-- For phish discovery experiment, the data folder should be organized in [[this format](https://github.com/lindsey98/Phishpedia/tree/main/datasets/test_sites)]:
+- For phish discovery experiment, the data folder should be organized in [this format](https://github.com/lindsey98/Phishpedia/tree/main/datasets/test_sites):
 ```
 python phishpedia_main.py --folder [data folder you want to test] --results [xxx.txt]
 ```
@@ -66,7 +66,7 @@ python -m src.pipeline_eval --data-dir datasets/benign_sample_30k --mode benign 
 
 ## Training the model (Optional)
 1. If you want to train object detection faster-rcnn model yourself, 
-- First dowonload training [[data](https://drive.google.com/file/d/1L3KSWEXcnWzYdJ4hPrNEUvC8jaaNOiBa/view?usp=sharing)] to **datasets/**
+- First dowonload training [data](https://drive.google.com/file/d/1L3KSWEXcnWzYdJ4hPrNEUvC8jaaNOiBa/view?usp=sharing) to **datasets/**
 
 - Second step is to create folder to save trained weights and log:
 ```
@@ -93,7 +93,7 @@ python -m src.detectron2_pedia.train_net \
        --config-file src/detectron2_pedia/configs/faster_rcnn.yaml \
        --resume
 ```
-- Launch [[DAG](http://openaccess.thecvf.com/content_ICCV_2017/papers/Xie_Adversarial_Examples_for_ICCV_2017_paper.pdf)] adversarial attack on Faster-RCNN:
+- Launch [DAG](http://openaccess.thecvf.com/content_ICCV_2017/papers/Xie_Adversarial_Examples_for_ICCV_2017_paper.pdf) adversarial attack on Faster-RCNN:
 ```
 python -m src.detectron2_pedia.run_DAG \
     --cfg-path src/detectron2_pedia/configs/faster_rcnn.yaml \
@@ -103,7 +103,7 @@ python -m src.detectron2_pedia.run_DAG \
 ```
 
 2. If you want to train siamese
-- I first pretrained on the Logos2k [[download here](https://drive.google.com/file/d/1gniiDM0mgwIzE4t1svWXLI5-A5AJgVlh/view?usp=sharing)] dataset, using a pretrained BiT-M ResNet50x1 model, which we have to download first:
+- I first pretrained on the Logos2k [download here](https://drive.google.com/file/d/1gniiDM0mgwIzE4t1svWXLI5-A5AJgVlh/view?usp=sharing) dataset, using a pretrained BiT-M ResNet50x1 model, which we have to download first:
 ```
 wget https://storage.googleapis.com/bit_models/BiT-M-R50x1.npz # download pretraind weights
 ```
@@ -116,9 +116,9 @@ python -m src.siamese_retrain.bit_pytorch.train \
     --dataset logo_2k \  # Name of custom dataset as specified and self-implemented above.
 ```
 - Saving and utilizing the weights in the previous step, I finetune the model on our logo targetlist dataset:
-Download [[siamese training list](https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing)], 
-[[siamese testing list](https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=sharing)],
-[[siamese datadict](https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing)],
+Download [siamese training list](https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing), 
+[siamese testing list](https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=sharing),
+[siamese datadict](https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing),
 put them under **src/siamese_retrain**.
 Run
 ```
@@ -129,7 +129,7 @@ python -m src.siamese_retrain.bit_pytorch.train \
     --dataset targetlist \  # Name of custom dataset as specified and self-implemented above.
     --weights_path {weights_path} \  # Path to weights saved in the previous step, i.e. bit.pth.tar.
 ```
-- Launch adversarial attack ([[i-FGSM](https://arxiv.org/pdf/1412.6572.pdf))], [[i-StepLL](https://arxiv.org/pdf/1611.01236.pdf)], [[DeepFool](https://arxiv.org/pdf/1511.04599.pdf)], [[C&W L2](https://arxiv.org/pdf/1608.04644.pdf)], [[BPDA with Linf-PGD](https://arxiv.org/pdf/1802.00420.pdf)]) on siamese:
+- Launch adversarial attack ([i-FGSM](https://arxiv.org/pdf/1412.6572.pdf)), [i-StepLL](https://arxiv.org/pdf/1611.01236.pdf), [DeepFool](https://arxiv.org/pdf/1511.04599.pdf), [C&W L2](https://arxiv.org/pdf/1608.04644.pdf), [BPDA with Linf-PGD](https://arxiv.org/pdf/1802.00420.pdf)) on siamese:
 Run src/adv_attack/gradient masking siamese.ipynb 
 
 ## To cite
