@@ -154,4 +154,5 @@ If you find our work useful in your research, please consider citing our paper b
 ## Acknowledgement 
 
 ## Miscellaneous
-In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
+- In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
+- The logo targetlist decribed in our paper includes 181 brands, we have further expanded the targetlist to include 277 brands in this code repository 
