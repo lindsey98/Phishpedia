@@ -23,7 +23,7 @@
     - siamese_retrain: training script for siamese
     - detectron2_peida: training script for object detector
     - phishpedia: inference script for siamese
-    - util: other scripts (chromedriver utilities)
+    - util: other scripts (chromedriver utilities, vtscan etc.)
     - siamese.py: main script for siamese
     - pipeline_eval.py: evaluation script for general experiment
 
@@ -33,9 +33,13 @@
        
 ## Requirements
 - Linux machine equipped with GPU 
-python=3.7
-torch=1.5.1
+
+python=3.7 
+
+torch=1.5.1 
+
 torchvision=0.6.0
+
 - Run
 ```
 pip install -r requirements.txt
