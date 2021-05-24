@@ -40,7 +40,7 @@ torchvision=0.6.0
 ```
 pip install -r requirements.txt
 ```
-- Install Detectron2 manually, see the official installation [guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). 
+- Install Detectron2 manually, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). 
 
 ## Instructions
 1. Download all the model files:
@@ -52,8 +52,8 @@ pip install -r requirements.txt
 put it under **src/detectron2_pedia/output/rcnn_2**
 
 2. Download all data files
-- Download [phish 30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing), 
-[benign30k](https://drive.google.com/file/d/1yORUeSrF5vGcgxYrsCoqXcpOUHt-iHq_/view?usp=sharing) dataset,
+- Download [Phish 30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing), 
+[Benign 30k](https://drive.google.com/file/d/1yORUeSrF5vGcgxYrsCoqXcpOUHt-iHq_/view?usp=sharing) dataset,
 unzip and move them to **datasets/**
 
 3. Run experiment 
@@ -70,7 +70,7 @@ python -m src.pipeline_eval --data-dir datasets/benign_sample_30k --mode benign 
 
 ## Training the model (Optional)
 1. If you want to train object detection faster-rcnn model yourself, 
-- First dowonload training [data](https://drive.google.com/file/d/1L3KSWEXcnWzYdJ4hPrNEUvC8jaaNOiBa/view?usp=sharing) to **datasets/**
+- First dowonload [training data](https://drive.google.com/file/d/1L3KSWEXcnWzYdJ4hPrNEUvC8jaaNOiBa/view?usp=sharing) to **datasets/**
 
 - Second step is to create folder to save trained weights and log:
 ```
