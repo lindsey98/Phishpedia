@@ -26,8 +26,6 @@
 - phishpedia_config.py: config script for phish-discovery experiment 
 - phishpedia_main.py: main script for phish-discovery experiment 
 ```
-
-
        
 ## Requirements
 - Linux machine equipped with GPU 
@@ -134,4 +132,13 @@ python -m src.siamese_retrain.bit_pytorch.train \
 - Launch adversarial attack ([[i-FGSM](https://arxiv.org/pdf/1412.6572.pdf))], [[i-StepLL](https://arxiv.org/pdf/1611.01236.pdf)], [[DeepFool](https://arxiv.org/pdf/1511.04599.pdf)], [[C&W L2](https://arxiv.org/pdf/1608.04644.pdf)], [[BPDA with Linf-PGD](https://arxiv.org/pdf/1802.00420.pdf)]) on siamese:
 Run src/adv_attack/gradient masking siamese.ipynb 
 
- 
+## To cite
+If you find our work useful in your research, please consider citing our paper by:
+```
+@inproceedings{lin2021phishpedia,
+  title={Phishpedia: A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages},
+  author={Lin, Yun and Liu, Ruofan and Divakaran, Dinil Mon and Ng, Jun Yang and Chan, Qing Zhou and Lu, Yiwen and Si, Yuxuan and Zhang, Fan and Dong, Jin Song},
+  booktitle={30th $\{$USENIX$\}$ Security Symposium ($\{$USENIX$\}$ Security 21)},
+  year={2021}
+}
+```
