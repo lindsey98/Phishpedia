@@ -114,9 +114,9 @@ python -m src.siamese_retrain.bit_pytorch.train \
     --dataset logo_2k \  # Name of custom dataset as specified and self-implemented above.
 ```
 - Saving and utilizing the weights in the previous step, I finetune the model on our logo targetlist dataset:
-Download [siamese training list(https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing)], 
-[siamese testing list(https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=sharing)],
-[siamese datadict(https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing)],
+Download [[siamese training list](https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing)], 
+[[siamese testing list](https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=sharing)],
+[[siamese datadict](https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing)],
 put them under **src/siamese_retrain**.
 Run
 ```
