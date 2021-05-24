@@ -153,3 +153,5 @@ If you find our work useful in your research, please consider citing our paper b
 
 ## Acknowledgement 
 
+## Miscellaneous
+In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
