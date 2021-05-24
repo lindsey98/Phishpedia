@@ -101,7 +101,7 @@ python -m src.detectron2_pedia.run_DAG \
 ```
 
 2. If you want to train siamese
-- I first pretrained on the Logos2k [[download here](https://drive.google.com/file/d/1IFDF7gyjnnyrns4Fm-Ui8sMloBsNY1EO/view?usp=sharing)] dataset, using a pretrained BiT-M ResNet50x1 model, which we have to download first:
+- I first pretrained on the Logos2k [[download here](https://drive.google.com/file/d/1gniiDM0mgwIzE4t1svWXLI5-A5AJgVlh/view?usp=sharing)] dataset, using a pretrained BiT-M ResNet50x1 model, which we have to download first:
 ```
 wget https://storage.googleapis.com/bit_models/BiT-M-R50x1.npz
 ```
@@ -114,9 +114,9 @@ python -m src.siamese_retrain.bit_pytorch.train \
     --dataset logo_2k \  # Name of custom dataset as specified and self-implemented above.
 ```
 - Saving and utilizing the weights in the previous step, I finetune the model on our logo targetlist dataset:
-Download [[siamese training list](https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing)], 
-[[siamese testing list](https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=sharing)],
-[[siamese datadict](https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing)],
+Download [siamese training list(https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing)], 
+[siamese testing list(https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=sharing)],
+[siamese datadict(https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing)],
 put them under **src/siamese_retrain**.
 Run
 ```
