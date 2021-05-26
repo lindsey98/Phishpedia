@@ -156,3 +156,5 @@ If you find our work useful in your research, please consider citing our paper b
 ## Miscellaneous
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
 - The logo targetlist decribed in our paper includes 181 brands, we have further expanded the targetlist to include 277 brands in this code repository 
+- We did not include the certstream code in this repo, our certstream code is basically the same as [Phish_catcher](https://github.com/x0rz/phishing_catcher), we lower the score threshold to be 40 to process more suspicious websites, readers can refer to their repo for details
+- We also did not include the crawling script in this repo, readers can use [Selenium](https://selenium-python.readthedocs.io/), [Scrapy](https://github.com/scrapy/scrapy) or any web-crawling API to crawl the domains obtained from Cerstream
