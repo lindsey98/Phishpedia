@@ -27,6 +27,7 @@
     - siamese.py: main script for siamese
     - pipeline_eval.py: evaluation script for general experiment
 
+- tele: telegram scripts to vote for phishing 
 - phishpedia_config.py: config script for phish-discovery experiment 
 - phishpedia_main.py: main script for phish-discovery experiment 
 ```
@@ -139,6 +140,28 @@ python -m src.siamese_retrain.bit_pytorch.train \
 ```
 - Launch adversarial attack ([i-FGSM](https://arxiv.org/pdf/1412.6572.pdf), [i-StepLL](https://arxiv.org/pdf/1611.01236.pdf), [DeepFool](https://arxiv.org/pdf/1511.04599.pdf), [C&W L2](https://arxiv.org/pdf/1608.04644.pdf), [BPDA with Linf-PGD](https://arxiv.org/pdf/1802.00420.pdf)) on siamese:
 Run src/adv_attack/gradient masking siamese.ipynb 
+
+## Telegram service to label found phishing (Optional)
+### Introduction
+- When phishing are reported by the model, users may also want to manually verify the intention of the websites, thus we also developed a telegram-bot to help labeling the screenshot. An example is like this <img src="big_pic/tele.png"/>
+- In this application, we support the following command:
+```
+/start # this will return all the unlabelled data
+/get all/date # this will return the statistics for all the data namely how many positive and negatives there are
+/classify disagree # this will bring up phishing pages with any disagreement, ie one voted not phishing and one voted phishing for a revote
+```
+### Setup tele-bot
+- 1. Create an empty google sheet for saving the results (foldername, voting results etc.)
+- 2. Follow the [guide](https://www.analyticsvidhya.com/blog/2020/07/read-and-update-google-spreadsheets-with-python/) to download JSON file which stores the credential for that particular google sheet, save as **tele/cred.json**
+- 3. Go to **tele/tele.py**, Change 
+```
+token = '[token for telebot]' 
+folder = "[the folder you want to label]"
+```
+[How do I find token for telebot?](https://core.telegram.org/bots#botfather)
+- 4. Run **tele/tele.py**
+
+
 
 ## Reference 
 If you find our work useful in your research, please consider citing our paper by:
