@@ -40,7 +40,6 @@
 ```
        
 ## Requirements
-- Linux machine equipped with GPU 
 
 python=3.7 
 
@@ -48,9 +47,9 @@ torch=1.5.1
 
 torchvision=0.6.0
 
-- Install Detectron2 manually, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). 
+Install Detectron2 manually, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). 
 
-- Then, run
+Then, run
 ```
 pip install -r requirements.txt
 ```
