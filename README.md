@@ -112,7 +112,7 @@ python -m src.detectron2_pedia.run_DAG \
 
 ### 2. If you want to train siamese
 Our training has two stages: In first stage, we use the dataset [Logo2K+](https://arxiv.org/abs/1911.07924) published in AAAI'20 to pretrain; in second stage we finetune the model on our logo targetlist
-- I first pretrained on the [Logos2k data](https://drive.google.com/file/d/1zAIp97e8VlFHLwtuZU3Sg1OlvuOPUJJW/view?usp=sharing), [Logo2k training list](https://drive.google.com/file/d/19NuNiy9yv6jDyPruce5MLSQDhFVkcbav/view?usp=sharing), [logo2k testing list](https://drive.google.com/file/d/1-uTDQT_f0nC4lrVf-0Rfz2c9ZyZnhqjz/view?usp=sharing), [logo2k labeldict](https://drive.google.com/file/d/1adCjkccF2gpPvvbkBu3MUvEmfAVcNpOL/view?usp=sharing) dataset, using a pretrained BiT-M ResNet50x1 model, which we have to download first:
+- We first pretrained on the [Logos2k data](https://drive.google.com/file/d/1zAIp97e8VlFHLwtuZU3Sg1OlvuOPUJJW/view?usp=sharing), [Logo2k training list](https://drive.google.com/file/d/19NuNiy9yv6jDyPruce5MLSQDhFVkcbav/view?usp=sharing), [logo2k testing list](https://drive.google.com/file/d/1-uTDQT_f0nC4lrVf-0Rfz2c9ZyZnhqjz/view?usp=sharing), [logo2k labeldict](https://drive.google.com/file/d/1adCjkccF2gpPvvbkBu3MUvEmfAVcNpOL/view?usp=sharing) dataset, using a pretrained BiT-M ResNet50x1 model, which we have to download first:
 ```
 wget https://storage.googleapis.com/bit_models/BiT-M-R50x1.npz # download pretraind weights
 ```
@@ -124,7 +124,7 @@ python -m src.siamese_retrain.bit_pytorch.train \
     --logdir {log_dir} \  # Where to log training info.
     --dataset logo_2k \  # Name of custom dataset as specified and self-implemented above.
 ```
-- Saving and utilizing the weights in the previous step, I finetune the model on our logo targetlist dataset:
+- Saving and utilizing the weights in the previous step, we finetune the model on our logo targetlist dataset:
 Download [Logo targetlist](https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing), 
 [Logo targetlist for training](https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=sharing),
 [Logo targetlist for testing](https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing),
