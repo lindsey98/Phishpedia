@@ -152,7 +152,7 @@ python -m src.siamese_retrain.bit_pytorch.train \
 - Launch adversarial attack ([i-FGSM](https://arxiv.org/pdf/1412.6572.pdf), [i-StepLL](https://arxiv.org/pdf/1611.01236.pdf), [DeepFool](https://arxiv.org/pdf/1511.04599.pdf), [C&W L2](https://arxiv.org/pdf/1608.04644.pdf), [BPDA with Linf-PGD](https://arxiv.org/pdf/1802.00420.pdf)) on siamese:
 Run src/adv_attack/gradient masking siamese.ipynb 
 
-## Telegram service to label found phishing (Optional)
+<!-- ## Telegram service to label found phishing (Optional)
 ### Introduction
 - When phishing are reported by the model, users may also want to manually verify the intention of the websites, thus we also developed a telegram-bot to help labeling the screenshot. An example is like this <img src="big_pic/tele.png"/>
 - In this application, we support the following command:
@@ -170,8 +170,7 @@ token = '[token for telebot]'
 folder = "[the folder you want to label]"
 ```
 [How do I find token for telebot?](https://core.telegram.org/bots#botfather)
-- 4. Run **tele/tele.py**
-
+- 4. Run **tele/tele.py** -->
 
 
 ## Reference 
