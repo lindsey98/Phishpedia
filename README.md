@@ -8,7 +8,7 @@
 
 ## Framework
     
-<img src="big_pic/pic.png" style="width:2000px;height:350px"/>
+<img src="big_pic/overview.png" style="width:2000px;height:350px"/>
 
 ```Input```: A URL and its screenshot ```Output```: Phish/Benign, Phishing target
 - Step 1: Enter <b>Deep Object Detection Model</b>, get predicted elements
@@ -30,7 +30,6 @@
      |_ expand_targetlist
      |_ domain_map.pkl
      |_ resnetv2_rgb_new.pth.tar
-    - util: other scripts (chromedriver utilities, vtscan etc.)
     - siamese.py: main script for siamese
     - pipeline_eval.py: evaluation script for general experiment
 
@@ -41,13 +40,15 @@
        
 ## Requirements
 
+Test with Linux machine (I believe for Windows also work)
+
 python=3.7 
 
-torch=1.5.1 
+torch>=1.6.0 
 
-torchvision=0.6.0
+torchvision>=0.6.0
 
-Install Detectron2 manually, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). 
+Install compatible Detectron2 manually, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). If you are using Windows, try this [guide](https://dgmaxime.medium.com/how-to-easily-install-detectron2-on-windows-10-39186139101c) instead.
 
 Then, run
 ```
@@ -65,7 +66,7 @@ put it under **src/detectron2_pedia/output/rcnn_2**
 
 - Your directory should be look like the project structure shown above.
 
-### 2. Download all data files
+### 2. Download all data files 
 - Download [Phish 30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing), 
 [Benign 30k](https://drive.google.com/file/d/1yORUeSrF5vGcgxYrsCoqXcpOUHt-iHq_/view?usp=sharing) dataset,
 unzip and move them to **datasets/**
@@ -110,14 +111,14 @@ python -m src.detectron2_pedia.train_net \
        --config-file src/detectron2_pedia/configs/faster_rcnn.yaml \
        --resume
 ```
-- Launch [DAG](http://openaccess.thecvf.com/content_ICCV_2017/papers/Xie_Adversarial_Examples_for_ICCV_2017_paper.pdf) adversarial attack on Faster-RCNN:
+<!-- - Launch [DAG](http://openaccess.thecvf.com/content_ICCV_2017/papers/Xie_Adversarial_Examples_for_ICCV_2017_paper.pdf) adversarial attack on Faster-RCNN:
 ```
 python -m src.detectron2_pedia.run_DAG \
     --cfg-path src/detectron2_pedia/configs/faster_rcnn.yaml \
     --weights-path src/detectron2_pedia/output/rcnn_2/rcnn_bet365.pth \
     --results-save-path coco_instances_results.json \
     --vis-save-dir saved
-```
+``` -->
 
 ### 2. If you want to train siamese
 Our training has two stages: In first stage, we use the dataset [Logo2K+](https://arxiv.org/abs/1911.07924) published in AAAI'20 to pretrain; in second stage we finetune the model on our logo targetlist
@@ -147,10 +148,11 @@ python -m src.siamese_retrain.bit_pytorch.train \
     --dataset targetlist \  # Name of custom dataset as specified and self-implemented above.
     --weights_path {weights_path} \  # Path to weights saved in the previous step, i.e. bit.pth.tar.
 ```
-- Launch adversarial attack ([i-FGSM](https://arxiv.org/pdf/1412.6572.pdf), [i-StepLL](https://arxiv.org/pdf/1611.01236.pdf), [DeepFool](https://arxiv.org/pdf/1511.04599.pdf), [C&W L2](https://arxiv.org/pdf/1608.04644.pdf), [BPDA with Linf-PGD](https://arxiv.org/pdf/1802.00420.pdf)) on siamese:
-Run src/adv_attack/gradient masking siamese.ipynb 
+<!-- - Launch adversarial attack ([i-FGSM](https://arxiv.org/pdf/1412.6572.pdf), [i-StepLL](https://arxiv.org/pdf/1611.01236.pdf), [DeepFool](https://arxiv.org/pdf/1511.04599.pdf), [C&W L2](https://arxiv.org/pdf/1608.04644.pdf), [BPDA with Linf-PGD](https://arxiv.org/pdf/1802.00420.pdf)) on siamese:
+Run src/adv_attack/gradient masking siamese.ipynb  -->
 
-## Telegram service to label found phishing (Optional)
+ 
+<!-- ## Telegram service to label found phishing (Optional)
 ### Introduction
 - When phishing are reported by the model, users may also want to manually verify the intention of the websites, thus we also developed a telegram-bot to help labeling the screenshot. An example is like this <img src="big_pic/tele.png"/>
 - In this application, we support the following command:
@@ -168,8 +170,7 @@ token = '[token for telebot]'
 folder = "[the folder you want to label]"
 ```
 [How do I find token for telebot?](https://core.telegram.org/bots#botfather)
-- 4. Run **tele/tele.py**
-
+- 4. Run **tele/tele.py** -->
 
 
 ## Reference 
