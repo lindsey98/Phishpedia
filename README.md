@@ -48,11 +48,12 @@ torch=1.5.1
 
 torchvision=0.6.0
 
-- Run
+- Install Detectron2 manually, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). 
+
+- Then, run
 ```
 pip install -r requirements.txt
 ```
-- Install Detectron2 manually, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). 
 
 ## Instructions
 ### 1. Download all the model files:
