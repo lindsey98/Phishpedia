@@ -30,7 +30,6 @@
      |_ expand_targetlist
      |_ domain_map.pkl
      |_ resnetv2_rgb_new.pth.tar
-    - util: other scripts (chromedriver utilities, vtscan etc.)
     - siamese.py: main script for siamese
     - pipeline_eval.py: evaluation script for general experiment
 
