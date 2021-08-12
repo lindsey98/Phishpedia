@@ -21,12 +21,12 @@
 ```
 - src
     - adv_attack: adversarial attacking scripts
-    - siamese_retrain: training script for siamese
     - detectron2_peida: training script for object detector
      |_ output
       |_ rcnn_2
         |_ rcnn_bet365.pth 
-    - phishpedia: inference script for siamese
+    - siamese_pedia: inference script for siamese
+     |_ siamese_retrain: training script for siamese
      |_ expand_targetlist
      |_ domain_map.pkl
      |_ resnetv2_rgb_new.pth.tar
