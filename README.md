@@ -84,7 +84,7 @@ python -m src.pipeline_eval --data-dir datasets/phish_sample_30k --mode phish --
 python -m src.pipeline_eval --data-dir datasets/benign_sample_30k --mode benign --write-txt output_benign.txt --ts [threshold for siamese, 0.83 is suggested]
 ```
 
-## Training the model (Optional)
+<!-- ## Training the model (Optional)
 ### 1. If you want to train object detection faster-rcnn model yourself, 
 - First dowonload [training data](https://drive.google.com/file/d/1L3KSWEXcnWzYdJ4hPrNEUvC8jaaNOiBa/view?usp=sharing) to **datasets/**
 - Second step is to create folder to save trained weights and log:
@@ -151,7 +151,8 @@ python -m src.siamese_retrain.bit_pytorch.train \
 ```
 - Launch adversarial attack ([i-FGSM](https://arxiv.org/pdf/1412.6572.pdf), [i-StepLL](https://arxiv.org/pdf/1611.01236.pdf), [DeepFool](https://arxiv.org/pdf/1511.04599.pdf), [C&W L2](https://arxiv.org/pdf/1608.04644.pdf), [BPDA with Linf-PGD](https://arxiv.org/pdf/1802.00420.pdf)) on siamese:
 Run src/adv_attack/gradient masking siamese.ipynb 
-
+ -->
+ 
 <!-- ## Telegram service to label found phishing (Optional)
 ### Introduction
 - When phishing are reported by the model, users may also want to manually verify the intention of the websites, thus we also developed a telegram-bot to help labeling the screenshot. An example is like this <img src="big_pic/tele.png"/>
