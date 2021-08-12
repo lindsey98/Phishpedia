@@ -1,7 +1,6 @@
 # Global configuration
 from src.siamese import *
 from src.detectron2_pedia.inference import *
-from src.util.chrome import vt_scan
 
 # element recognition model -- logo only
 cfg_path = './src/detectron2_pedia/configs/faster_rcnn.yaml'

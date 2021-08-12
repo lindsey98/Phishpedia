@@ -1,6 +1,6 @@
-from src.phishpedia.models import KNOWN_MODELS
-from src.phishpedia.utils import brand_converter
-from src.phishpedia.inference import siamese_inference, pred_siamese
+from src.siamese_pedia.models import KNOWN_MODELS
+from src.siamese_pedia.utils import brand_converter
+from src.siamese_pedia.inference import siamese_inference, pred_siamese
 import torch
 import os
 import numpy as np

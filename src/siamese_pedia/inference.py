@@ -7,7 +7,7 @@ from torch import nn
 import torch.nn.functional as F
 import torch
 from collections import OrderedDict
-from src.phishpedia.utils import brand_converter, resolution_alignment
+from src.siamese_pedia.utils import brand_converter, resolution_alignment
 import matplotlib.pyplot as plt
 
 def l2_norm(x):
