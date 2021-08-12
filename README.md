@@ -8,7 +8,7 @@
 
 ## Framework
     
-<img src="big_pic/pic.png" style="width:2000px;height:350px"/>
+<img src="big_pic/overview.png" style="width:2000px;height:350px"/>
 
 ```Input```: A URL and its screenshot ```Output```: Phish/Benign, Phishing target
 - Step 1: Enter <b>Deep Object Detection Model</b>, get predicted elements
