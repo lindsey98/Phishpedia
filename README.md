@@ -41,13 +41,15 @@
        
 ## Requirements
 
+Test with Linux machine (I believe for Windows also work)
+
 python=3.7 
 
-torch=1.5.1 
+torch>=1.6.0 
 
-torchvision=0.6.0
+torchvision>=0.6.0
 
-Install Detectron2 manually, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). 
+Install compatible Detectron2 manually, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). If you are using Windows, try this [guide](https://dgmaxime.medium.com/how-to-easily-install-detectron2-on-windows-10-39186139101c) instead.
 
 Then, run
 ```
@@ -65,7 +67,7 @@ put it under **src/detectron2_pedia/output/rcnn_2**
 
 - Your directory should be look like the project structure shown above.
 
-### 2. Download all data files
+### 2. Download all data files 
 - Download [Phish 30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing), 
 [Benign 30k](https://drive.google.com/file/d/1yORUeSrF5vGcgxYrsCoqXcpOUHt-iHq_/view?usp=sharing) dataset,
 unzip and move them to **datasets/**
