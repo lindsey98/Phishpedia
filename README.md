@@ -63,6 +63,8 @@ pip install -r requirements.txt
 - Then download [Object detector weights](https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing),
 put it under **src/detectron2_pedia/output/rcnn_2**
 
+- Your directory should be look like the project structure shown above.
+
 ### 2. Download all data files
 - Download [Phish 30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing), 
 [Benign 30k](https://drive.google.com/file/d/1yORUeSrF5vGcgxYrsCoqXcpOUHt-iHq_/view?usp=sharing) dataset,
