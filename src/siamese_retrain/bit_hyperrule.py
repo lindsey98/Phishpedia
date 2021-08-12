@@ -13,14 +13,12 @@
 # limitations under the License.
 
 def get_resolution(original_resolution):
-    """Takes (H,W) and returns (precrop, crop)."""
-    area = original_resolution[0] * original_resolution[1]
-    return (160, 128) if area < 96*96 else (512, 480)
+    return (original_resolution[0], original_resolution[1])
 
 
 known_dataset_sizes = {
-    'logo_2k': (95, 95),
-    'targetlist': (95, 95),
+    'logo_2k': (128, 128),
+    'targetlist': (128, 128),
 }
 
 
