@@ -112,14 +112,14 @@ python -m src.detectron2_pedia.train_net \
        --config-file src/detectron2_pedia/configs/faster_rcnn.yaml \
        --resume
 ```
-- Launch [DAG](http://openaccess.thecvf.com/content_ICCV_2017/papers/Xie_Adversarial_Examples_for_ICCV_2017_paper.pdf) adversarial attack on Faster-RCNN:
+<!-- - Launch [DAG](http://openaccess.thecvf.com/content_ICCV_2017/papers/Xie_Adversarial_Examples_for_ICCV_2017_paper.pdf) adversarial attack on Faster-RCNN:
 ```
 python -m src.detectron2_pedia.run_DAG \
     --cfg-path src/detectron2_pedia/configs/faster_rcnn.yaml \
     --weights-path src/detectron2_pedia/output/rcnn_2/rcnn_bet365.pth \
     --results-save-path coco_instances_results.json \
     --vis-save-dir saved
-```
+``` -->
 
 ### 2. If you want to train siamese
 Our training has two stages: In first stage, we use the dataset [Logo2K+](https://arxiv.org/abs/1911.07924) published in AAAI'20 to pretrain; in second stage we finetune the model on our logo targetlist
@@ -149,8 +149,8 @@ python -m src.siamese_retrain.bit_pytorch.train \
     --dataset targetlist \  # Name of custom dataset as specified and self-implemented above.
     --weights_path {weights_path} \  # Path to weights saved in the previous step, i.e. bit.pth.tar.
 ```
-- Launch adversarial attack ([i-FGSM](https://arxiv.org/pdf/1412.6572.pdf), [i-StepLL](https://arxiv.org/pdf/1611.01236.pdf), [DeepFool](https://arxiv.org/pdf/1511.04599.pdf), [C&W L2](https://arxiv.org/pdf/1608.04644.pdf), [BPDA with Linf-PGD](https://arxiv.org/pdf/1802.00420.pdf)) on siamese:
-Run src/adv_attack/gradient masking siamese.ipynb 
+<!-- - Launch adversarial attack ([i-FGSM](https://arxiv.org/pdf/1412.6572.pdf), [i-StepLL](https://arxiv.org/pdf/1611.01236.pdf), [DeepFool](https://arxiv.org/pdf/1511.04599.pdf), [C&W L2](https://arxiv.org/pdf/1608.04644.pdf), [BPDA with Linf-PGD](https://arxiv.org/pdf/1802.00420.pdf)) on siamese:
+Run src/adv_attack/gradient masking siamese.ipynb  -->
 
  
 <!-- ## Telegram service to label found phishing (Optional)
