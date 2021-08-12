@@ -1,8 +1,8 @@
 from phishpedia_config import *
 import os
 import argparse
-from src.detectron2_pedia.inference import *
 import time
+from src.util.chrome import *
 
 #####################################################################################################################
 # ** Step 1: Enter Layout detector, get predicted elements

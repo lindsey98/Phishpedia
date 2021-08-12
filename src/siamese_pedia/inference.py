@@ -19,7 +19,7 @@ def l2_norm(x):
 
 def pred_siamese(img, model, imshow=False, title=None, grayscale=False):
     '''
-    Inference for a single image
+    Get feature embedding of a single image
     :param img: image path in str or image in PIL.Image
     :param model: model to make inference
     :param imshow: enable display of image or not
