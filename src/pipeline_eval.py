@@ -116,12 +116,12 @@ if __name__ == '__main__':
 
     # Siamese
     pedia_model, logo_feat_list, file_name_list = phishpedia_config(num_classes=277,
-                                                                    weights_path='src/phishpedia/resnetv2_rgb_new.pth.tar',
-                                                                    targetlist_path='src/phishpedia/expand_targetlist/')
+                                                                    weights_path='src/siamese_pedia/resnetv2_rgb_new.pth.tar',
+                                                                    targetlist_path='src/siamese_pedia/expand_targetlist/')
     print('Number of protected logos = {}'.format(str(len(logo_feat_list))))
 
     # Domain map path
-    domain_map_path = 'src/phishpedia/domain_map.pkl'
+    domain_map_path = 'src/siamese_pedia/domain_map.pkl'
 
     # PhishPedia
     phishpedia_eval(data_dir, mode, siamese_ts, write_txt)
