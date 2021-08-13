@@ -10,12 +10,12 @@ ele_model = config_rcnn(cfg_path, weights_path, conf_threshold=0.05)
 # siamese model
 print('Load protected logo list')
 pedia_model, logo_feat_list, file_name_list = phishpedia_config(num_classes=277,
-                                                weights_path='./src/phishpedia/resnetv2_rgb_new.pth.tar',
-                                                targetlist_path='./src/phishpedia/expand_targetlist/')
+                                                weights_path='./src/siamese_pedia/resnetv2_rgb_new.pth.tar',
+                                                targetlist_path='./src/siamese_pedia/expand_targetlist/')
 print('Finish loading protected logo list')
 
 siamese_ts = 0.87 # FIXME: threshold is 0.87 in phish-discovery?
 
 # brand-domain dictionary
-domain_map_path = './src/phishpedia/domain_map.pkl'
+domain_map_path = './src/siamese_pedia/domain_map.pkl'
 
