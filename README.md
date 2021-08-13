@@ -11,7 +11,7 @@
 <img src="big_pic/overview.png" style="width:2000px;height:350px"/>
 
 ```Input```: A URL and its screenshot ```Output```: Phish/Benign, Phishing target
-- Step 1: Enter <b>Deep Object Detection Model</b>, get predicted elements
+- Step 1: Enter <b>Deep Object Detection Model</b>, get predicted logos and inputs (inputs are not used for later prediction, just for explaination)
 
 - Step 2: Enter <b>Deep Siamese Model</b>
     - If Siamese report no target, ```Return  Benign, None```
