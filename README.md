@@ -128,7 +128,7 @@ wget https://storage.googleapis.com/bit_models/BiT-M-R50x1.npz # download pretra
 ```
 - This command runs the pre-training on the downloaded model:
 ```
-python -m src.siamese_retrain.bit_pytorch.train \
+python -m src.siamese_pedia.siamese_retrain.bit_pytorch.train \
     --name {exp_name} \  # Name of this run. Used for monitoring and checkpointing.
     --model BiT-M-R50x1 \  # Which pretrained model to use.
     --logdir {log_dir} \  # Where to log training info.
@@ -138,10 +138,10 @@ python -m src.siamese_retrain.bit_pytorch.train \
 Download [Logo targetlist](https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0evKSOake6hCTZ/view?usp=sharing), 
 [Logo targetlist for training](https://drive.google.com/file/d/1GirhWiOVQpJWafhHA93elMfsUrxJzr9f/view?usp=sharing),
 [Logo targetlist for testing](https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing),
-put them under **src/siamese_retrain**.
+put them under **src/siamese_pedia/siamese_retrain**.
 Run
 ```
-python -m src.siamese_retrain.bit_pytorch.train \
+python -m src.siamese_pedia.siamese_retrain.bit_pytorch.train \
     --name {exp_name} \  # Name of this run. Used for monitoring and checkpointing.
     --model BiT-M-R50x1 \  # Which pretrained model to use.
     --logdir {log_dir} \  # Where to log training info.
