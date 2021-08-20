@@ -81,12 +81,12 @@ unzip and move them to **datasets/**
 
 ### 3. Run experiment 
 - For phish discovery experiment, the data folder should be organized in [this format](https://github.com/lindsey98/Phishpedia/tree/main/datasets/test_sites):
-```
+```bash
 python phishpedia_main.py --folder [data folder you want to test] --results [xxx.txt]
 ```
 - For general experiment on phish30k and benign30k: 
 please run evaluation scripts
-```
+```bash
 python -m src.pipeline_eval --data-dir datasets/phish_sample_30k --mode phish --write-txt output_phish.txt --ts [threshold for siamese, 0.83 is suggested]
 python -m src.pipeline_eval --data-dir datasets/benign_sample_30k --mode benign --write-txt output_benign.txt --ts [threshold for siamese, 0.83 is suggested]
 ```
@@ -100,20 +100,20 @@ mkdir src/detectron2_pedia/output
 ```
 - Then start training 
 To train on a single gpu:
-```
+```bash
 python -m src.detectron2_pedia.train_net \
        --config-file src/detectron2_pedia/configs/faster_rcnn.yaml
 ```
 
 To train on multiple gpus:
-```
+```bash
 python -m src.detectron2_pedia.train_net \
        --num-gpus 4 \
        --config-file src/detectron2_pedia/configs/faster_rcnn.yaml
 ```
 
 To resume training from a checkpoint (finds last checkpoint from cfg.OUTPUT_DIR)
-```
+```bash
 python -m src.detectron2_pedia.train_net \
        --num-gpus 4 \
        --config-file src/detectron2_pedia/configs/faster_rcnn.yaml \
@@ -135,7 +135,7 @@ Our training has two stages: In first stage, we use the dataset [Logo2K+](https:
 wget https://storage.googleapis.com/bit_models/BiT-M-R50x1.npz # download pretraind weights
 ```
 - This command runs the pre-training on the downloaded model:
-```
+```bash
 python -m src.siamese_pedia.siamese_retrain.bit_pytorch.train \
     --name {exp_name} \  # Name of this run. Used for monitoring and checkpointing.
     --model BiT-M-R50x1 \  # Which pretrained model to use.
@@ -148,7 +148,7 @@ Download [Logo targetlist](https://drive.google.com/file/d/1cuGAGe-HubaQWU8Gwn0e
 [Logo targetlist for testing](https://drive.google.com/file/d/12GjdcYeSBbPji8pCq5KrFhWmqUC451Pc/view?usp=sharing),
 put them under **src/siamese_pedia/siamese_retrain**.
 Run
-```
+```bash
 python -m src.siamese_pedia.siamese_retrain.bit_pytorch.train \
     --name {exp_name} \  # Name of this run. Used for monitoring and checkpointing.
     --model BiT-M-R50x1 \  # Which pretrained model to use.
@@ -192,10 +192,8 @@ If you find our work useful in your research, please consider citing our paper b
 }
 ```
 
-## Acknowledgement 
-
 ## Miscellaneous
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
 - The logo targetlist decribed in our paper includes 181 brands, we have further expanded the targetlist to include 277 brands in this code repository 
-- We did not include the certstream code in this repo, our certstream code is basically the same as [Phish_catcher](https://github.com/x0rz/phishing_catcher), we lower the score threshold to be 40 to process more suspicious websites, readers can refer to their repo for details
+- We did not include the Certstream code in this repo, our Certstream code is the same as [Phish_catcher](https://github.com/x0rz/phishing_catcher), we lower the score threshold to be 40 to process more suspicious websites, readers can refer to their repo for details
 - We also did not include the crawling script in this repo, readers can use [Selenium](https://selenium-python.readthedocs.io/), [Scrapy](https://github.com/scrapy/scrapy) or any web-crawling API to crawl the domains obtained from Cerstream, just make sure that the crawled websites are stored in [this format](https://github.com/lindsey98/Phishpedia/tree/main/datasets/test_sites)
