@@ -45,7 +45,8 @@ def phishpedia_config(num_classes:int, weights_path:str, targetlist_path:str, gr
         if target.startswith('.'): # skip hidden files
             continue
         for logo_path in os.listdir(os.path.join(targetlist_path, target)):
-            if logo_path.endswith('.png') or logo_path.endswith('.jpeg') or logo_path.endswith('.jpg') or logo_path.endswith('.PNG') or logo_path.endswith('.JPG') or logo_path.endswith('.JPEG'):
+            if logo_path.endswith('.png') or logo_path.endswith('.jpeg') or logo_path.endswith('.jpg') or logo_path.endswith('.PNG') \
+                                          or logo_path.endswith('.JPG') or logo_path.endswith('.JPEG'):
                 if logo_path.startswith('loginpage') or logo_path.startswith('homepage'): # skip homepage/loginpage
                     continue
                 logo_feat_list.append(pred_siamese(img=os.path.join(targetlist_path, target, logo_path), 

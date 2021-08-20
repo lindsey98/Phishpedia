@@ -1,8 +1,8 @@
 
 import torch
 import numpy as np
-import src.siamese_retrain.bit_pytorch.models as models
-from src.siamese_retrain.bit_pytorch.dataloader import GetLoader
+import src.siamese_pedia.siamese_retrain.bit_pytorch.models as models
+from src.siamese_pedia.siamese_retrain.bit_pytorch.dataloader import GetLoader
 import torch.nn.functional as F
 import os
 import cv2
@@ -134,9 +134,9 @@ if __name__ == '__main__':
             tv.transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
     ])
 
-    val_set = GetLoader(data_root='./src/phishpedia/expand_targetlist',
-                          data_list='./src/siamese_retrain/test_targets.txt',
-                          label_dict='./src/siamese_retrain/target_dict.json',
+    val_set = GetLoader(data_root='./src/siamese_pedia/expand_targetlist',
+                          data_list='./src/siamese_pedia/siamese_retrain/test_targets.txt',
+                          label_dict='./src/siamese_pedia/siamese_retrain/target_dict.json',
                           transform=val_tx)
     
     val_loader = torch.utils.data.DataLoader(val_set, batch_size=len(val_set), drop_last=False, shuffle=False)

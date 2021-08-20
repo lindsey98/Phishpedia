@@ -23,12 +23,12 @@ import numpy as np
 import torch
 import torchvision as tv
 
-import src.siamese_retrain.bit_pytorch.fewshot as fs
-import src.siamese_retrain.bit_pytorch.lbtoolbox as lb
-import src.siamese_retrain.bit_pytorch.models as models
-import src.siamese_retrain.bit_common as bit_common
-import src.siamese_retrain.bit_hyperrule as bit_hyperrule
-from src.siamese_retrain.bit_pytorch.dataloader import GetLoader
+import src.siamese_pedia.siamese_retrain.bit_pytorch.fewshot as fs
+import src.siamese_pedia.siamese_retrain.bit_pytorch.lbtoolbox as lb
+import src.siamese_pedia.siamese_retrain.bit_pytorch.models as models
+import src.siamese_pedia.siamese_retrain.bit_common as bit_common
+import src.siamese_pedia.siamese_retrain.bit_hyperrule as bit_hyperrule
+from src.siamese_pedia.siamese_retrain.bit_pytorch.dataloader import GetLoader
 
 import os
 os.environ["CUDA_VISIBLE_DEVICES"]="0, 1"
@@ -77,14 +77,14 @@ def mktrainval(args, logger):
                               transform=val_tx)
         
     elif args.dataset == "targetlist":
-        train_set = GetLoader(data_root='./src/phishpedia/expand_targetlist',
-                                            data_list='./src/siamese_retrain/train_targets.txt',
-                                            label_dict='./src/siamese_retrain/target_dict.json',
+        train_set = GetLoader(data_root='./src/siamese_pedia/expand_targetlist',
+                                            data_list='./src/siamese_pedia/siamese_retrain/train_targets.txt',
+                                            label_dict='./src/siamese_pedia/siamese_retrain/target_dict.json',
                                             transform=train_tx)
         
-        valid_set = GetLoader(data_root='./src/phishpedia/expand_targetlist',
-                              data_list='./src/siamese_retrain/test_targets.txt',
-                              label_dict='./src/siamese_retrain/target_dict.json',
+        valid_set = GetLoader(data_root='./src/siamese_pedia/expand_targetlist',
+                              data_list='./src/siamese_pedia/siamese_retrain/test_targets.txt',
+                              label_dict='./src/siamese_pedia/siamese_retrain/target_dict.json',
                               transform=val_tx)
 
     logger.info("Using a training set with {} images.".format(len(train_set)))
