@@ -72,7 +72,7 @@ put it under **src/detectron2_pedia/output/rcnn_2**
 cd src/siamese_pedia/
 unzip expand_targetlist.zip
 ```
-- Your directory should be look like the project structure shown above.
+- Your directory should be look like the project structure shown above in Project directory section.
 
 ### 2. Download all data files 
 - Download [Phish 30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing), 
