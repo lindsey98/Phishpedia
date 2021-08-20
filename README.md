@@ -69,7 +69,8 @@ put it under **src/detectron2_pedia/output/rcnn_2**
 ### 1. Unzip logo targetlist:
 - Unzip the logo targetlist
 ```bash
-unzip src/siamese_pedia/expand_targetlist.zip
+cd src/siamese_pedia/
+unzip expand_targetlist.zip
 ```
 - Your directory should be look like the project structure shown above.
 
