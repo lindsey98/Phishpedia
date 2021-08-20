@@ -56,23 +56,24 @@ pip install -r requirements.txt
 ```
 
 ## Instructions
-### 1. Download all the model files:
 
+<!-- ### 1. Download all the model files:
 - First download [Siamese model weights](https://drive.google.com/file/d/1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS/view?usp=sharing),
 [Logo targetlist](https://drive.google.com/file/d/1_C8NSQYWkpW_-tW8WzFaBr8vDeBAWQ87/view?usp=sharing),
 [Brand domain dictionary](https://drive.google.com/file/d/1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1/view?usp=sharing), put them under **src/siamese_pedia**
 
 - Then download [Object detector weights](https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing),
 put it under **src/detectron2_pedia/output/rcnn_2**
+ -->
 
 - Your directory should be look like the project structure shown above.
 
-### 2. Download all data files 
+### 1. Download all data files 
 - Download [Phish 30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing), 
 [Benign 30k](https://drive.google.com/file/d/1yORUeSrF5vGcgxYrsCoqXcpOUHt-iHq_/view?usp=sharing) dataset,
 unzip and move them to **datasets/**
 
-### 3. Run experiment 
+### 2. Run experiment 
 - For phish discovery experiment, the data folder should be organized in [this format](https://github.com/lindsey98/Phishpedia/tree/main/datasets/test_sites):
 ```
 python phishpedia_main.py --folder [data folder you want to test] --results [xxx.txt]
