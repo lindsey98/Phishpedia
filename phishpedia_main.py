@@ -3,6 +3,8 @@ import os
 import argparse
 import time
 from src.util.chrome import *
+# import os
+# os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
 #####################################################################################################################
 # ** Step 1: Enter Layout detector, get predicted elements
@@ -70,8 +72,8 @@ if __name__ == "__main__":
 
     # os.environ["CUDA_VISIBLE_DEVICES"]="1"
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f', "--folder", help='Input folder path to parse', required=True)
-    parser.add_argument('-r', "--results", help='Input results file name', required=True)
+    parser.add_argument('-f', "--folder", help='Input folder path to parse',  default='./datasets/test_sites')
+    parser.add_argument('-r', "--results", help='Input results file name', default='./test.txt')
     args = parser.parse_args()
     date = args.folder.split('/')[-1]
     directory = args.folder
@@ -90,8 +92,8 @@ if __name__ == "__main__":
     for item in tqdm(os.listdir(directory)):
         start_time = time.time()
 
-        if item in open(results_path, encoding='ISO-8859-1').read(): # have been predicted
-            continue
+        # if item in open(results_path, encoding='ISO-8859-1').read(): # have been predicted
+        #     continue
 
         try:
             print(item)

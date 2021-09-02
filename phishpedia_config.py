@@ -13,6 +13,7 @@ pedia_model, logo_feat_list, file_name_list = phishpedia_config(num_classes=277,
                                                 weights_path='./src/siamese_pedia/resnetv2_rgb_new.pth.tar',
                                                 targetlist_path='./src/siamese_pedia/expand_targetlist/')
 print('Finish loading protected logo list')
+print(logo_feat_list.shape)
 
 siamese_ts = 0.87 # FIXME: threshold is 0.87 in phish-discovery?
 

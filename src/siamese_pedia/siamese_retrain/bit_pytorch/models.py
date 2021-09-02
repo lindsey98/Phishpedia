@@ -155,7 +155,7 @@ class ResNetV2(nn.Module):
     def features(self, x):
         x = self.head[:-1](self.body(self.root(x)))
 
-        return x.squeeze()
+        return x.squeeze(-1).squeeze(-1)
 
     def forward(self, x):
         x = self.head(self.body(self.root(x)))
