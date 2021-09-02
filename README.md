@@ -28,6 +28,8 @@
     - siamese_pedia: inference script for siamese
      |_ siamese_retrain: training script for siamese
      |_ expand_targetlist
+         |_ 1&1 Ionos
+         |_ ...
      |_ domain_map.pkl
      |_ resnetv2_rgb_new.pth.tar
     - siamese.py: main script for siamese
