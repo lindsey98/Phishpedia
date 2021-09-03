@@ -42,7 +42,7 @@
        
 ## Requirements
 
-Test with Windows machine 
+Windows machine 
 
 python=3.7 
 
