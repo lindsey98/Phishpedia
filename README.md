@@ -42,7 +42,7 @@
        
 ## Requirements
 
-Test with Linux machine (I believe for Windows also work)
+Test with Windows machine 
 
 python=3.7 
 
