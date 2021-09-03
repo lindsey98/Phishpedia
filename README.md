@@ -74,7 +74,7 @@ put it under **src/detectron2_pedia/output/rcnn_2**
 cd src/siamese_pedia/
 unzip expand_targetlist.zip -d expand_targetlist
 ```
-- If logo targetlist cannot be successfully unzipped, try download the folder [here](https://drive.google.com/file/d/1_C8NSQYWkpW_-tW8WzFaBr8vDeBAWQ87/view?usp=sharing) manually instead.
+- If logo targetlist cannot be successfully unzipped, try download the folder [here](https://drive.google.com/file/d/1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I/view?usp=sharing) manually instead.
 - Your directory should be look like the project structure shown above in Project directory section.
 
 ### 2. Download model files 
