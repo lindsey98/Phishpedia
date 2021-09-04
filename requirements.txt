@@ -13,7 +13,6 @@ Pillow
 pathlib
 fvcore
 pycocotools
-errno
 scikit-learn
 advertorch
 python-telegram-bot
