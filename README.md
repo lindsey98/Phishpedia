@@ -21,7 +21,7 @@
 ```
 - src
     - adv_attack: adversarial attacking scripts
-    - detectron2_peida: training script for object detector
+    - detectron2_pedia: training script for object detector
      |_ output
       |_ rcnn_2
         |_ rcnn_bet365.pth 
