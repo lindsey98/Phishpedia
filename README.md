@@ -198,6 +198,8 @@ If you find our work useful in your research, please consider citing our paper b
   year={2021}
 }
 ```
+## Contacts
+If you have any issue running our code, you can raise an issue or send an email to liu.ruofan16@u.nus.edu
 
 ## Miscellaneous
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
