@@ -42,7 +42,7 @@
        
 ## Requirements
 
-Windows/Linux machine 
+Windows/Linux/Mac machine 
 
 python=3.7 
 
@@ -79,7 +79,7 @@ unzip expand_targetlist.zip -d expand_targetlist
 
 ### 2. Download model files (Windows users can skip)
 - If you are using Windows, you can skip this step (The model files I uploaded can only work on Windows). 
-- If you are using Linux, please download all the model files [here](https://drive.google.com/drive/folders/1rCEqhu1CS8tphwDKoxsCRh5t1PXfSceH?usp=sharing), i.e. resnetv2_rgb_new.pth.tar, domain_map.pkl, rcnn_bet365.pth, and put the models to locations as the project directory tree shows. 
+- If you are using Linux/Mac, please download all the model files [here](https://drive.google.com/drive/folders/1rCEqhu1CS8tphwDKoxsCRh5t1PXfSceH?usp=sharing), i.e. resnetv2_rgb_new.pth.tar, domain_map.pkl, rcnn_bet365.pth, and put the models to locations as the project directory tree shows. 
 
 ### 3. Download experimental data files in paper (You can skip this step if you want to test on your own dataset)
 - Download [Phish 30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing), 
