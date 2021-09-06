@@ -87,9 +87,10 @@ unzip expand_targetlist.zip -d expand_targetlist
 unzip and move them to **datasets/**
 
 ### 4. Run experiment 
-- For phish discovery experiment, the data folder should be organized in [this format](https://github.com/lindsey98/Phishpedia/tree/main/datasets/test_sites):
+- For phish discovery experiment, the data folder should be organized in [this format](https://github.com/lindsey98/Phishpedia/tree/main/datasets/test_sites). Specifically, for each site, you need to have an info.txt storing its URL, a shot.png storing its screenshot, and a html.txt storing its HTML text. The folder name for site does not matter, we simply use domain name as folder name to better track the results.
+- After data folder is ready, run the following command:
 ```bash
-python phishpedia_main.py --folder [data folder you want to test] --results [xxx.txt]
+python phishpedia_main.py --folder [data_folder_you_want_to_test] --results [name_you_want_to_give.txt]
 ```
 - For general experiment on phish30k and benign30k: 
 please run evaluation scripts
