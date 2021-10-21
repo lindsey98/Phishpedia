@@ -104,7 +104,8 @@ def phishpedia_classifier_logo(logo_boxes,
                 matched_coord = coord
                 siamese_conf = this_conf
                 break  # break if target is matched
-            break  # only look at 1st logo
+            if i >= 2:  # only look at top-2 logo
+                break
 
     return brand_converter(pred_target), matched_coord, siamese_conf
 

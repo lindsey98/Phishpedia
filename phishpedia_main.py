@@ -4,7 +4,7 @@ import argparse
 import time
 from src.util.chrome import *
 # import os
-# os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
 #####################################################################################################################
 # ** Step 1: Enter Layout detector, get predicted elements
