@@ -15,7 +15,7 @@ pedia_model, logo_feat_list, file_name_list = phishpedia_config(num_classes=277,
 print('Finish loading protected logo list')
 print(logo_feat_list.shape)
 
-siamese_ts = 0.87 # FIXME: threshold is 0.87 in phish-discovery?
+siamese_ts = 0.83 # FIXME: threshold is 0.87 in phish-discovery?
 
 # brand-domain dictionary
 domain_map_path = './src/siamese_pedia/domain_map.pkl'
