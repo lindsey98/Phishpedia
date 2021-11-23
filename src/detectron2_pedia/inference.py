@@ -64,6 +64,9 @@ def vis(img_path, pred_boxes):
 
     # draw rectangle
     for j, box in enumerate(pred_boxes):
-        cv2.rectangle(check, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), (36, 255, 12), 2)
+        if j == 0:
+            cv2.rectangle(check, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), (255, 255, 0), 2)
+        else:
+            cv2.rectangle(check, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), (36, 255, 12), 2)
 
     return check
