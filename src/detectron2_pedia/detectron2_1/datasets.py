@@ -11,9 +11,9 @@ from detectron2.data import transforms as T
 from detectron2.data.datasets import register_coco_instances
 
 # Define dataset paths
-data_dir = Path("datasets/data")
+data_dir = Path("datasets/")
 
-benign_img_dir = data_dir / "benign_database"
+benign_img_dir = data_dir / "benign_sample_30k"
 
 benign_train_coco_path = data_dir / "coco_train.json"
 benign_test_coco_path = data_dir / "coco_test.json"
