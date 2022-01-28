@@ -101,7 +101,8 @@ python -m src.pipeline_eval --data-dir datasets/benign_sample_30k --mode benign 
 
 ## Training the model (Optional)
 ### 1. If you want to train object detection faster-rcnn model yourself, 
-- First dowonload [training data](https://drive.google.com/file/d/1L3KSWEXcnWzYdJ4hPrNEUvC8jaaNOiBa/view?usp=sharing) to **datasets/**
+- We use Benign_30k dataset to train faster-rcnn model
+- Download [coco_train.json](https://drive.google.com/file/d/1u56I0IHBgM9glNJl2wcLfaihp1L_U7eD/view?usp=sharing) and [coco_test.json](https://drive.google.com/file/d/1bH3Yp6K1B37B_sS_MNMz7yvYcOhOu-J8/view?usp=sharing) to **datasets/**
 - Second step is to create folder to save trained weights and log:
 ```
 mkdir src/detectron2_pedia/output
