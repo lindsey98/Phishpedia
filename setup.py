@@ -40,7 +40,9 @@ setup(name='phishpedia',
             'scikit-learn',
             'detectron2 @ git+https://github.com/facebookresearch/detectron2.git'
       ],
-      data_files = [('phishpedia/src/detectron2_pedia/configs', ['phishpedia/src/detectron2_pedia/configs/faster_rcnn.yaml']),
-                    ('phishpedia/src/detectron2_pedia/configs/bases', ['phishpedia/src/detectron2_pedia/configs/bases/Base-RCNN-FPN.yaml'])],
-
+      package_data={
+            # If any package contains *.txt or *.rst files, include them:
+            "": ["*.yaml", "*.pkl", "*.pth", "*.zip", "*.tar"],
+      },
+      include_package_data=True
       )
