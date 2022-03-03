@@ -30,4 +30,5 @@ setup(name='phishpedia',
             'pycocotools',
             'scikit-learn',
       ],
+      packages=[pkg for pkg in find_packages() if pkg.startswith('phishpedia')],
 )
