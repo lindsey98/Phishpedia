@@ -33,8 +33,8 @@ from detectron2.engine import (
 from detectron2.evaluation import COCOEvaluator, verify_results
 from detectron2.modeling import GeneralizedRCNNWithTTA
 
-from src.detectron2_pedia.detectron2_1.datasets import BenignMapper
-from src.detectron2_pedia.detectron2_1.register_backbone import *
+from phishpedia.src.detectron2_pedia.detectron2_1.datasets import BenignMapper
+from phishpedia.src.detectron2_pedia.detectron2_1.register_backbone import *
 import os
 # os.environ["CUDA_VISIBLE_DEVICES"]="1"
 

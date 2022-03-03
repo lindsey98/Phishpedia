@@ -1,5 +1,5 @@
 import os
-from src.detectron2_pedia import detectron2_1
+from phishpedia.src.detectron2_pedia import detectron2_1
 from detectron2.config import get_cfg
 from detectron2.engine import DefaultPredictor
 import cv2

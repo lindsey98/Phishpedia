@@ -20,7 +20,7 @@ import logging
 import logging.config
 import os
 
-from src.siamese_pedia.siamese_retrain import bit_hyperrule
+from phishpedia.src.siamese_pedia.siamese_retrain import bit_hyperrule
 
 
 def argparser(known_models):

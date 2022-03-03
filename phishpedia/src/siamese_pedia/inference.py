@@ -7,7 +7,7 @@ from torch import nn
 import torch.nn.functional as F
 import torch
 from collections import OrderedDict
-from .utils import brand_converter, resolution_alignment
+from phishpedia.src.siamese_pedia.utils import brand_converter, resolution_alignment
 import matplotlib.pyplot as plt
 
 

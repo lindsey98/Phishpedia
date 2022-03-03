@@ -1,6 +1,6 @@
 # Global configuration
-from src.siamese import *
-from src.detectron2_pedia.inference import *
+from phishpedia.src.siamese import *
+from phishpedia.src.detectron2_pedia.inference import *
 
 # element recognition model -- logo only
 cfg_path = './src/detectron2_pedia/configs/faster_rcnn.yaml'

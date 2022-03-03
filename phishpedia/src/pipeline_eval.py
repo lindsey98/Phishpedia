@@ -2,8 +2,8 @@ import os
 
 from tqdm import tqdm
 import time
-from src.siamese import *
-from src.detectron2_pedia.inference import *
+from phishpedia.src.siamese import *
+from phishpedia.src.detectron2_pedia.inference import *
 import argparse
 import errno
 

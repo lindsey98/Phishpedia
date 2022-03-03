@@ -1,6 +1,6 @@
-from src.siamese_pedia.siamese_retrain.bit_pytorch.models import KNOWN_MODELS
-from src.siamese_pedia.utils import brand_converter
-from src.siamese_pedia.inference import siamese_inference, pred_siamese
+from phishpedia.src.siamese_pedia.siamese_retrain.bit_pytorch.models import KNOWN_MODELS
+from phishpedia.src.siamese_pedia.utils import brand_converter
+from phishpedia.src.siamese_pedia.inference import siamese_inference, pred_siamese
 import torch
 import os
 import numpy as np
