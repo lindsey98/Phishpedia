@@ -17,6 +17,18 @@
     - If Siamese report no target, ```Return  Benign, None```
     - Else Siamese report a target, ```Return Phish, Phishing target``` 
     
+## Requirements
+
+Windows/Linux/Mac machine 
+python=3.7 
+torch=1.6.0 
+torchvision
+Install compatible Detectron2 manually, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). If you are using Windows, try this [guide](https://dgmaxime.medium.com/how-to-easily-install-detectron2-on-windows-10-39186139101c) instead.
+Then, run
+```
+pip install -r requirements.txt
+```
+
 ## Use it as a package
 ```
 pip install git+https://github.com/lindsey98/Phishpedia.git
