@@ -2,8 +2,10 @@ from setuptools import setup, find_packages
 from functools import reduce
 
 long_description = """Phishpedia"""
+version="0.0.0"
 
 setup(name='phishpedia',
+      version="0.0.0",
       description='Phishpedia',
       author='Ruofan Liu',
       author_email='liu.ruofan16@u.nus.edu',
