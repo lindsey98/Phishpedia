@@ -15,7 +15,7 @@ setup(name='phishpedia',
       url='https://github.com/lindsey98/Phishpedia',
       license='Apache License 2.0',
       python_requires='==3.7.*',
-      packages=['phishpedia'],
+      packages=['phishpedia', 'phishpedia.src'],
       install_requires=[
             'torchsummary',
             'scipy',
