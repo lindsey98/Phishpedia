@@ -1,0 +1,32 @@
+_BASE_: "./bases/Base-RCNN-FPN.yaml"
+MODEL:
+  # COCO ResNet50 weights
+  WEIGHTS: "https://dl.fbaipublicfiles.com/detectron2/COCO-Detection/faster_rcnn_R_50_FPN_3x/137849458/model_final_280758.pkl"
+  MASK_ON: False # Not doing segmentation
+  RESNETS:
+    DEPTH: 50 # ResNet50
+  ROI_HEADS:
+    NUM_CLASSES: 2 # Change to suit own task
+    # Can reduce this for lower memory/faster training; Default 512
+    BATCH_SIZE_PER_IMAGE: 512
+  BACKBONE:
+    FREEZE_AT: 2 # Default 2
+DATASETS:
+  TRAIN: ("benign_train",)
+  TEST: ("benign_test",)
+DATALOADER:
+  NUM_WORKERS: 0
+SOLVER:
+  IMS_PER_BATCH: 12 # Batch size; Default 16
+  BASE_LR: 0.001
+  # (2/3, 8/9)
+  STEPS: (17000, 22000) # The iteration number to decrease learning rate by GAMMA.
+  MAX_ITER: 25000 # Number of training iterations
+  CHECKPOINT_PERIOD: 2500 # Saves checkpoint every number of steps
+INPUT:
+  MIN_SIZE_TRAIN: (640, 672, 704, 736, 768, 800) # Image input sizes
+TEST:
+  # The period (in terms of steps) to evaluate the model during training.
+  # Set to 0 to disable.
+  EVAL_PERIOD: 2500
+OUTPUT_DIR: "./output" # Specify output directory
