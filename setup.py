@@ -38,7 +38,6 @@ setup(name='phishpedia',
             'fvcore',
             'pycocotools',
             'scikit-learn',
-            'detectron2 @ git+https://github.com/facebookresearch/detectron2.git'
       ],
       package_data={
             # If any package contains *.txt or *.rst files, include them:

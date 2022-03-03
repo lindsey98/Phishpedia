@@ -25,18 +25,21 @@ torch=1.6.0
 torchvision
 Make sure that the Pytorch is compatible with your CUDA version.
 Install compatible Detectron2 manually, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). If you are using Windows, try this [guide](https://dgmaxime.medium.com/how-to-easily-install-detectron2-on-windows-10-39186139101c) instead.
-Then, run
-```
-pip install -r requirements.txt
-```
+
 
 ## Use it as a package
+First install the requirements, then run
 ```
  pip install git+https://github.com/lindsey98/Phishpedia.git
 ```
 
 ## Use it as a repository
-Please see detailed instructions in phishpedia/README.md
+First install the requirements
+Then, run
+```
+pip install -r requirements.txt
+```
+Please see detailed instructions in [phishpedia/README.md](phishpedia/README.md)
 
 ## Reference 
 If you find our work useful in your research, please consider citing our paper by:
