@@ -29,11 +29,6 @@ Then, run
 pip install -r requirements.txt
 ```
 
-## Use it as a package
-```
-pip install git+https://github.com/lindsey98/Phishpedia.git
-```
-
 ## Use it as a repository
 Please see detailed instructions in phishpedia/README.md
 
