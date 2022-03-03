@@ -37,5 +37,6 @@ setup(name='phishpedia',
             'fvcore',
             'pycocotools',
             'scikit-learn',
-      ]
+      ],
+      dependency_links = ["https://github.com/facebookresearch/detectron2.git"]
 )
