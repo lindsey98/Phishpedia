@@ -18,7 +18,7 @@ setup(name='phishpedia',
       packages=['phishpedia', 'phishpedia.src', 'phishpedia.src.siamese_pedia',
                 'phishpedia.src.detectron2_pedia', 'phishpedia.src.adv_attack',
                 'phishpedia.src.util', 'phishpedia.src.siamese_pedia.siamese_retrain', 'phishpedia.src.siamese_pedia.siamese_retrain.bit_pytorch',
-                'phishpedia.src.detectron2_pedia.config', 'phishpedia.src.detectron2_pedia.detectron2_1',
+                'phishpedia.src.detectron2_pedia.configs', 'phishpedia.src.detectron2_pedia.detectron2_1',
                 'phishpedia.src.adv_attack.attack'],
       install_requires=[
             'torchsummary',
