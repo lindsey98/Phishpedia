@@ -11,22 +11,21 @@ setup(name='phishpedia',
       license='Apache License 2.0',
       python_requires='==3.7',
       install_requires=[
-          'torchsummary'
-            'scipy'
-            'tldextract'
-            'opencv-python'
-            'selenium'
-            'helium'
-            'selenium-wire'
-            'webdriver-manager'
-            'pandas'
-            'numpy'
-            'tqdm'
-            'Pillow'
-            'pathlib'
-            'fvcore'
-            'pycocotools'
-            'scikit-learn'
-            'advertorch'
+            'torchsummary',
+            'scipy',
+            'tldextract',
+            'opencv-python',
+            'selenium',
+            'helium',
+            'selenium-wire',
+            'webdriver-manager',
+            'pandas',
+            'numpy',
+            'tqdm',
+            'Pillow',
+            'pathlib',
+            'fvcore',
+            'pycocotools',
+            'scikit-learn',
       ],
 )
