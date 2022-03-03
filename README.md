@@ -24,3 +24,16 @@ pip install git+https://github.com/lindsey98/Phishpedia.git
 
 ## Use it as a repository
 Please see detailed instructions in phishpedia/README.md
+
+## Reference 
+If you find our work useful in your research, please consider citing our paper by:
+```
+@inproceedings{lin2021phishpedia,
+  title={Phishpedia: A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages},
+  author={Lin, Yun and Liu, Ruofan and Divakaran, Dinil Mon and Ng, Jun Yang and Chan, Qing Zhou and Lu, Yiwen and Si, Yuxuan and Zhang, Fan and Dong, Jin Song},
+  booktitle={30th $\{$USENIX$\}$ Security Symposium ($\{$USENIX$\}$ Security 21)},
+  year={2021}
+}
+```
+## Contacts
+If you have any issue running our code, you can raise an issue or send an email to liu.ruofan16@u.nus.edu
