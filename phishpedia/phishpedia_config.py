@@ -10,10 +10,11 @@ ele_model = config_rcnn(cfg_path, weights_path, conf_threshold=0.05)
 
 # siamese model
 print('Load protected logo list')
-subprocess.run(
-    "unzip {}/src/siamese_pedia/expand_targetlist.zip -d {}/src/siamese_pedia/expand_targetlist/".format(os.path.dirname(__file__), os.path.dirname(__file__)),
-    shell=True,
-)
+if not os.path.isdir('{}/src/siamese_pedia/expand_targetlist/'.format(os.path.dirname(__file__))):
+    subprocess.run(
+        "unzip {}/src/siamese_pedia/expand_targetlist.zip -d {}/src/siamese_pedia/expand_targetlist/".format(os.path.dirname(__file__), os.path.dirname(__file__)),
+        shell=True,
+    )
 pedia_model, logo_feat_list, file_name_list = phishpedia_config(num_classes=277,
                                                 weights_path=os.path.join(os.path.dirname(__file__), 'src/siamese_pedia/resnetv2_rgb_new.pth.tar'),
                                                 targetlist_path=os.path.join(os.path.dirname(__file__),'src/siamese_pedia/expand_targetlist/'))

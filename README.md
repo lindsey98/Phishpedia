@@ -23,7 +23,7 @@ Windows/Linux/Mac machine
 python=3.7 
 torch=1.6.0 
 torchvision
-Make sure that the pytorch is compatible with your CUDA version.
+Make sure that the Pytorch is compatible with your CUDA version.
 Install compatible Detectron2 manually, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). If you are using Windows, try this [guide](https://dgmaxime.medium.com/how-to-easily-install-detectron2-on-windows-10-39186139101c) instead.
 Then, run
 ```
