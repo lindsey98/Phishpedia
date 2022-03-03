@@ -37,7 +37,7 @@ setup(name='phishpedia',
             'fvcore',
             'pycocotools',
             'scikit-learn',
-            'detectron2 @ git+ssh://git@github.com/facebookresearch/detectron2'
+            'detectron2 @ git+https://github.com/facebookresearch/detectron2.git'
       ],
 
 
