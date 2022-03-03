@@ -39,6 +39,7 @@ setup(name='phishpedia',
             'scikit-learn',
             'detectron2 @ git+https://github.com/facebookresearch/detectron2.git'
       ],
-
+      data_files = [('', ['phishpedia/src/detectron2_pedia/configs/faster_rcnn.yaml']),
+                    ('', ['phishpedia/src/detectron2_pedia/configs/bases/Base-RCNN-FPN.yaml'])],
 
       )
