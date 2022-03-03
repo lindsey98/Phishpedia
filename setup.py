@@ -19,6 +19,7 @@ setup(name='phishpedia',
                 'phishpedia.src.detectron2_pedia', 'phishpedia.src.adv_attack',
                 'phishpedia.src.util', 'phishpedia.src.siamese_pedia.siamese_retrain', 'phishpedia.src.siamese_pedia.siamese_retrain.bit_pytorch',
                 'phishpedia.src.detectron2_pedia.configs', 'phishpedia.src.detectron2_pedia.detectron2_1',
+                'phishpedia.src.detectron2_pedia.configs.bases',
                 'phishpedia.src.adv_attack.attack'],
       install_requires=[
             'torchsummary',
@@ -39,7 +40,7 @@ setup(name='phishpedia',
             'scikit-learn',
             'detectron2 @ git+https://github.com/facebookresearch/detectron2.git'
       ],
-      data_files = [('', ['phishpedia/src/detectron2_pedia/configs/faster_rcnn.yaml']),
-                    ('', ['phishpedia/src/detectron2_pedia/configs/bases/Base-RCNN-FPN.yaml'])],
+      data_files = [('phishpedia/src/detectron2_pedia/configs', ['phishpedia/src/detectron2_pedia/configs/faster_rcnn.yaml']),
+                    ('phishpedia/src/detectron2_pedia/configs/bases', ['phishpedia/src/detectron2_pedia/configs/bases/Base-RCNN-FPN.yaml'])],
 
       )
