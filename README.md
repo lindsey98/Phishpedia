@@ -32,6 +32,11 @@ First install the requirements, then run
 ```
  pip install git+https://github.com/lindsey98/Phishpedia.git
 ```
+In python
+```python
+from phishpedia import test
+
+```
 
 ## Use it as a repository
 First install the requirements

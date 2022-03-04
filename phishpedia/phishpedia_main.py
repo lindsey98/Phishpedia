@@ -15,7 +15,7 @@ os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 #####################################################################################################################
 
 
-def main(url, screenshot_path):
+def test(url, screenshot_path):
     '''
     Phishdiscovery for phishpedia main script
     :param url: URL
@@ -106,7 +106,7 @@ if __name__ == "__main__":
                 continue
 
             else:
-                phish_category, phish_target, plotvis, siamese_conf = main(url=url, screenshot_path=screenshot_path)
+                phish_category, phish_target, plotvis, siamese_conf = test(url=url, screenshot_path=screenshot_path)
 
                 # FIXME: call VTScan only when phishpedia report it as phishing
                 vt_result = "None"
