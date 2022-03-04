@@ -56,7 +56,7 @@ def test(url, screenshot_path):
 
     if pred_target is None:
         print('Did not match to any brand, report as benign')
-        return phish_category, pred_target, plotvis, siamese_conf
+        return phish_category, pred_target, plotvis, siamese_conf, pred_boxes
 
     else:
         phish_category = 1
@@ -65,7 +65,7 @@ def test(url, screenshot_path):
                     (int(matched_coord[0] + 20), int(matched_coord[1] + 20)),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
 
-    return phish_category, pred_target, plotvis, siamese_conf
+    return phish_category, pred_target, plotvis, siamese_conf, pred_boxes
 
 
 if __name__ == "__main__":
@@ -106,7 +106,7 @@ if __name__ == "__main__":
                 continue
 
             else:
-                phish_category, phish_target, plotvis, siamese_conf = test(url=url, screenshot_path=screenshot_path)
+                phish_category, phish_target, plotvis, siamese_conf, pred_boxes = test(url=url, screenshot_path=screenshot_path)
 
                 # FIXME: call VTScan only when phishpedia report it as phishing
                 vt_result = "None"
