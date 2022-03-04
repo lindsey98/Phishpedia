@@ -79,6 +79,8 @@ if __name__ == "__main__":
     directory = args.folder
     results_path = args.results.split('.txt')[0] + "_pedia.txt"
 
+    global ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH
+
     ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH = load_config(args.config)
 
     if not os.path.exists(results_path):
