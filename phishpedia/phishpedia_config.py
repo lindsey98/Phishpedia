@@ -11,7 +11,7 @@ def load_config(cfg_path: Union[str, None]):
     #################### '''Default''' ####################
     if cfg_path is None:
         with open(os.path.join(os.path.dirname(__file__), 'configs.yaml')) as file:
-            configs = yaml.load(file)
+            configs = yaml.load(file, Loader=yaml.FullLoader)
 
         # element recognition model -- logo only
         ELE_CFG_PATH = os.path.join(os.path.dirname(__file__), configs['ELE_MODEL']['CFG_PATH'])
@@ -47,7 +47,7 @@ def load_config(cfg_path: Union[str, None]):
     #################### '''Customized''' ####################
     else:
         with open(cfg_path) as file:
-            configs = yaml.load(file)
+            configs = yaml.load(file, Loader=yaml.FullLoader)
 
         ELE_CFG_PATH = configs['ELE_MODEL']['CFG_PATH']
         ELE_WEIGHTS_PATH = configs['ELE_MODEL']['WEIGHTS_PATH']
