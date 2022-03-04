@@ -15,11 +15,17 @@ os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 #####################################################################################################################
 
 
-def test(url, screenshot_path):
+def test(url, screenshot_path, ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH):
     '''
     Phishdiscovery for phishpedia main script
     :param url: URL
     :param screenshot_path: path to screenshot
+    :param ELE_MODEL: logo detector
+    :param SIAMESE_THRE: threshold for Siamese
+    :param SIAMESE_MODEL: siamese model
+    :param LOGO_FEATS: cached reference logo features
+    :param LOGO_FILES: cached reference logo paths
+    :param DOMAIN_MAP_PATH: domain map.pkl
     :return phish_category: 0 for benign 1 for phish
     :return pred_target: None or phishing target
     :return plotvis: predicted image
@@ -79,8 +85,6 @@ if __name__ == "__main__":
     directory = args.folder
     results_path = args.results.split('.txt')[0] + "_pedia.txt"
 
-    global ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH
-
     ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH = load_config(args.config)
 
     if not os.path.exists(results_path):
@@ -110,7 +114,13 @@ if __name__ == "__main__":
                 continue
 
             else:
-                phish_category, phish_target, plotvis, siamese_conf, pred_boxes = test(url=url, screenshot_path=screenshot_path)
+                phish_category, phish_target, plotvis, siamese_conf, pred_boxes = test(url=url, screenshot_path=screenshot_path,
+                                                                                       ELE_MODEL=ELE_MODEL,
+                                                                                       SIAMESE_THRE=SIAMESE_THRE,
+                                                                                       SIAMESE_MODEL=SIAMESE_MODEL,
+                                                                                       LOGO_FEATS=LOGO_FEATS,
+                                                                                       LOGO_FILES=LOGO_FILES,
+                                                                                       DOMAIN_MAP_PATH=DOMAIN_MAP_PATH)
 
                 # FIXME: call VTScan only when phishpedia report it as phishing
                 vt_result = "None"
