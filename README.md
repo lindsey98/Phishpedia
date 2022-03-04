@@ -34,8 +34,18 @@ First install the requirements, then run
 ```
 In python
 ```python
-from phishpedia import test
+from phishpedia.phishpedia_main import test
+import matplotlib.pyplot as plt
 
+url = open("phishpedia/datasets/test_sites/accounts.g.cdcde.com/info.txt").read().strip()
+screenshot_path = "phishpedia/datasets/test_sites/accounts.g.cdcde.com/shot.png"
+phish_category, pred_target, plotvis, siamese_conf = test(url, screenshot_path)
+print('Phishing (1) or Benign (0) ?', phish_category)
+print('What is its targeted brand if it is a phishing ?', pred_target)
+print('What is the siamese matching confidence ?', siamese_conf)
+plt.imshow(plotvis)
+plt.title("Predicted screenshot with annotations")
+plt.show()
 ```
 
 ## Use it as a repository
