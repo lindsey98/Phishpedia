@@ -38,6 +38,7 @@ setup(name='phishpedia',
             'fvcore',
             'pycocotools',
             'scikit-learn',
+            'pyyaml'
       ],
       package_data={
             # If any package contains *.txt or *.rst files, include them:

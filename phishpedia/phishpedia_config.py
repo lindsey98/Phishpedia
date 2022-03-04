@@ -2,27 +2,80 @@
 from phishpedia.src.siamese import *
 from phishpedia.src.detectron2_pedia.inference import *
 import subprocess
+from typing import Union
+import yaml
 
-# element recognition model -- logo only
-cfg_path = os.path.join(os.path.dirname(__file__), 'src/detectron2_pedia/configs/faster_rcnn.yaml')
-weights_path = os.path.join(os.path.dirname(__file__), 'src/detectron2_pedia/output/rcnn_2/rcnn_bet365.pth')
-ele_model = config_rcnn(cfg_path, weights_path, conf_threshold=0.05)
 
-# siamese model
-print('Load protected logo list')
-if not os.path.isdir('{}/src/siamese_pedia/expand_targetlist/'.format(os.path.dirname(__file__))):
-    subprocess.run(
-        "unzip {}/src/siamese_pedia/expand_targetlist.zip -d {}/src/siamese_pedia/expand_targetlist/".format(os.path.dirname(__file__), os.path.dirname(__file__)),
-        shell=True,
-    )
-pedia_model, logo_feat_list, file_name_list = phishpedia_config(num_classes=277,
-                                                weights_path=os.path.join(os.path.dirname(__file__), 'src/siamese_pedia/resnetv2_rgb_new.pth.tar'),
-                                                targetlist_path=os.path.join(os.path.dirname(__file__),'src/siamese_pedia/expand_targetlist/'))
-print('Finish loading protected logo list')
-print(logo_feat_list.shape)
+def load_config(cfg_path: Union[str, None]):
 
-siamese_ts = 0.83 # FIXME: threshold is 0.87 in phish-discovery?
+    #################### '''Default''' ####################
+    if cfg_path is None:
+        with open(os.path.join(os.path.dirname(__file__), 'configs.yaml')) as file:
+            configs = yaml.load(file)
 
-# brand-domain dictionary
-domain_map_path = os.path.join(os.path.dirname(__file__), 'src/siamese_pedia/domain_map.pkl')
+        # element recognition model -- logo only
+        ELE_CFG_PATH = os.path.join(os.path.dirname(__file__), configs['ELE_MODEL']['CFG_PATH'])
+        ELE_WEIGHTS_PATH = os.path.join(os.path.dirname(__file__), configs['ELE_MODEL']['WEIGHTS_PATH'])
+        ELE_CONFIG_THRE = configs['ELE_MODEL']['DETECT_THRE']
+        ELE_MODEL = config_rcnn(ELE_CFG_PATH, ELE_WEIGHTS_PATH, conf_threshold=ELE_CONFIG_THRE)
+
+        # siamese model
+        SIAMESE_THRE = configs['SIAMESE_MODEL']['MATCH_THRE']
+
+        print('Load protected logo list')
+        if configs['SIAMESE_MODEL']['TARGETLIST_PATH'].endswith('.zip') \
+                and not os.path.isdir('{}/{}'.format(os.path.dirname(__file__),
+                                                     configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0])
+                                      ):
+            subprocess.run(
+                "unzip {}/{} -d {}/{}/".format(os.path.dirname(__file__),
+                                               configs['SIAMESE_MODEL']['TARGETLIST_PATH'],
+                                               os.path.dirname(__file__),
+                                               configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0]
+                                               ),
+                shell=True,
+            )
+
+        SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES = phishpedia_config(
+            num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
+            weights_path=os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['WEIGHTS_PATH']),
+            targetlist_path=os.path.join(os.path.dirname(__file__),
+                                         configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0]))
+        print('Finish loading protected logo list')
+        DOMAIN_MAP_PATH = os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['DOMAIN_MAP_PATH'])
+
+    #################### '''Customized''' ####################
+    else:
+        with open(cfg_path) as file:
+            configs = yaml.load(file)
+
+        ELE_CFG_PATH = configs['ELE_MODEL']['CFG_PATH']
+        ELE_WEIGHTS_PATH = configs['ELE_MODEL']['WEIGHTS_PATH']
+        ELE_CONFIG_THRE = configs['ELE_MODEL']['DETECT_THRE']
+        ELE_MODEL = config_rcnn(ELE_CFG_PATH, ELE_WEIGHTS_PATH, conf_threshold=ELE_CONFIG_THRE)
+
+        # siamese model
+        SIAMESE_THRE = configs['SIAMESE_MODEL']['MATCH_THRE']
+
+        print('Load protected logo list')
+        if configs['SIAMESE_MODEL']['TARGETLIST_PATH'].endswith('.zip') \
+                and not os.path.isdir('{}'.format(configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0])):
+            subprocess.run(
+                "unzip {} -d {}/".format(configs['SIAMESE_MODEL']['TARGETLIST_PATH'],
+                                         configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0]),
+                shell=True,
+            )
+
+        SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES = phishpedia_config(
+            num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
+            weights_path=configs['SIAMESE_MODEL']['WEIGHTS_PATH'],
+            targetlist_path=configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0])
+        print('Finish loading protected logo list')
+
+        DOMAIN_MAP_PATH = configs['SIAMESE_MODEL']['DOMAIN_MAP_PATH']
+
+    return ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH
+
+
+
 
