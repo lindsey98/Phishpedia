@@ -18,7 +18,7 @@
     - Else Siamese report a target, ```Return Phish, Phishing target``` 
     
 ## Requirements
-
+The following packages may need to install manually.
 Windows/Linux/Mac machine 
 python=3.7 
 torch=1.6.0 
