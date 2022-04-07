@@ -73,19 +73,9 @@ def test(url, screenshot_path, ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEAT
     return phish_category, pred_target, plotvis, siamese_conf, pred_boxes
 
 
-if __name__ == "__main__":
-
-    # os.environ["CUDA_VISIBLE_DEVICES"]="1"
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-f', "--folder", help='Input folder path to parse',  default='./datasets/cannot_detect_logo')
-    parser.add_argument('-r', "--results", help='Input results file name', default='./debug.txt')
-    parser.add_argument('-c', "--config", help='Config file path', default=None)
-    args = parser.parse_args()
-    date = args.folder.split('/')[-1]
-    directory = args.folder
-    results_path = args.results.split('.txt')[0] + "_pedia.txt"
-
-    ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH = load_config(args.config)
+def runit(folder, results, ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH):
+    directory = folder
+    results_path = results
 
     if not os.path.exists(results_path):
         with open(results_path, "w+") as f:
@@ -100,8 +90,8 @@ if __name__ == "__main__":
     for item in tqdm(os.listdir(directory)):
         start_time = time.time()
 
-        # if item in open(results_path, encoding='ISO-8859-1').read(): # have been predicted
-        #     continue
+        if item in open(results_path, encoding='ISO-8859-1').read(): # have been predicted
+            continue
 
         try:
             print(item)
@@ -153,8 +143,88 @@ if __name__ == "__main__":
         except Exception as e:
             print(str(e))
 
-    #  raise(e)
-    time.sleep(2)
+if __name__ == "__main__":
+
+    # os.environ["CUDA_VISIBLE_DEVICES"]="1"
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-f', "--folder", help='Input folder path to parse',  default='./datasets/cannot_detect_logo')
+    parser.add_argument('-r', "--results", help='Input results file name', default='./debug.txt')
+    parser.add_argument('-c', "--config", help='Config file path', default=None)
+    args = parser.parse_args()
+    date = args.folder.split('/')[-1]
+    directory = args.folder
+    results_path = args.results.split('.txt')[0] + "_pedia.txt"
+
+    # ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH = load_config(args.config)
+    #
+    # if not os.path.exists(results_path):
+    #     with open(results_path, "w+") as f:
+    #         f.write("folder" + "\t")
+    #         f.write("url" + "\t")
+    #         f.write("phish" + "\t")
+    #         f.write("prediction" + "\t")  # write top1 prediction only
+    #         f.write("siamese_conf" + "\t")
+    #         f.write("vt_result" + "\t")
+    #         f.write("runtime" + "\n")
+    #
+    # for item in tqdm(os.listdir(directory)):
+    #     start_time = time.time()
+    #
+    #     # if item in open(results_path, encoding='ISO-8859-1').read(): # have been predicted
+    #     #     continue
+    #
+    #     try:
+    #         print(item)
+    #         full_path = os.path.join(directory, item)
+    #
+    #         screenshot_path = os.path.join(full_path, "shot.png")
+    #         url = open(os.path.join(full_path, 'info.txt'), encoding='ISO-8859-1').read()
+    #
+    #         if not os.path.exists(screenshot_path):
+    #             continue
+    #
+    #         else:
+    #             phish_category, phish_target, plotvis, siamese_conf, pred_boxes = test(url=url, screenshot_path=screenshot_path,
+    #                                                                                    ELE_MODEL=ELE_MODEL,
+    #                                                                                    SIAMESE_THRE=SIAMESE_THRE,
+    #                                                                                    SIAMESE_MODEL=SIAMESE_MODEL,
+    #                                                                                    LOGO_FEATS=LOGO_FEATS,
+    #                                                                                    LOGO_FILES=LOGO_FILES,
+    #                                                                                    DOMAIN_MAP_PATH=DOMAIN_MAP_PATH)
+    #
+    #             # FIXME: call VTScan only when phishpedia report it as phishing
+    #             vt_result = "None"
+    #             if phish_target is not None:
+    #                 try:
+    #                     if vt_scan(url) is not None:
+    #                         positive, total = vt_scan(url)
+    #                         print("Positive VT scan!")
+    #                         vt_result = str(positive) + "/" + str(total)
+    #                     else:
+    #                         print("Negative VT scan!")
+    #                         vt_result = "None"
+    #
+    #                 except Exception as e:
+    #                     print('VTScan is not working...')
+    #                     vt_result = "error"
+    #
+    #             # write results as well as predicted images
+    #             with open(results_path, "a+", encoding='ISO-8859-1') as f:
+    #                 f.write(item + "\t")
+    #                 f.write(url + "\t")
+    #                 f.write(str(phish_category) + "\t")
+    #                 f.write(str(phish_target) + "\t")  # write top1 prediction only
+    #                 f.write(str(siamese_conf) + "\t")
+    #                 f.write(vt_result + "\t")
+    #                 f.write(str(round(time.time() - start_time, 4)) + "\n")
+    #
+    #             cv2.imwrite(os.path.join(full_path, "predict.png"), plotvis)
+    #
+    #     except Exception as e:
+    #         print(str(e))
+    #
+    # #  raise(e)
+    # time.sleep(2)
 
 
 

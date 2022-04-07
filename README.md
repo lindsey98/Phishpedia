@@ -17,6 +17,29 @@
     - If Siamese report no target, ```Return  Benign, None```
     - Else Siamese report a target, ```Return Phish, Phishing target``` 
     
+## Project structure
+```
+- src
+    - adv_attack: adversarial attacking scripts
+    - detectron2_pedia: training script for object detector
+     |_ output
+      |_ rcnn_2
+        |_ rcnn_bet365.pth 
+    - siamese_pedia: inference script for siamese
+     |_ siamese_retrain: training script for siamese
+     |_ expand_targetlist
+         |_ 1&1 Ionos
+         |_ ...
+     |_ domain_map.pkl
+     |_ resnetv2_rgb_new.pth.tar
+    - siamese.py: main script for siamese
+    - pipeline_eval.py: evaluation script for general experiment
+
+- tele: telegram scripts to vote for phishing 
+- phishpedia_config.py: config script for phish-discovery experiment 
+- phishpedia_main.py: main script for phish-discovery experiment 
+```
+    
 ## Requirements
 The following packages may need to install manually.
 - Windows/Linux/Mac machine 
@@ -31,7 +54,7 @@ First install the requirements, then run
 ```
  pip install git+https://github.com/lindsey98/Phishpedia.git
 ```
-In python
+Run in python to test a single site
 ```python
 from phishpedia.phishpedia_main import test
 import matplotlib.pyplot as plt
@@ -53,15 +76,19 @@ plt.imshow(plotvis[:, :, ::-1])
 plt.title("Predicted screenshot with annotations")
 plt.show()
 ```
+Or run in terminal to test a list of sites
+```
+python run.py --folder <folder you want to test e.g. phishpedia/datasets/test_sites> --results <where you want to save the results e.g. test.txt> --repeat <whether running it iteratively (when the folder is growing)>
+```
 
-## Use it as a repository
+<!-- ## Use it as a repository
 First install the requirements
 Then, run
 ```
 pip install -r requirements.txt
 ```
 Please see detailed instructions in [phishpedia/README.md](phishpedia/README.md)
-
+-->
 ## Reference 
 If you find our work useful in your research, please consider citing our paper by:
 ```
