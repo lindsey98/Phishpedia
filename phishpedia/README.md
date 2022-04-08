@@ -57,16 +57,15 @@ Then, run
 pip install -r requirements.txt
 ```
 
-## Instructions
-
-<!-- ### 1. Download all the model files:
+<!-- ## Instructions
+### 1. Download all the model files:
 - First download [Siamese model weights](https://drive.google.com/file/d/1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS/view?usp=sharing),
 [Logo targetlist](https://drive.google.com/file/d/1_C8NSQYWkpW_-tW8WzFaBr8vDeBAWQ87/view?usp=sharing),
 [Brand domain dictionary](https://drive.google.com/file/d/1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1/view?usp=sharing), put them under **src/siamese_pedia**
 
 - Then download [Object detector weights](https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing),
 put it under **src/detectron2_pedia/output/rcnn_2**
- -->
+
 
 ### 1. Unzip logo targetlist:
 - Unzip the logo targetlist
@@ -165,6 +164,7 @@ python -m src.siamese_pedia.siamese_retrain.bit_pytorch.train \
     --dataset targetlist \  # Name of custom dataset as specified and self-implemented above.
     --weights_path {weights_path} \  # Path to weights saved in the previous step, i.e. bit.pth.tar.
 ```
+ -->
 <!-- - Launch adversarial attack ([i-FGSM](https://arxiv.org/pdf/1412.6572.pdf), [i-StepLL](https://arxiv.org/pdf/1611.01236.pdf), [DeepFool](https://arxiv.org/pdf/1511.04599.pdf), [C&W L2](https://arxiv.org/pdf/1608.04644.pdf), [BPDA with Linf-PGD](https://arxiv.org/pdf/1802.00420.pdf)) on siamese:
 Run src/adv_attack/gradient masking siamese.ipynb  -->
 
