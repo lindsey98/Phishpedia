@@ -76,7 +76,7 @@ plt.imshow(plotvis[:, :, ::-1])
 plt.title("Predicted screenshot with annotations")
 plt.show()
 ```
-Or run in terminal to test a list of sites
+Or run in terminal to test a list of sites, copy run.py to your local machine and run
 ```
 python run.py --folder <folder you want to test e.g. phishpedia/datasets/test_sites> --results <where you want to save the results e.g. test.txt> --repeat <whether running it iteratively (when the folder is growing)>
 ```
