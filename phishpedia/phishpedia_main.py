@@ -46,7 +46,7 @@ def test(url, screenshot_path, ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEAT
     # If no element is reported
     if len(pred_boxes) == 0:
         print('No element is detected, report as benign')
-        return phish_category, pred_target, plotvis, siamese_conf
+        return phish_category, pred_target, plotvis, siamese_conf, pred_boxes
     print('Entering siamese')
 
     ######################## Step2: Siamese (logo matcher) ########################################
