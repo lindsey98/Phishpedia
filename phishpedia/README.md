@@ -127,6 +127,7 @@ python -m src.detectron2_pedia.train_net \
        --config-file src/detectron2_pedia/configs/faster_rcnn.yaml \
        --resume
 ```
+-->
 <!-- - Launch [DAG](http://openaccess.thecvf.com/content_ICCV_2017/papers/Xie_Adversarial_Examples_for_ICCV_2017_paper.pdf) adversarial attack on Faster-RCNN:
 ```
 python -m src.detectron2_pedia.run_DAG \
@@ -135,7 +136,7 @@ python -m src.detectron2_pedia.run_DAG \
     --results-save-path coco_instances_results.json \
     --vis-save-dir saved
 ``` -->
-
+<!--
 ### 2. If you want to train siamese
 Our training has two stages: In first stage, we use the dataset [Logo2K+](https://arxiv.org/abs/1911.07924) published in AAAI'20 to pretrain; in second stage we finetune the model on our logo targetlist
 - We first pretrained on the [Logos2k data](https://drive.google.com/file/d/1zAIp97e8VlFHLwtuZU3Sg1OlvuOPUJJW/view?usp=sharing), [Logo2k training list](https://drive.google.com/file/d/19NuNiy9yv6jDyPruce5MLSQDhFVkcbav/view?usp=sharing), [logo2k testing list](https://drive.google.com/file/d/1-uTDQT_f0nC4lrVf-0Rfz2c9ZyZnhqjz/view?usp=sharing), [logo2k labeldict](https://drive.google.com/file/d/1adCjkccF2gpPvvbkBu3MUvEmfAVcNpOL/view?usp=sharing) dataset, using a pretrained BiT-M ResNet50x1 model, which we have to download first:
