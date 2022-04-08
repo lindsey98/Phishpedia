@@ -6,7 +6,7 @@ from typing import Union
 import yaml
 
 
-def load_config(cfg_path: Union[str, None]):
+def load_config(cfg_path: Union[str, None], reload_targetlist=False):
 
     #################### '''Default''' ####################
     if cfg_path is None:
@@ -34,11 +34,22 @@ def load_config(cfg_path: Union[str, None]):
                 shell=True,
             )
 
-        SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES = phishpedia_config(
-            num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
-            weights_path=os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['WEIGHTS_PATH'].replace('/', os.sep)),
-            targetlist_path=os.path.join(os.path.dirname(__file__),
-                                         configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0].replace('/', os.sep)))
+        if os.path.exists(os.path.join(os.path.dirname(__file__), 'LOGO_FEATS.npy')) and reload_targetlist == False:
+            SIAMESE_MODEL = phishpedia_config_easy(num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
+                                                   weights_path=os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['WEIGHTS_PATH'].replace('/', os.sep)))
+            LOGO_FEATS = np.load(os.path.join(os.path.dirname(__file__), 'LOGO_FEATS.npy'))
+            LOGO_FILES = np.load(os.path.join(os.path.dirname(__file__), 'LOGO_FILES.npy'))
+
+        else:
+            SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES = phishpedia_config(
+                num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
+                weights_path=os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['WEIGHTS_PATH'].replace('/', os.sep)),
+                targetlist_path=os.path.join(os.path.dirname(__file__),
+                                             configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0].replace('/', os.sep)))
+
+            np.save(os.path.join(os.path.dirname(__file__), 'LOGO_FEATS'), LOGO_FEATS)
+            np.save(os.path.join(os.path.dirname(__file__), 'LOGO_FILES'), LOGO_FILES)
+
         print('Finish loading protected logo list')
         DOMAIN_MAP_PATH = os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['DOMAIN_MAP_PATH'].replace('/', os.sep))
 
