@@ -23,7 +23,7 @@ if __name__ == '__main__':
                             help='Input folder path to parse')
         parser.add_argument('-r', "--results", default=date + '_pedia.txt',
                             help='Input results file name')
-        parser.add_argument('-t', '--repeat', default=True, action='store_true')
+        parser.add_argument('-t', '--repeat', action='store_true')
         args = parser.parse_args()
         print(args)
         runit(args.folder, args.results, ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH)
