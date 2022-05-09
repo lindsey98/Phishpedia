@@ -100,4 +100,4 @@ If you find our work useful in your research, please consider citing our paper b
 }
 ```
 ## Contacts
-If you have any issue running our code, you can raise an issue or send an email to liu.ruofan16@u.nus.edu
+If you have any issue running our code, you can raise an issue or send an email to liu.ruofan16@u.nus.edu, dcsliny@nus.eud.sg, and dcsdjs@nus.edu.sg
