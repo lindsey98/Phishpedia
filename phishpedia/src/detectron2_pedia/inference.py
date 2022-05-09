@@ -14,6 +14,13 @@ def pred_rcnn(im, predictor):
     :return:
     '''
     im = cv2.imread(im)
+
+    if im is not None:
+        if im.shape[-1] == 4:
+            im = cv2.cvtColor(im, cv2.COLOR_BGRA2BGR)
+    else:
+        return None, None, None, None
+
     outputs = predictor(im)
 
     instances = outputs['instances']
@@ -60,6 +67,10 @@ def vis(img_path, pred_boxes):
     '''
 
     check = cv2.imread(img_path)
+    if pred_boxes is None:
+        return check
+    if len(pred_boxes) == 0: # no element
+        return check
     pred_boxes = pred_boxes.numpy() if not isinstance(pred_boxes, np.ndarray) else pred_boxes
 
     # draw rectangle

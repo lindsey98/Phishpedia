@@ -14,8 +14,8 @@ if __name__ == '__main__':
     ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH = load_config(None)
 
     while True: # comment if you want to process it once
-        # date = '2021-12-22'
-        date = datetime.today().strftime('%Y-%m-%d')
+        date = '2021-04-07'
+        # date = datetime.today().strftime('%Y-%m-%d')
         print('Today is:', date)
         parser = argparse.ArgumentParser()
         parser.add_argument('-f', "--folder",

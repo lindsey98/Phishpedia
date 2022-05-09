@@ -39,15 +39,16 @@ def test(url, screenshot_path, ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEAT
 
     ####################### Step1: layout detector ##############################################
     pred_boxes, _, _, _ = pred_rcnn(im=screenshot_path, predictor=ELE_MODEL)
-    pred_boxes = pred_boxes.detach().cpu().numpy()  ## get predicted logo box
+    if pred_boxes is not None:
+        pred_boxes = pred_boxes.detach().cpu().numpy()
     plotvis = vis(screenshot_path, pred_boxes)
     print("plot")
-
     # If no element is reported
-    if len(pred_boxes) == 0:
+    if pred_boxes is None or len(pred_boxes) == 0:
         print('No element is detected, report as benign')
         return phish_category, pred_target, plotvis, siamese_conf, pred_boxes
     print('Entering siamese')
+
 
     ######################## Step2: Siamese (logo matcher) ########################################
     pred_target, matched_coord, siamese_conf = phishpedia_classifier_logo(logo_boxes=pred_boxes,
@@ -93,42 +94,42 @@ def runit(folder, results, ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, L
         if item in open(results_path, encoding='ISO-8859-1').read(): # have been predicted
             continue
 
-        try:
-            print(item)
-            full_path = os.path.join(directory, item)
+        print(item)
+        full_path = os.path.join(directory, item)
 
-            screenshot_path = os.path.join(full_path, "shot.png")
-            url = open(os.path.join(full_path, 'info.txt'), encoding='ISO-8859-1').read()
+        screenshot_path = os.path.join(full_path, "shot.png")
+        url = open(os.path.join(full_path, 'info.txt'), encoding='ISO-8859-1').read()
 
-            if not os.path.exists(screenshot_path):
-                continue
+        if not os.path.exists(screenshot_path):
+            continue
 
-            else:
-                phish_category, phish_target, plotvis, siamese_conf, pred_boxes = test(url=url, screenshot_path=screenshot_path,
-                                                                                       ELE_MODEL=ELE_MODEL,
-                                                                                       SIAMESE_THRE=SIAMESE_THRE,
-                                                                                       SIAMESE_MODEL=SIAMESE_MODEL,
-                                                                                       LOGO_FEATS=LOGO_FEATS,
-                                                                                       LOGO_FILES=LOGO_FILES,
-                                                                                       DOMAIN_MAP_PATH=DOMAIN_MAP_PATH)
+        else:
+            phish_category, phish_target, plotvis, siamese_conf, pred_boxes = test(url=url, screenshot_path=screenshot_path,
+                                                                                   ELE_MODEL=ELE_MODEL,
+                                                                                   SIAMESE_THRE=SIAMESE_THRE,
+                                                                                   SIAMESE_MODEL=SIAMESE_MODEL,
+                                                                                   LOGO_FEATS=LOGO_FEATS,
+                                                                                   LOGO_FILES=LOGO_FILES,
+                                                                                   DOMAIN_MAP_PATH=DOMAIN_MAP_PATH)
 
-                # FIXME: call VTScan only when phishpedia report it as phishing
-                vt_result = "None"
-                if phish_target is not None:
-                    try:
-                        if vt_scan(url) is not None:
-                            positive, total = vt_scan(url)
-                            print("Positive VT scan!")
-                            vt_result = str(positive) + "/" + str(total)
-                        else:
-                            print("Negative VT scan!")
-                            vt_result = "None"
+            # FIXME: call VTScan only when phishpedia report it as phishing
+            vt_result = "None"
+            if phish_target is not None:
+                try:
+                    if vt_scan(url) is not None:
+                        positive, total = vt_scan(url)
+                        print("Positive VT scan!")
+                        vt_result = str(positive) + "/" + str(total)
+                    else:
+                        print("Negative VT scan!")
+                        vt_result = "None"
 
-                    except Exception as e:
-                        print('VTScan is not working...')
-                        vt_result = "error"
+                except Exception as e:
+                    print('VTScan is not working...')
+                    vt_result = "error"
 
-                # write results as well as predicted images
+            # write results as well as predicted images
+            try:
                 with open(results_path, "a+", encoding='ISO-8859-1') as f:
                     f.write(item + "\t")
                     f.write(url + "\t")
@@ -138,10 +139,11 @@ def runit(folder, results, ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, L
                     f.write(vt_result + "\t")
                     f.write(str(round(time.time() - start_time, 4)) + "\n")
 
-                cv2.imwrite(os.path.join(full_path, "predict.png"), plotvis)
+                if plotvis is not None:
+                    cv2.imwrite(os.path.join(full_path, "predict.png"), plotvis)
+            except UnicodeEncodeError:
+                continue
 
-        except Exception as e:
-            print(str(e))
 
 if __name__ == "__main__":
 
