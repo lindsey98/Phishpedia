@@ -96,53 +96,53 @@ def runit(folder, results, ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, L
 
         print(item)
         full_path = os.path.join(directory, item)
-
-        screenshot_path = os.path.join(full_path, "shot.png")
-        url = open(os.path.join(full_path, 'info.txt'), encoding='ISO-8859-1').read()
-
-        if not os.path.exists(screenshot_path):
+        if item == '' or not os.path.exists(full_path):  # screenshot not exist
             continue
+        screenshot_path = os.path.join(full_path, "shot.png")
+        info_path = os.path.join(full_path, 'info.txt')
+        if not os.path.exists(screenshot_path) or not os.path.exists(info_path):  # screenshot not exist
+            continue
+        url = open(info_path, encoding='ISO-8859-1').read()
 
-        else:
-            phish_category, phish_target, plotvis, siamese_conf, pred_boxes = test(url=url, screenshot_path=screenshot_path,
-                                                                                   ELE_MODEL=ELE_MODEL,
-                                                                                   SIAMESE_THRE=SIAMESE_THRE,
-                                                                                   SIAMESE_MODEL=SIAMESE_MODEL,
-                                                                                   LOGO_FEATS=LOGO_FEATS,
-                                                                                   LOGO_FILES=LOGO_FILES,
-                                                                                   DOMAIN_MAP_PATH=DOMAIN_MAP_PATH)
+        phish_category, phish_target, plotvis, siamese_conf, pred_boxes = test(url=url, screenshot_path=screenshot_path,
+                                                                               ELE_MODEL=ELE_MODEL,
+                                                                               SIAMESE_THRE=SIAMESE_THRE,
+                                                                               SIAMESE_MODEL=SIAMESE_MODEL,
+                                                                               LOGO_FEATS=LOGO_FEATS,
+                                                                               LOGO_FILES=LOGO_FILES,
+                                                                               DOMAIN_MAP_PATH=DOMAIN_MAP_PATH)
 
-            # FIXME: call VTScan only when phishpedia report it as phishing
-            vt_result = "None"
-            if phish_target is not None:
-                try:
-                    if vt_scan(url) is not None:
-                        positive, total = vt_scan(url)
-                        print("Positive VT scan!")
-                        vt_result = str(positive) + "/" + str(total)
-                    else:
-                        print("Negative VT scan!")
-                        vt_result = "None"
-
-                except Exception as e:
-                    print('VTScan is not working...')
-                    vt_result = "error"
-
-            # write results as well as predicted images
+        # FIXME: call VTScan only when phishpedia report it as phishing
+        vt_result = "None"
+        if phish_target is not None:
             try:
-                with open(results_path, "a+", encoding='ISO-8859-1') as f:
-                    f.write(item + "\t")
-                    f.write(url + "\t")
-                    f.write(str(phish_category) + "\t")
-                    f.write(str(phish_target) + "\t")  # write top1 prediction only
-                    f.write(str(siamese_conf) + "\t")
-                    f.write(vt_result + "\t")
-                    f.write(str(round(time.time() - start_time, 4)) + "\n")
+                if vt_scan(url) is not None:
+                    positive, total = vt_scan(url)
+                    print("Positive VT scan!")
+                    vt_result = str(positive) + "/" + str(total)
+                else:
+                    print("Negative VT scan!")
+                    vt_result = "None"
 
-                if plotvis is not None:
-                    cv2.imwrite(os.path.join(full_path, "predict.png"), plotvis)
-            except UnicodeEncodeError:
-                continue
+            except Exception as e:
+                print('VTScan is not working...')
+                vt_result = "error"
+
+        # write results as well as predicted images
+        try:
+            with open(results_path, "a+", encoding='ISO-8859-1') as f:
+                f.write(item + "\t")
+                f.write(url + "\t")
+                f.write(str(phish_category) + "\t")
+                f.write(str(phish_target) + "\t")  # write top1 prediction only
+                f.write(str(siamese_conf) + "\t")
+                f.write(vt_result + "\t")
+                f.write(str(round(time.time() - start_time, 4)) + "\n")
+
+            if plotvis is not None:
+                cv2.imwrite(os.path.join(full_path, "predict.png"), plotvis)
+        except UnicodeEncodeError:
+            continue
 
 
 if __name__ == "__main__":
