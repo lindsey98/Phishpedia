@@ -89,6 +89,13 @@ pip install -r requirements.txt
 ```
 Please see detailed instructions in [phishpedia/README.md](phishpedia/README.md)
 -->
+
+## Miscellaneous
+- In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
+- The logo targetlist decribed in our paper includes 181 brands, we have further expanded the targetlist to include 277 brands in this code repository 
+- For the phish discovery experiment, we obtain feed from [Certstream phish_catcher](https://github.com/x0rz/phishing_catcher), we lower the score threshold to be 40 to process more suspicious websites, readers can refer to their repo for details
+- We use Scrapy for website crawling [Repo here](https://github.com/lindsey98/MyScrapy.git) 
+
 ## Reference 
 If you find our work useful in your research, please consider citing our paper by:
 ```
