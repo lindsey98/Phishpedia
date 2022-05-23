@@ -100,9 +100,12 @@ def runit(folder, results, ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, L
             continue
         screenshot_path = os.path.join(full_path, "shot.png")
         info_path = os.path.join(full_path, 'info.txt')
-        if not os.path.exists(screenshot_path) or not os.path.exists(info_path):  # screenshot not exist
+        if not os.path.exists(screenshot_path):  # screenshot not exist
             continue
-        url = open(info_path, encoding='ISO-8859-1').read()
+        try:
+            url = open(info_path, encoding='ISO-8859-1').read()
+        except:
+            url = 'https://www' + item
 
         phish_category, phish_target, plotvis, siamese_conf, pred_boxes = test(url=url, screenshot_path=screenshot_path,
                                                                                ELE_MODEL=ELE_MODEL,
