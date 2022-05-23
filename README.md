@@ -50,7 +50,7 @@ The following packages may need to install manually.
 
 
 ## Use it as a package
-First install the requirements, then run
+Installing Git LFS (https://git-lfs.github.com/) to the machine you use, Install the requirements, then run
 ```
  pip install git+https://github.com/lindsey98/Phishpedia.git
 ```
