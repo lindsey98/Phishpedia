@@ -54,11 +54,6 @@ Installing Git LFS (https://git-lfs.github.com/) to the machine you use, Install
 ```
  pip install git+https://github.com/lindsey98/Phishpedia.git
 ```
-Installing Git LFS (https://git-lfs.github.com/) to the machine you use, then run
-```
-cd Phishpedia
-git lfs pull
-```
 Run in python to test a single site
 ```python
 from phishpedia.phishpedia_main import test
