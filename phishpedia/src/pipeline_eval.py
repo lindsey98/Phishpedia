@@ -39,7 +39,7 @@ def phishpedia_eval(data_dir, mode, siamese_ts, write_txt):
             try:
                 url = open(os.path.join(data_dir, folder, 'info.txt'), encoding="ISO-8859-1").read()
             except:
-                url = 'https://www' + folder
+                url = 'https://www.' + folder
 
         # Element recognition module
         start_time = time.time()
