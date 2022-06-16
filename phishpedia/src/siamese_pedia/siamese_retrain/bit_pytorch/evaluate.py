@@ -142,7 +142,7 @@ if __name__ == '__main__':
     val_loader = torch.utils.data.DataLoader(val_set, batch_size=len(val_set), drop_last=False, shuffle=False)
     
     model = models.KNOWN_MODELS['BiT-M-R50x1'](head_size=len(val_set.classes), zero_head=True)
-    checkpoint = torch.load('./src/detectron2_pedia/output/rcnn_2/rcnn_bet365.pth', map_location="cpu")["model"]
+    checkpoint = torch.load('./src/siamese_pedia/resnetv2_rgb_new.pth.tar', map_location="cpu")["model"]
     
     from collections import OrderedDict
     new_state_dict = OrderedDict()
