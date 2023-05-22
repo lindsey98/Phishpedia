@@ -54,9 +54,28 @@ if [ -z "Phishpedia" ]; then
   echo "Package Phishpedia not found in the Conda environment myenv."
   exit 1
 else
-  echo "Going to the directory of package PhishIntention in Conda environment myenv."
+  echo "Going to the directory of package Phishpedia in Conda environment myenv."
   cd "$package_location/phishpedia" || exit
-  pwd
+  cd src/detectron2_pedia/output/rcnn_2/
+  file_id="1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH"
+  output_file="rcnn_bet365.pth"
+  wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" && rm -rf /tmp/cookies.txt
+  
+  cd ../../siamese_pedia/
+  file_id="1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I"
+  output_file="expand_targetlist.zip"
+  # Download the file using wget
+  wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" && rm -rf /tmp/cookies.txt
+  dir_name=$(unzip -l src.zip | awk '/^[^ ]/ {print $4}' | awk -F'/' '{print $1}' | uniq)
+  echo $dir_name
+  
+  file_id="1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1"
+  output_file="domain_map.pkl"
+  wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" && rm -rf /tmp/cookies.txt
+    
+  file_id="1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS"
+  output_file="resnetv2_rgb_new.pth.tar"
+  wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" && rm -rf /tmp/cookies.txt
   
 fi
 
