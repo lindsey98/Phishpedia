@@ -29,21 +29,30 @@ export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$mkl_path"
 # Get the CUDA and cuDNN versions, install pytorch, torchvision
 pip install -r requirements.txt
 conda install typing_extensions
-cuda_version=$(nvcc --version | grep release | awk '{print $6}' | cut -c2- | awk -F. '{print $1"."$2}')
-pip install torch==1.8.1 torchvision -f "https://download.pytorch.org/whl/cu${cuda_version//.}/torch_stable.html"
 
-# Install Detectron2
-cuda_version=$(nvcc --version | grep release | awk '{print $6}' | cut -c2- | awk -F. '{print $1$2}')
-case $cuda_version in
-    "111" | "102" | "101")
-      python -m pip install detectron2 -f \
-  https://dl.fbaipublicfiles.com/detectron2/wheels/cu"$cuda_version"/torch1.8/index.html
-    ;;
-    *)
-      echo "Please build Detectron2 from source https://detectron2.readthedocs.io/en/latest/tutorials/install.html">&2
-      exit 1
-      ;;
-esac
+# Check if nvcc (CUDA compiler) is available
+if ! command -v nvcc &> /dev/null; then
+    echo "CUDA is not available."
+    pip install torch==1.8.1 torchvision
+    # Install Detectron2
+    python -m --user pip install 'git+https://github.com/facebookresearch/detectron2.git'
+else
+    cuda_version=$(nvcc --version | grep release | awk '{print $6}' | cut -c2- | awk -F. '{print $1"."$2}')
+    pip install torch==1.8.1 torchvision -f "https://download.pytorch.org/whl/cu${cuda_version//.}/torch_stable.html"
+    # Install Detectron2
+    cuda_version=$(nvcc --version | grep release | awk '{print $6}' | cut -c2- | awk -F. '{print $1$2}')
+    case $cuda_version in
+        "111" | "102" | "101")
+          python -m pip install detectron2 -f \
+      https://dl.fbaipublicfiles.com/detectron2/wheels/cu"$cuda_version"/torch1.8/index.html
+        ;;
+        *)
+          echo "Please build Detectron2 from source https://detectron2.readthedocs.io/en/latest/tutorials/install.html">&2
+          exit 1
+          ;;
+    esac
+fi
+
 
 ## Download models
 export LD_LIBRARY_PATH=""
