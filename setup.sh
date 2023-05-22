@@ -70,7 +70,8 @@ else
   output_file="rcnn_bet365.pth"
   wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" && rm -rf /tmp/cookies.txt
   
-  cd ../../siamese_pedia/
+  cd "$package_location/phishpedia" || exit
+  cd src/siamese_pedia/
   file_id="1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I"
   output_file="expand_targetlist.zip"
   # Download the file using wget
