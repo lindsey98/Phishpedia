@@ -44,3 +44,20 @@ case $cuda_version in
       exit 1
       ;;
 esac
+
+## Download models
+export LD_LIBRARY_PATH=""
+pip install git+https://github.com/lindsey98/Phishpedia.git
+package_location=$(pip show phishpedia | grep Location | awk '{print $2}')
+
+if [ -z "Phishpedia" ]; then
+  echo "Package Phishpedia not found in the Conda environment myenv."
+  exit 1
+else
+  echo "Going to the directory of package PhishIntention in Conda environment myenv."
+  cd "$package_location/phishpedia" || exit
+  pwd
+  
+fi
+
+echo "All packages installed successfully!"
