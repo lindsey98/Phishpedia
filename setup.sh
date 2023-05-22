@@ -75,7 +75,7 @@ else
   output_file="expand_targetlist.zip"
   # Download the file using wget
   wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" && rm -rf /tmp/cookies.txt
-  dir_name=$(unzip -l src.zip | awk '/^[^ ]/ {print $4}' | awk -F'/' '{print $1}' | uniq)
+  dir_name=$(unzip -l expand_targetlist.zip | awk '/^[^ ]/ {print $4}' | awk -F'/' '{print $1}' | uniq)
   echo $dir_name
   
   file_id="1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1"
