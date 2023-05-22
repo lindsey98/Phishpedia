@@ -41,16 +41,19 @@
 ```
 
 ## Instructions
-1. Installing Git LFS (https://git-lfs.github.com/) to the machine you use
-2. Install the requirements
-   - Create an environment with python=3.7 
-   - Install torch, torchvision compatible with your CUDA, see here: https://pytorch.org/get-started/previous-versions/
-   - Install compatible Detectron2, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). If you are using Windows, try this [guide](https://dgmaxime.medium.com/how-to-easily-install-detectron2-on-windows-10-39186139101c) instead.
-3. Install Phishpedia by running
+1. Create local clone of Phishpedia
 ```
- pip install git+https://github.com/lindsey98/Phishpedia.git
+git clone https://github.com/lindsey98/Phishpedia.git
 ```
-Run in python to test a single site
+
+2. Setup
+```
+cd Phishpedia
+chmod +x ./setup.sh
+./setup.sh
+```
+
+3. Run in python to test a single site
 ```python
 from phishpedia.phishpedia_main import test
 import matplotlib.pyplot as plt
@@ -87,7 +90,7 @@ Please see detailed instructions in [phishpedia/README.md](phishpedia/README.md)
 -->
 
 ## Miscellaneous
-- :exclamation::exclamation: Unfortunetaly, Git LFS has bandwidth limit every month, so if you meet the following error "pickle.UnpicklingError: invalid load key 'v'". You can try to download the models directly from [here](https://drive.google.com/drive/folders/1rCEqhu1CS8tphwDKoxsCRh5t1PXfSceH?usp=sharing): And then move the models to your **Phishpedia package**.
+<!-- - :exclamation::exclamation: Unfortunetaly, Git LFS has bandwidth limit every month, so if you meet the following error "pickle.UnpicklingError: invalid load key 'v'". You can try to download the models directly from [here](https://drive.google.com/drive/folders/1rCEqhu1CS8tphwDKoxsCRh5t1PXfSceH?usp=sharing): And then move the models to your **Phishpedia package**. -->
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
 - The logo targetlist decribed in our paper includes 181 brands, we have further expanded the targetlist to include 277 brands in this code repository 
 - For the phish discovery experiment, we obtain feed from [Certstream phish_catcher](https://github.com/x0rz/phishing_catcher), we lower the score threshold to be 40 to process more suspicious websites, readers can refer to their repo for details
