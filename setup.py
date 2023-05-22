@@ -42,7 +42,7 @@ setup(name='phishpedia',
       ],
       package_data={
             # If any package contains *.txt or *.rst files, include them:
-            "": ["*.yaml", "*.pkl", "*.pth", "*.zip", "*.tar"],
+            "": ["*.yaml"],
       },
       include_package_data=True
       )
