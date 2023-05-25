@@ -53,7 +53,11 @@ chmod +x ./setup.sh
 ./setup.sh
 ```
 
-3. Run in python to test a single site
+3. Active conda environment "myenv"
+```
+conda activate myenv
+```
+Run in python to test a single site
 ```python
 from phishpedia.phishpedia_main import test
 import matplotlib.pyplot as plt
