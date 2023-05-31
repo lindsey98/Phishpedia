@@ -53,9 +53,9 @@ chmod +x ./setup.sh
 ./setup.sh
 ```
 
-3. Active conda environment "myenv"
+3. Active conda environment "py37"
 ```
-conda activate myenv
+conda activate py37
 ```
 Run in python to test a single site
 ```python
