@@ -2,10 +2,6 @@ torchsummary
 scipy
 tldextract
 opencv-python
-selenium
-helium
-selenium-wire
-webdriver-manager
 pandas
 numpy
 tqdm
@@ -18,6 +14,8 @@ advertorch
 python-telegram-bot
 gspread
 oauth2client
+lxml
+
 
 
 
