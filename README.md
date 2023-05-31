@@ -41,6 +41,9 @@
 ```
 
 ## Instructions
+Requirements: 
+- CUDA 11
+
 1. Create local clone of Phishpedia
 ```
 git clone https://github.com/lindsey98/Phishpedia.git
@@ -53,9 +56,9 @@ chmod +x ./setup.sh
 ./setup.sh
 ```
 
-3. Active conda environment "py37"
+3. 
 ```
-conda activate py37
+conda activate myenv
 ```
 Run in python to test a single site
 ```python
