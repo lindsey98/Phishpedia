@@ -1,0 +1,13 @@
+
+ELE_MODEL: # element recognition model -- logo only
+  CFG_PATH: CONDA_ENV_PATH_PLACEHOLDER/src/detectron2_pedia/configs/faster_rcnn.yaml # os.path.join(os.path.dirname(__file__), xxx)
+  WEIGHTS_PATH: CONDA_ENV_PATH_PLACEHOLDER/src/detectron2_pedia/output/rcnn_2/rcnn_bet365.pth
+  DETECT_THRE: 0.05
+
+SIAMESE_MODEL:
+  NUM_CLASSES: 277 # number of brands, users don't need to modify this even the targetlist is expanded
+  WEIGHTS_PATH: CONDA_ENV_PATH_PLACEHOLDER/src/siamese_pedia/resnetv2_rgb_new.pth.tar
+  TARGETLIST_PATH: CONDA_ENV_PATH_PLACEHOLDER/src/siamese_pedia/expand_targetlist.zip
+  MATCH_THRE: 0.83 # FIXME: threshold is 0.87 in phish-discovery?
+  DOMAIN_MAP_PATH: CONDA_ENV_PATH_PLACEHOLDER/src/siamese_pedia/domain_map.pkl
+
