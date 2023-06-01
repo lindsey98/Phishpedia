@@ -23,10 +23,10 @@ else
    conda activate "$ENV_NAME"
 fi
 
-mkl_path=$(conda info --base)/envs/"$ENV_NAME"/lib
-echo "MKL path is $mkl_path"
-# Export the LD_LIBRARY_PATH environment variable
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$mkl_path"
+#mkl_path=$(conda info --base)/envs/"$ENV_NAME"/lib
+#echo "MKL path is $mkl_path"
+## Export the LD_LIBRARY_PATH environment variable
+#export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$mkl_path"
 
 
 # Get the CUDA and cuDNN versions, install pytorch, torchvision
