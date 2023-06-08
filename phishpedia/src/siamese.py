@@ -120,18 +120,17 @@ def phishpedia_classifier_logo(logo_boxes,
         for i, coord in enumerate(logo_boxes):
             min_x, min_y, max_x, max_y = coord
             bbox = [float(min_x), float(min_y), float(max_x), float(max_y)]
-            target_this, domain_this, this_conf = siamese_inference(model, domain_map,
+            matched_target, matched_domain, this_conf = siamese_inference(model, domain_map,
                                                                     logo_feat_list, file_name_list,
                                                                     shot_path, bbox, t_s=ts, grayscale=False)
-
             # print(target_this, domain_this, this_conf)
             # domain matcher to avoid FP
-            if (target_this is not None) and (tldextract.extract(url).domain not in domain_this):
+            if (matched_target is not None) and (tldextract.extract(url).domain+'.'+tldextract.extract(url).suffix not in matched_domain):
                 # FIXME: avoid fp due to godaddy domain parking, ignore webmail provider (ambiguous)
-                if target_this == 'GoDaddy' or target_this == "Webmail Provider":
-                    target_this = None  # ignore the prediction
+                if matched_target == 'GoDaddy' or matched_target == "Webmail Provider":
+                    matched_target = None  # ignore the prediction
                     this_conf = None
-                pred_target = target_this
+                pred_target = matched_target
                 matched_coord = coord
                 siamese_conf = this_conf
                 break  # break if target is matched
