@@ -128,11 +128,9 @@ def phishpedia_classifier_logo(logo_boxes,
                     if matched_target == 'GoDaddy' or matched_target == "Webmail Provider" or matched_target == "Government of the United Kingdom":
                         matched_target = None  # ignore the prediction
                         matched_domain = None  # ignore the prediction
-                        this_conf = None
                 else:  # benign, real target
                     matched_target = None  # ignore the prediction
                     matched_domain = None  # ignore the prediction
-                    this_conf = None
                 break  # break if target is matched
             if i >= 2:  # only look at top-2 logo
                 break
