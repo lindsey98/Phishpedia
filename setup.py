@@ -37,7 +37,12 @@ setup(name='phishpedia',
             'fvcore',
             'pycocotools',
             'scikit-learn',
-            'pyyaml'
+            'pyyaml',
+            'cryptography==38.0.4',
+            'typing_extensions',
+            'gspread',
+            'oauth2client',
+            'lxml',
       ],
       package_data={
             # If any package contains *.txt or *.rst files, include them:
