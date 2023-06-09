@@ -110,11 +110,8 @@ def phishpedia_classifier_logo(logo_boxes,
         domain_map = pickle.load(handle)
 
     print('number of logo boxes:', len(logo_boxes))
-    matched_coord = None
-    siamese_conf = None
+    matched_target, matched_domain, matched_coord, this_conf = None, None, None, None
 
-    # run logo matcher
-    pred_target = None
     if len(logo_boxes) > 0:
         # siamese prediction for logo box
         for i, coord in enumerate(logo_boxes):
@@ -125,17 +122,20 @@ def phishpedia_classifier_logo(logo_boxes,
                                                                     shot_path, bbox, t_s=ts, grayscale=False)
             # print(target_this, domain_this, this_conf)
             # domain matcher to avoid FP
-            if (matched_target is not None) and (tldextract.extract(url).domain+'.'+tldextract.extract(url).suffix not in matched_domain):
-                # FIXME: avoid fp due to godaddy domain parking, ignore webmail provider (ambiguous)
-                if matched_target == 'GoDaddy' or matched_target == "Webmail Provider":
+            if matched_target is not None:
+                if tldextract.extract(url).domain + '.' + tldextract.extract(url).suffix not in matched_domain:
+                    # avoid fp due to godaddy domain parking, ignore webmail provider (ambiguous)
+                    if matched_target == 'GoDaddy' or matched_target == "Webmail Provider" or matched_target == "Government of the United Kingdom":
+                        matched_target = None  # ignore the prediction
+                        matched_domain = None  # ignore the prediction
+                        this_conf = None
+                else:  # benign, real target
                     matched_target = None  # ignore the prediction
+                    matched_domain = None  # ignore the prediction
                     this_conf = None
-                pred_target = matched_target
-                matched_coord = coord
-                siamese_conf = this_conf
                 break  # break if target is matched
             if i >= 2:  # only look at top-2 logo
                 break
 
-    return brand_converter(pred_target), matched_coord, siamese_conf
+    return brand_converter(matched_target), matched_coord, this_conf
 
