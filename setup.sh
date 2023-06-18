@@ -23,27 +23,24 @@ else
    conda activate "$ENV_NAME"
 fi
 
-#mkl_path=$(conda info --base)/envs/"$ENV_NAME"/lib
-#echo "MKL path is $mkl_path"
-## Export the LD_LIBRARY_PATH environment variable
-#export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$mkl_path"
-
+# Set Conda environment as an environment variable
+export MYENV=$(conda info --base)/envs/"$ENV_NAME"
 
 # Get the CUDA and cuDNN versions, install pytorch, torchvision
-pip install -r requirements.txt
-pip install cryptography==38.0.4
+conda run -n "$ENV_NAME" pip install -r requirements.txt
+conda run -n "$ENV_NAME" pip install cryptography==38.0.4
 conda install typing_extensions
-pip install torch==1.9.0 torchvision -f \
+conda run -n "$ENV_NAME" pip install torch==1.9.0 torchvision -f \
   "https://download.pytorch.org/whl/cu111/torch_stable.html"
 
-python -m pip install detectron2 -f \
+conda run -n "$ENV_NAME" python -m pip install detectron2 -f \
   https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html
 
 
 ## Download models
 export LD_LIBRARY_PATH=""
-pip install git+https://github.com/lindsey98/Phishpedia.git
-package_location=$(pip show phishpedia | grep Location | awk '{print $2}')
+conda run -n "$ENV_NAME" pip install git+https://github.com/lindsey98/Phishpedia.git
+package_location=$(conda run -n myenv pip show phishpedia | grep Location | awk '{print $2}')
 
 if [ -z "Phishpedia" ]; then
   echo "Package Phishpedia not found in the Conda environment myenv."
