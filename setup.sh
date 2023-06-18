@@ -38,9 +38,8 @@ conda run -n "$ENV_NAME" python -m pip install detectron2 -f \
 
 
 ## Download models
-export LD_LIBRARY_PATH=""
-conda run -n "$ENV_NAME" pip install git+https://github.com/lindsey98/Phishpedia.git
-package_location=$(conda run -n myenv pip show phishpedia | grep Location | awk '{print $2}')
+conda run -n "$ENV_NAME" pip install -v .
+package_location=$(conda run -n "$ENV_NAME" pip show phishpedia | grep Location | awk '{print $2}')
 
 if [ -z "Phishpedia" ]; then
   echo "Package Phishpedia not found in the Conda environment myenv."
