@@ -55,6 +55,7 @@ cd Phishpedia
 chmod +x ./setup.sh
 ./setup.sh
 ```
+If you meet any problem in downloading the models, you can manually download them from here https://huggingface.co/Kelsey98/Phishpedia. And put them into the corresponding conda environment.
 
 3. 
 ```
