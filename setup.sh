@@ -5,8 +5,6 @@ FILEDIR=$(pwd)
 # Source the Conda configuration
 CONDA_BASE=$(conda info --base)
 source "$CONDA_BASE/etc/profile.d/conda.sh"
-
-# # Create a new conda environment with Python 3.7
 ENV_NAME="myenv"
 
 # Check if the environment already exists
@@ -26,7 +24,9 @@ export MYENV=$(conda info --base)/envs/"$ENV_NAME"
 
 # Get the CUDA and cuDNN versions, install pytorch, torchvision
 conda run -n "$ENV_NAME" pip install -r requirements.txt
+
 conda run -n "$ENV_NAME" pip install cryptography==38.0.4
+
 conda run -n "$ENV_NAME" pip install torch==1.9.0 torchvision -f \
   "https://download.pytorch.org/whl/cu111/torch_stable.html"
 
