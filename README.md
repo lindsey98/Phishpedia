@@ -16,10 +16,16 @@
 </p>
 
 - This is the official implementation of "Phishpedia: A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages" USENIX'21 [link to paper](https://www.usenix.org/conference/usenixsecurity21/presentation/lin), [link to our website](https://sites.google.com/view/phishpedia-site/), [link to our dataset](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=drive_link).
+
+- Existing reference-based phishing detectors:
+  - :x: Lack of interpretability
+  - :x: Lack of generalization performance in the wild
+  - :x: Lack of a large-scale phishing benchmark dataset
+    
 - The contributions of our paper:
-   - [x] We propose a phishing identification system Phishpedia, which has high identification accuracy and low runtime overhead, outperforming the relevant state-of-the-art identification approaches. 
-   - [x] Our system provides explainable annotations which increase users' confidence in model prediction
-   - [x] We conducted a phishing discovery experiment on emerging domains fed from CertStream and discovered 1,704 real phishing, out of which 1133 are zero-days   
+   - :white_check_mark: We propose a phishing identification system Phishpedia, which has high identification accuracy and low runtime overhead, outperforming the relevant state-of-the-art identification approaches. 
+   - :white_check_mark: Our system provides explainable annotations which increase users' confidence in model prediction
+   - :white_check_mark: We conducted a phishing discovery experiment on emerging domains fed from CertStream and discovered 1,704 real phishing, out of which 1133 are zero-days   
 
 ## Framework
     
