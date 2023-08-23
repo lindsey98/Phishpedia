@@ -1,17 +1,32 @@
 # Phishpedia A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages
 
-- This is the official implementation of "Phishpedia: A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages" USENIX'21 [link to paper](https://www.usenix.org/system/files/sec21fall-lin.pdf), [link to our website](https://sites.google.com/view/phishpedia-site/home?authuser=0)
+<div align="center">
+
+![Dialogues](https://img.shields.io/badge/Proctected\_Brands\_Size-277-green?style=flat-square)
+![Dialogues](https://img.shields.io/badge/Phishing\_Benchmark\_Size-30k-green?style=flat-square)
+
+
+</div>
+<p align="center">
+  <a href="https://www.usenix.org/conference/usenixsecurity21/presentation/lin">Paper</a> •
+  <a href="https://sites.google.com/view/phishpedia-site/">Website</a> •
+  <a href="https://www.youtube.com/watch?v=ZQOH1RW5DmY">Video</a> •
+   <a href="https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=drive_link">Dataset</a> •
+  <a href="#citation">Citation</a>
+</p>
+
+- This is the official implementation of "Phishpedia: A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages" USENIX'21 [link to paper](https://www.usenix.org/conference/usenixsecurity21/presentation/lin), [link to our website](https://sites.google.com/view/phishpedia-site/), [link to our dataset](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=drive_link).
 - The contributions of our paper:
    - [x] We propose a phishing identification system Phishpedia, which has high identification accuracy and low runtime overhead, outperforming the relevant state-of-the-art identification approaches. 
-   - [x] Our system provides explainable annotations which increases users' confidence in model prediction
-   - [x] We conduct phishing discovery experiment on emerging domains fed from CertStream and discovered 1,704 real phishing, out of which 1133 are zero-days   
+   - [x] Our system provides explainable annotations which increase users' confidence in model prediction
+   - [x] We conducted a phishing discovery experiment on emerging domains fed from CertStream and discovered 1,704 real phishing, out of which 1133 are zero-days   
 
 ## Framework
     
 <img src="phishpedia/big_pic/overview.png" style="width:2000px;height:350px"/>
 
 ```Input```: A URL and its screenshot ```Output```: Phish/Benign, Phishing target
-- Step 1: Enter <b>Deep Object Detection Model</b>, get predicted logos and inputs (inputs are not used for later prediction, just for explaination)
+- Step 1: Enter <b>Deep Object Detection Model</b>, get predicted logos and inputs (inputs are not used for later prediction, just for explanation)
 
 - Step 2: Enter <b>Deep Siamese Model</b>
     - If Siamese report no target, ```Return  Benign, None```
@@ -44,7 +59,7 @@
 Requirements: 
 - CUDA 11
 
-1. Create local clone of Phishpedia
+1. Create a local clone of Phishpedia
 ```
 git clone https://github.com/lindsey98/Phishpedia.git
 ```
@@ -55,13 +70,15 @@ cd Phishpedia
 chmod +x ./setup.sh
 ./setup.sh
 ```
-If you meet any problem in downloading the models, you can manually download them from here https://huggingface.co/Kelsey98/Phishpedia. And put them into the corresponding conda environment.
+If you encounter any problem in downloading the models, you can manually download them from here https://huggingface.co/Kelsey98/Phishpedia. And put them into the corresponding conda environment.
 
 3. 
 ```
 conda activate myenv
 ```
-Run in python to test a single site
+
+Run in Python to test a single website
+
 ```python
 from phishpedia.phishpedia_main import test
 import matplotlib.pyplot as plt
@@ -83,30 +100,22 @@ plt.imshow(plotvis[:, :, ::-1])
 plt.title("Predicted screenshot with annotations")
 plt.show()
 ```
-Or run in terminal to test a list of sites, copy run.py to your local machine and run
+Or run in the terminal to test a list of sites, copy run.py to your local machine and run
 ```
 python run.py --folder <folder you want to test e.g. phishpedia/datasets/test_sites> --results <where you want to save the results e.g. test.txt> --no_repeat
 ```
 
-<!-- ## Use it as a repository
-First install the requirements
-Then, run
-```
-pip install -r requirements.txt
-```
-Please see detailed instructions in [phishpedia/README.md](phishpedia/README.md)
--->
 
 ## Miscellaneous
-<!-- - :exclamation::exclamation: Unfortunetaly, Git LFS has bandwidth limit every month, so if you meet the following error "pickle.UnpicklingError: invalid load key 'v'". You can try to download the models directly from [here](https://drive.google.com/drive/folders/1rCEqhu1CS8tphwDKoxsCRh5t1PXfSceH?usp=sharing): And then move the models to your **Phishpedia package**. -->
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
-- The logo targetlist decribed in our paper includes 181 brands, we have further expanded the targetlist to include 277 brands in this code repository 
+- The logo targetlist described in our paper includes 181 brands, we have further expanded the targetlist to include 277 brands in this code repository 
 - For the phish discovery experiment, we obtain feed from [Certstream phish_catcher](https://github.com/x0rz/phishing_catcher), we lower the score threshold to be 40 to process more suspicious websites, readers can refer to their repo for details
 - We use Scrapy for website crawling [Repo here](https://github.com/lindsey98/MyScrapy.git) 
 
-## Reference 
+## Citation 
 If you find our work useful in your research, please consider citing our paper by:
-```
+
+```bibtex
 @inproceedings{lin2021phishpedia,
   title={Phishpedia: A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages},
   author={Lin, Yun and Liu, Ruofan and Divakaran, Dinil Mon and Ng, Jun Yang and Chan, Qing Zhou and Lu, Yiwen and Si, Yuxuan and Zhang, Fan and Dong, Jin Song},
@@ -114,5 +123,6 @@ If you find our work useful in your research, please consider citing our paper b
   year={2021}
 }
 ```
+
 ## Contacts
-If you have any issue running our code, you can raise an issue or send an email to liu.ruofan16@u.nus.edu, dcsliny@nus.eud.sg, and dcsdjs@nus.edu.sg
+If you have any issues running our code, you can raise an issue or send an email to liu.ruofan16@u.nus.edu, dcsliny@nus.eud.sg, and dcsdjs@nus.edu.sg
