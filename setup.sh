@@ -25,8 +25,6 @@ export MYENV=$(conda info --base)/envs/"$ENV_NAME"
 # Get the CUDA and cuDNN versions, install pytorch, torchvision
 conda run -n "$ENV_NAME" pip install -r requirements.txt
 
-conda run -n "$ENV_NAME" pip install cryptography==38.0.4
-
 conda run -n "$ENV_NAME" pip install torch==1.9.0 torchvision -f \
   "https://download.pytorch.org/whl/cu111/torch_stable.html"
 
@@ -46,7 +44,7 @@ else
   cd "$package_location/phishpedia/src" || exit
   git lfs install
   git clone https://huggingface.co/Kelsey98/Phishpedia
-  mv Phishpedia/* .
+  cp -r Phishpedia/* .
   rm -rf Phishpedia
   
   # cd src/detectron2_pedia/output/rcnn_2/
