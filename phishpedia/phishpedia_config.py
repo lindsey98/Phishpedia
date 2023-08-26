@@ -28,11 +28,12 @@ def load_config(cfg_path: Union[str, None], reload_targetlist=False):
     print('Load protected logo list')
     if configs['SIAMESE_MODEL']['TARGETLIST_PATH'].endswith('.zip') \
             and not os.path.isdir('{}'.format(configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0].replace('/', os.sep))):
-        subprocess.run(
-            "unzip {} -d {}/".format(configs['SIAMESE_MODEL']['TARGETLIST_PATH'].replace('/', os.sep),
-                                     configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0].replace('/', os.sep)),
-            shell=True,
-        )
+        subprocess.run('cd {} && unzip expand_targetlist.zip -d .'.format(os.path.dirname(configs['SIAMESE_MODEL']['TARGETLIST_PATH'])), shell=True)
+        # subprocess.run(
+        #     "unzip {} -d {}/".format(configs['SIAMESE_MODEL']['TARGETLIST_PATH'].replace('/', os.sep),
+        #                              configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0].replace('/', os.sep)),
+        #     shell=True,
+        # )
 
     SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES = phishpedia_config(
         num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
