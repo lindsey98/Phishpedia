@@ -43,28 +43,33 @@ if [ -z "Phishpedia" ]; then
   exit 1
 else
   echo "Going to the directory of package Phishpedia in Conda environment myenv."
-  cd "$package_location/phishpedia" || exit
-  cd src/detectron2_pedia/output/rcnn_2/
-  file_id="1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH"
-  output_file="rcnn_bet365.pth"
-  wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" && rm -rf /tmp/cookies.txt
+  cd "$package_location/phishpedia/src" || exit
+  git lfs install
+  git clone https://huggingface.co/Kelsey98/Phishpedia
+  mv Phishpedia/* .
+  rm -rf Phishpedia
   
-  cd "$package_location/phishpedia" || exit
-  cd src/siamese_pedia/
-  file_id="1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I"
-  output_file="expand_targetlist.zip"
-  # Download the file using wget
-  wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" && rm -rf /tmp/cookies.txt
-  dir_name=$(unzip -l expand_targetlist.zip | awk '/^[^ ]/ {print $4}' | awk -F'/' '{print $1}' | uniq)
-  echo $dir_name
+  # cd src/detectron2_pedia/output/rcnn_2/
+  # file_id="1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH"
+  # output_file="rcnn_bet365.pth"
+  # wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" && rm -rf /tmp/cookies.txt
   
-  file_id="1nTIC6311dvdY4cGsrI4c3WMndSauuHSm"
-  output_file="domain_map.pkl"
-  wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" && rm -rf /tmp/cookies.txt
+  # cd "$package_location/phishpedia" || exit
+  # cd src/siamese_pedia/
+  # file_id="1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I"
+  # output_file="expand_targetlist.zip"
+  # # Download the file using wget
+  # wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" && rm -rf /tmp/cookies.txt
+  # dir_name=$(unzip -l expand_targetlist.zip | awk '/^[^ ]/ {print $4}' | awk -F'/' '{print $1}' | uniq)
+  # echo $dir_name
+
+  # file_id="1nTIC6311dvdY4cGsrI4c3WMndSauuHSm"
+  # output_file="domain_map.pkl"
+  # wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" && rm -rf /tmp/cookies.txt
     
-  file_id="1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS"
-  output_file="resnetv2_rgb_new.pth.tar"
-  wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" && rm -rf /tmp/cookies.txt
+  # file_id="1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS"
+  # output_file="resnetv2_rgb_new.pth.tar"
+  # wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" && rm -rf /tmp/cookies.txt
   
 fi
 
