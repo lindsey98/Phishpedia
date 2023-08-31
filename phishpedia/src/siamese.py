@@ -124,7 +124,8 @@ def phishpedia_classifier_logo(logo_boxes,
             # domain matcher to avoid FP
             if matched_target is not None:
                 matched_coord = coord
-                if tldextract.extract(url).domain + '.' + tldextract.extract(url).suffix not in matched_domain:
+                # if tldextract.extract(url).domain + '.' + tldextract.extract(url).suffix not in matched_domain:
+                if tldextract.extract(url).domain not in matched_domain:
                     # avoid fp due to godaddy domain parking, ignore webmail provider (ambiguous)
                     if matched_target == 'GoDaddy' or matched_target == "Webmail Provider" or matched_target == "Government of the United Kingdom":
                         matched_target = None  # ignore the prediction
