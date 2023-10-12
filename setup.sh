@@ -25,12 +25,14 @@ export MYENV=$(conda info --base)/envs/"$ENV_NAME"
 # Get the CUDA and cuDNN versions, install pytorch, torchvision
 conda run -n "$ENV_NAME" pip install -r requirements.txt
 
-conda run -n "$ENV_NAME" pip install torch==1.9.0 torchvision -f \
-  "https://download.pytorch.org/whl/cu111/torch_stable.html"
-
-conda run -n "$ENV_NAME" python -m pip install detectron2 -f \
-  https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html
-
+# Install pytorch, torchvision, detectron2
+if command -v nvcc &> /dev/null; then
+   conda run -n "$ENV_NAME" pip install torch==1.9.0 torchvision -f "https://download.pytorch.org/whl/cu111/torch_stable.html"
+   conda run -n "$ENV_NAME" python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html"
+else
+   conda run -n "$ENV_NAME" pip install torch==1.9.0+cpu torchvision==0.10.0+cpu torchaudio==0.9.0 -f "https://download.pytorch.org/whl/torch_stable.html"
+   conda run -n "$ENV_NAME" python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.9/index.html"
+fi
 
 ## Download models
 conda run -n "$ENV_NAME" pip install -v .
