@@ -4,7 +4,7 @@ FILEDIR=$(pwd)
 
 # Source the Conda configuration
 CONDA_BASE=$(conda info --base)
-source "$CONDA_BASE/etc/profile.d/conda.sh"
+# source "$CONDA_BASE/etc/profile.d/conda.sh"
 ENV_NAME="myenv"
 
 # Check if the environment already exists
