@@ -41,11 +41,16 @@ if [ -z "Phishpedia" ]; then
   exit 1
 else
   echo "Going to the directory of package Phishpedia in Conda environment myenv."
-  cd "$package_location/phishpedia/src/detectron2_pedia/" || exit
+  cd "$package_location/phishpedia/src/detectron2_pedia/output/rcnn_2" || exit
   pip install gdown
-  gdown --id 1eKVEGnAznFktm5s0plKjnwpUMGZfK9gX
+  gdown --id 1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH
   cd "$package_location/phishpedia/src/siamese_pedia/" || exit
-  gdown --id 11LZBxv4SIKQbqh2hcuZaQ-m00Tl1Mhkc
+  gdown --id 1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS
+  gdown --id 1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I
+  gdown --id 1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1
+  sudo apt-get update
+  sudo apt-get install unzip
+  unzip expand_targetlist.zip
 fi
 
 # Replace the placeholder in the YAML template
