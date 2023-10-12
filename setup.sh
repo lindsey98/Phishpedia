@@ -48,9 +48,9 @@ else
   gdown --id 1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS
   gdown --id 1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I
   gdown --id 1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1
-  sudo apt-get update
-  sudo apt-get install unzip
-  unzip expand_targetlist.zip
+  # sudo apt-get update
+  # sudo apt-get install unzip
+  # unzip expand_targetlist.zip
 fi
 
 # Replace the placeholder in the YAML template
