@@ -41,11 +41,11 @@ if [ -z "Phishpedia" ]; then
   exit 1
 else
   echo "Going to the directory of package Phishpedia in Conda environment myenv."
-  cd "$package_location/phishpedia/src" || exit
-  git lfs install
-  git clone https://huggingface.co/Kelsey98/Phishpedia
-  cp -r Phishpedia/* .
-  rm -rf Phishpedia
+  cd "$package_location/phishpedia/src/detectron2_pedia/" || exit
+  pip install gdown
+  gdown --id 1eKVEGnAznFktm5s0plKjnwpUMGZfK9gX
+  cd "$package_location/phishpedia/src/siamese_pedia/" || exit
+  gdown --id 11LZBxv4SIKQbqh2hcuZaQ-m00Tl1Mhkc
 fi
 
 # Replace the placeholder in the YAML template
