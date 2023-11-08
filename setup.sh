@@ -20,7 +20,7 @@ else
 fi
 
 # Set Conda environment as an environment variable
-export MYENV=$(conda info --base)/envs/"$ENV_NAME"
+# export MYENV=$(conda info --base)/envs/"$ENV_NAME"
 
 # Get the CUDA and cuDNN versions, install pytorch, torchvision
 conda run -n "$ENV_NAME" pip install -r requirements.txt
