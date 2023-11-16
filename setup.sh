@@ -1,7 +1,10 @@
 #!/bin/bash
 
 FILEDIR=$(pwd)
-conda info --envs | grep -w "$ENV_NAME" > /dev/null
+CONDA_BASE=$(conda info --base)
+source "$CONDA_BASE/etc/profile.d/conda.sh"
+
+conda info --envs | grep -w "myenv" > /dev/null
 
 if [ $? -eq 0 ]; then
    echo "Activating Conda environment myenv"
