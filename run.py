@@ -21,8 +21,6 @@ if __name__ == '__main__':
                         help='Input folder path to parse')
     parser.add_argument('-r', "--results", default=date + '_pedia.txt',
                         help='Input results file name')
-    parser.add_argument('--repeat', action='store_true')
-    parser.add_argument('--no_repeat', action='store_true')
 
     args = parser.parse_args()
     print(args)
