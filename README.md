@@ -92,11 +92,16 @@ from phishpedia.phishpedia_config import load_config
 
 url = open("phishpedia/datasets/test_sites/accounts.g.cdcde.com/info.txt").read().strip()
 screenshot_path = "phishpedia/datasets/test_sites/accounts.g.cdcde.com/shot.png"
-cfg_path = None # None means use default config.yaml
-ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH = load_config(cfg_path)
+ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH = load_config(None)
 
-phish_category, pred_target, plotvis, siamese_conf, pred_boxes = test(url, screenshot_path,
-                                                                      ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH)
+phish_category, pred_target, plotvis, siamese_conf, pred_boxes = test(url=url, screenshot_path=screenshot_path,
+                                                                       ELE_MODEL=ELE_MODEL,
+                                                                       SIAMESE_THRE=SIAMESE_THRE,
+                                                                       SIAMESE_MODEL=SIAMESE_MODEL,
+                                                                       LOGO_FEATS=LOGO_FEATS,
+                                                                       LOGO_FILES=LOGO_FILES,
+                                                                       DOMAIN_MAP_PATH=DOMAIN_MAP_PATH
+                                                                      )
 
 print('Phishing (1) or Benign (0) ?', phish_category)
 print('What is its targeted brand if it is a phishing ?', pred_target)
@@ -108,7 +113,7 @@ plt.show()
 ```
 Or run in the terminal to test a list of sites, copy run.py to your local machine and run
 ```
-python run.py --folder <folder you want to test e.g. phishpedia/datasets/test_sites> --results <where you want to save the results e.g. test.txt> --no_repeat
+python run.py --folder <folder you want to test e.g. phishpedia/datasets/test_sites> --results <where you want to save the results e.g. test.txt> 
 ```
 
 
