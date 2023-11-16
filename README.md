@@ -64,6 +64,7 @@
 ## Instructions
 Requirements: 
 - CUDA 11
+- Anaconda installed, please refer to the official installation guide: https://docs.anaconda.com/free/anaconda/install/index.html 
 
 1. Create a local clone of Phishpedia
 ```
@@ -72,7 +73,7 @@ git clone https://github.com/lindsey98/Phishpedia.git
 
 2. Setup
 ```
-cd Phishpedia
+cd Phishpedia/
 chmod +x ./setup.sh
 ./setup.sh
 ```
@@ -84,7 +85,6 @@ conda activate myenv
 ```
 
 Run in Python to test a single website
-
 ```python
 from phishpedia.phishpedia_main import test
 import matplotlib.pyplot as plt
@@ -111,11 +111,11 @@ plt.imshow(plotvis[:, :, ::-1])
 plt.title("Predicted screenshot with annotations")
 plt.show()
 ```
-Or run in the terminal to test a list of sites, copy run.py to your local machine and run
+
+Or run in bash 
 ```
 python run.py --folder <folder you want to test e.g. phishpedia/datasets/test_sites> --results <where you want to save the results e.g. test.txt> 
 ```
-
 
 ## Miscellaneous
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
