@@ -40,7 +40,7 @@ fi
 pip install -v .
 package_location=$(pip show phishpedia | grep Location | awk '{print $2}')
 
-if [ -z "Phishpedia" ]; then
+if [ -z "$package_location" ]; then
   echo "Package Phishpedia not found in the Conda environment myenv."
   exit 1
 else
