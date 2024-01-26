@@ -7,9 +7,8 @@ from typing import Union
 import yaml
 
 
-def load_config(cfg_path: Union[str, None], reload_targetlist=False):
+def load_config(cfg_path: Union[str, None]):
 
-    #################### '''Default''' ####################
     if cfg_path is None:
         with open(os.path.join(os.path.dirname(__file__), 'configs.yaml')) as file:
             configs = yaml.load(file, Loader=yaml.FullLoader)
@@ -26,19 +25,20 @@ def load_config(cfg_path: Union[str, None], reload_targetlist=False):
     SIAMESE_THRE = configs['SIAMESE_MODEL']['MATCH_THRE']
 
     print('Load protected logo list')
-    if configs['SIAMESE_MODEL']['TARGETLIST_PATH'].endswith('.zip') \
-            and not os.path.isdir('{}'.format(configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0].replace('/', os.sep))):
-        subprocess.run('cd {} && unzip expand_targetlist.zip -d .'.format(os.path.dirname(configs['SIAMESE_MODEL']['TARGETLIST_PATH'])), shell=True)
-        # subprocess.run(
-        #     "unzip {} -d {}/".format(configs['SIAMESE_MODEL']['TARGETLIST_PATH'].replace('/', os.sep),
-        #                              configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0].replace('/', os.sep)),
-        #     shell=True,
-        # )
+    targetlist_zip_path = configs['SIAMESE_MODEL']['TARGETLIST_PATH']
+    targetlist_dir = os.path.dirname(targetlist_zip_path)
+    zip_file_name = os.path.basename(targetlist_zip_path)
+    targetlist_folder = zip_file_name.split('.zip')[0]
+    full_targetlist_folder_dir = os.path.join(targetlist_dir, targetlist_folder)
+
+    if targetlist_zip_path.endswith('.zip') and not os.path.isdir(full_targetlist_folder_dir.replace('/', os.sep)):
+        os.makedirs(full_targetlist_folder_dir, exist_ok=True)
+        subprocess.run(f'unzip -o "{targetlist_zip_path}" -d "{full_targetlist_folder_dir}"', shell=True)
 
     SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES = phishpedia_config(
-        num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
-        weights_path=configs['SIAMESE_MODEL']['WEIGHTS_PATH'].replace('/', os.sep),
-        targetlist_path=configs['SIAMESE_MODEL']['TARGETLIST_PATH'].replace('/', os.sep).split('.zip')[0])
+                                                num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
+                                                weights_path=configs['SIAMESE_MODEL']['WEIGHTS_PATH'].replace('/', os.sep),
+                                                targetlist_path=full_targetlist_folder_dir.replace('/', os.sep))
     print('Finish loading protected logo list')
 
     DOMAIN_MAP_PATH = configs['SIAMESE_MODEL']['DOMAIN_MAP_PATH'].replace('/', os.sep)
