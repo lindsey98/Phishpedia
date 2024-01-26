@@ -1,21 +1,39 @@
 #!/bin/bash
+retry_count=3  # Number of retries
+
+download_with_retry() {
+  local file_id=$1
+  local file_name=$2
+  local count=0
+
+  until [ $count -ge $retry_count ]
+  do
+    gdown --id "$file_id" -O "$file_name" && break  # attempt to download and break if successful
+    count=$((count+1))
+    echo "Retry $count of $retry_count..."
+    sleep 1  # wait for 5 seconds before retrying
+  done
+
+  if [ $count -ge $retry_count ]; then
+    echo "Failed to download $file_name after $retry_count attempts."
+  fi
+}
 
 FILEDIR=$(pwd)
 CONDA_BASE=$(conda info --base)
 source "$CONDA_BASE/etc/profile.d/conda.sh"
 
-conda info --envs | grep -w "myenv" > /dev/null
+conda info --envs | grep -w "phishpedia" > /dev/null
 
 if [ $? -eq 0 ]; then
-   echo "Activating Conda environment myenv"
-   conda activate myenv
+   echo "Activating Conda environment phishpedia"
+   conda activate phishpedia
 else
-   echo "Creating and activating new Conda environment $ENV_NAME with Python 3.8"
-   conda create -n myenv python=3.8
-   conda activate myenv
+   echo "Creating and activating new Conda environment phishpedia with Python 3.8"
+   conda create -n phishpedia python=3.8
+   conda activate phishpedia
 fi
 
-pip install -r requirements.txt
 
 OS=$(uname -s)
 
@@ -23,39 +41,66 @@ if [[ "$OS" == "Darwin" ]]; then
   echo "Installing PyTorch and torchvision for macOS."
   pip install torch==1.9.0 torchvision==0.10.0 torchaudio==0.9.0
   python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.9/index.html"
+  python -m pip install paddlepaddle==2.5.1 -i https://mirror.baidu.com/pypi/simple
 else
   # Check if NVIDIA GPU is available for Linux and Windows
-  if command -v nvcc &> /dev/null; then
+  if command -v nvcc || command -v nvidia-smi &> /dev/null; then
     echo "CUDA is detected, installing GPU-supported PyTorch and torchvision."
     pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f "https://download.pytorch.org/whl/torch_stable.html"
     python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html"
+    python -m pip install paddlepaddle-gpu==2.5.1 -i https://mirror.baidu.com/pypi/simple
   else
     echo "No CUDA detected, installing CPU-only PyTorch and torchvision."
     pip install torch==1.9.0+cpu torchvision==0.10.0+cpu torchaudio==0.9.0 -f "https://download.pytorch.org/whl/torch_stable.html"
     python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.9/index.html"
+    python -m pip install paddlepaddle==2.5.1 -i https://mirror.baidu.com/pypi/simple
   fi
 fi
 
-## Download models
-pip install -v .
-package_location=$(pip show phishpedia | grep Location | awk '{print $2}')
+pip install -r requirements.txt
 
-if [ -z "$package_location" ]; then
-  echo "Package Phishpedia not found in the Conda environment myenv."
-  exit 1
+## Download models
+echo "Going to the directory of package Phishpedia in Conda environment myenv."
+mkdir -p models/
+cd models/
+
+
+# RCNN model weights
+if [ -f "rcnn_bet365.pth" ]; then
+  echo "RCNN model weights exists... skip"
 else
-  echo "Going to the directory of package Phishpedia in Conda environment myenv."
-  cd "$package_location/phishpedia/src/detectron2_pedia/output/rcnn_2" || exit
-  pip install gdown
-  gdown --id 1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH
-  cd "$package_location/phishpedia/src/siamese_pedia/" || exit
-  gdown --id 1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS
-  gdown --id 1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I
-  gdown --id 1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1
+  download_with_retry 1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH rcnn_bet365.pth
 fi
 
+# Faster RCNN config
+if [ -f "faster_rcnn.yaml" ]; then
+  echo "RCNN model config exists... skip"
+else
+  download_with_retry 1Q6lqjpl4exW7q_dPbComcj0udBMDl8CW faster_rcnn.yaml
+fi
+
+# Siamese model weights
+if [ -f "resnetv2_rgb_new.pth.tar" ]; then
+  echo "Siamese model weights exists... skip"
+else
+  download_with_retry 1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS resnetv2_rgb_new.pth.tar
+fi
+
+# Reference list
+if [ -f "expand_targetlist.zip" ]; then
+  echo "Reference list exists... skip"
+else
+  download_with_retry 1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I expand_targetlist.zip
+fi
+
+# Domain map
+if [ -f "domain_map.pkl" ]; then
+  echo "Domain map exists... skip"
+else
+  download_with_retry 1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1 domain_map.pkl
+fi
+
+
+
 # Replace the placeholder in the YAML template
-
-sed "s|CONDA_ENV_PATH_PLACEHOLDER|$package_location/phishpedia|g" "$FILEDIR/phishpedia/configs_template.yaml" > "$FILEDIR/phishpedia/configs.yaml"
-
 echo "All packages installed successfully!"

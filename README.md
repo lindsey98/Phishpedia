@@ -29,7 +29,7 @@
 
 ## Framework
     
-<img src="phishpedia/big_pic/overview.png" style="width:2000px;height:350px"/>
+<img src="./datasets/overview.png" style="width:2000px;height:350px"/>
 
 ```Input```: A URL and its screenshot ```Output```: Phish/Benign, Phishing target
 - Step 1: Enter <b>Deep Object Detection Model</b>, get predicted logos and inputs (inputs are not used for later prediction, just for explanation)
@@ -40,88 +40,54 @@
     
 ## Project structure
 ```
-- src
-    - adv_attack: adversarial attacking scripts
-    - detectron2_pedia: training script for object detector
-     |_ output
-      |_ rcnn_2
-        |_ rcnn_bet365.pth 
-    - siamese_pedia: inference script for siamese
-     |_ siamese_retrain: training script for siamese
-     |_ expand_targetlist
-         |_ 1&1 Ionos
-         |_ ...
-     |_ domain_map.pkl
-     |_ resnetv2_rgb_new.pth.tar
-    - siamese.py: main script for siamese
-    - pipeline_eval.py: evaluation script for general experiment
-
-- tele: telegram scripts to vote for phishing 
-- phishpedia_config.py: config script for phish-discovery experiment 
-- phishpedia_main.py: main script for phish-discovery experiment 
+- logo_recog.py: Deep Object Detection Model
+- logo_matching.py: Deep Siamese Model 
+- configs.yaml: Configuration file
+- phishpedia.py: Main script
 ```
 
 ## Instructions
 Requirements: 
-- CUDA 11
 - Anaconda installed, please refer to the official installation guide: https://docs.anaconda.com/free/anaconda/install/index.html 
 
 1. Create a local clone of Phishpedia
-```
+```bash
 git clone https://github.com/lindsey98/Phishpedia.git
 ```
 
 2. Setup
-```
-cd Phishpedia/
+```bash
 chmod +x ./setup.sh
 ./setup.sh
 ```
-If you encounter any problem in downloading the models, you can manually download them from here https://huggingface.co/Kelsey98/Phishpedia. And put them into the corresponding conda environment.
 
 3. 
 ```
-conda activate myenv
+conda activate phishpedia
 ```
 
-Run in Python to test a single website
-```python
-from phishpedia.phishpedia_main import test
-import matplotlib.pyplot as plt
-from phishpedia.phishpedia_config import load_config
-
-url = open("phishpedia/datasets/test_sites/accounts.g.cdcde.com/info.txt").read().strip()
-screenshot_path = "phishpedia/datasets/test_sites/accounts.g.cdcde.com/shot.png"
-ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH = load_config(None)
-
-phish_category, pred_target, plotvis, siamese_conf, pred_boxes = test(url=url, screenshot_path=screenshot_path,
-                                                                       ELE_MODEL=ELE_MODEL,
-                                                                       SIAMESE_THRE=SIAMESE_THRE,
-                                                                       SIAMESE_MODEL=SIAMESE_MODEL,
-                                                                       LOGO_FEATS=LOGO_FEATS,
-                                                                       LOGO_FILES=LOGO_FILES,
-                                                                       DOMAIN_MAP_PATH=DOMAIN_MAP_PATH
-                                                                      )
-
-print('Phishing (1) or Benign (0) ?', phish_category)
-print('What is its targeted brand if it is a phishing ?', pred_target)
-print('What is the siamese matching confidence ?', siamese_conf)
-print('Where is the predicted logo (in [x_min, y_min, x_max, y_max])?', pred_boxes)
-plt.imshow(plotvis[:, :, ::-1])
-plt.title("Predicted screenshot with annotations")
-plt.show()
+4. Run in bash 
+```bash
+python phishpedia.py --folder <folder you want to test e.g. ./datasets/test_sites>
 ```
 
-Or run in bash 
+The testing folder should be in the structure of:
+
 ```
-python run.py --folder <folder you want to test e.g. phishpedia/datasets/test_sites> --results <where you want to save the results e.g. test.txt> 
+test_site_1
+|__ info.txt (Write the URL)
+|__ shot.png (Save the screenshot)
+test_site_2
+|__ info.txt (Write the URL)
+|__ shot.png (Save the screenshot)
+......
 ```
 
 ## Miscellaneous
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
 - The logo targetlist described in our paper includes 181 brands, we have further expanded the targetlist to include 277 brands in this code repository 
 - For the phish discovery experiment, we obtain feed from [Certstream phish_catcher](https://github.com/x0rz/phishing_catcher), we lower the score threshold to be 40 to process more suspicious websites, readers can refer to their repo for details
-- We use Scrapy for website crawling [Repo here](https://github.com/lindsey98/MyScrapy.git) 
+- We use Scrapy for website crawling 
 
 ## Citation 
 If you find our work useful in your research, please consider citing our paper by:
