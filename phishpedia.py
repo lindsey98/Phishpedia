@@ -5,9 +5,9 @@ from datetime import datetime
 import argparse
 import os
 import torch
-from lib.phishpedia.configs import load_config
 from tldextract import tldextract
 import cv2
+from configs import load_config
 from logo_recog import pred_rcnn, vis
 from logo_matching import check_domain_brand_inconsistency
 from text_recog import check_email_credential_taking
