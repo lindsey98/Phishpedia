@@ -136,12 +136,14 @@ if __name__ == '__main__':
     for folder in tqdm(os.listdir(request_dir)):
         html_path = os.path.join(request_dir, folder, "html.txt")
         screenshot_path = os.path.join(request_dir, folder, "shot.png")
-        info_path = os.path.join(request_dir, folder, 'info.json')
+        # info_path = os.path.join(request_dir, folder, 'info.json')
+        info_path = os.path.join(request_dir, folder, 'info.txt')
 
         if not os.path.exists(screenshot_path):
             continue
 
-        url = eval(open(info_path).read())['url']
+        # url = eval(open(info_path).read())['url']
+        url = open(info_path).read()
 
         if os.path.exists(result_txt) and url in open(result_txt, encoding='ISO-8859-1').read():
             continue
