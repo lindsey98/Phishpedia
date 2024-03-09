@@ -18,14 +18,16 @@
 - This is the official implementation of "Phishpedia: A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages" USENIX'21 [link to paper](https://www.usenix.org/conference/usenixsecurity21/presentation/lin), [link to our website](https://sites.google.com/view/phishpedia-site/), [link to our dataset](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=drive_link).
 
 - Existing reference-based phishing detectors:
-  - :x: Lack of interpretability
-  - :x: Lack of generalization performance in the wild
+  - :x: Lack of **interpretability**, only give binary decision (legit or phish)
+  - :x: **Not robust against distribution shift**, because the classifier is biased towards the phishing training set
   - :x: Lack of a large-scale phishing benchmark dataset
     
 - The contributions of our paper:
    - :white_check_mark: We propose a phishing identification system Phishpedia, which has high identification accuracy and low runtime overhead, outperforming the relevant state-of-the-art identification approaches. 
-   - :white_check_mark: Our system provides explainable annotations which increase users' confidence in model prediction
-   - :white_check_mark: We conducted a phishing discovery experiment on emerging domains fed from CertStream and discovered 1,704 real phishing, out of which 1133 are zero-days   
+   - :white_check_mark: We are the first to propose to use **consistency-based method** for phishing detection, in place of the traditional classification-based method. We investigate the consistency between the webpage domain and its brand intention. The detected brand intention provides a **visual explanation** for phishing decision.
+   - :white_check_mark: Phishpedia is **NOT trained on any phishing dataset**, addressing the potential test-time distribution shift problem.
+   - :white_check_mark: We release a **30k phishing benchmark dataset**, each website is annotated with its URL, HTML, screenshot, and target brand: https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=drive_link.
+   - :white_check_mark: We set up a **phishing monitoring system**, investigating emerging domains fed from CertStream, and we have discovered 1,704 real phishing, out of which 1133 are zero-days not reported by industrial antivirus engine (Virustotal).  
 
 ## Framework
     
