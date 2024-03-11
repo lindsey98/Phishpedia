@@ -1,10 +1,12 @@
+import argparse
 from detectron2.config import get_cfg
 from detectron2.engine import DefaultPredictor
 import cv2
 import numpy as np
+import time
 import torch
 
-def pred_rcnn(im, predictor):
+def pred_rcnn(im, predictor, return_predictor_runtime=False):
     '''
     Perform inference for RCNN
     :param im:
@@ -19,7 +21,10 @@ def pred_rcnn(im, predictor):
     else:
         return None, None, None, None
 
+    start_time = time.time()
     outputs = predictor(im)
+    end_time = time.time()
+    predictor_runtime = end_time - start_time
 
     instances = outputs['instances']
     pred_classes = instances.pred_classes  # tensor
@@ -32,7 +37,11 @@ def pred_rcnn(im, predictor):
     logo_scores = scores[pred_classes == 1]
     input_scores = scores[pred_classes == 0]
 
-    return logo_boxes, logo_scores, input_boxes, input_scores
+    if return_predictor_runtime:
+        ret = (logo_boxes, logo_scores, input_boxes, input_scores, predictor_runtime)
+    else:
+        ret = (logo_boxes, logo_scores, input_boxes, input_scores)
+    return ret
 
 
 def config_rcnn(cfg_path, weights_path, conf_threshold):
@@ -78,3 +87,26 @@ def vis(img_path, pred_boxes):
             cv2.rectangle(check, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), (36, 255, 12), 2)
 
     return check
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Logo Recognition')
+    parser.add_argument('-i', '--input', help='Input image file path', required=True)
+    parser.add_argument('-o', '--output', help='Output image file path', default='output.png')
+    args = parser.parse_args()
+    input_img_path = args.input
+    output_img_path = args.output
+
+    cfg_path = 'models/faster_rcnn.yaml'
+    weights_path = 'models/rcnn_bet365.pth'
+    conf_threshold = 0.05
+
+    predictor = config_rcnn(cfg_path, weights_path, conf_threshold)
+    logo_boxes, logo_scores, input_boxes, input_scores, predictor_runtime = pred_rcnn(input_img_path, predictor, return_predictor_runtime=True)
+    print(f"Predictor runtime: {predictor_runtime:.3g} seconds")
+    plotvis = vis(output_img_path, logo_boxes)
+    cv2.imwrite(output_img_path, plotvis)
+    print(f"Saved output to {output_img_path}")
+
+if __name__ == '__main__':
+    main()
