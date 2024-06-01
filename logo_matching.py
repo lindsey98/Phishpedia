@@ -40,6 +40,8 @@ def check_domain_brand_inconsistency(logo_boxes,
             # domain matcher to avoid FP
             if matched_target is not None:
                 matched_coord = coord
+                if matched_target in ["Free ISP", "Webmail Provider", "cloudns", "GoDaddy", "Strato AG"]: # fixme: skip those web hosting domains
+                    matched_target = None
                 if tldextract.extract(url).domain in matched_domain: # domain and brand are consistent
                     matched_target = None
                 else:
