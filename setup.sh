@@ -19,7 +19,7 @@ else
    conda activate "$ENV_NAME"
 fi
 
-conda run -n "$ENV_NAME" pip install -r requirements.txt
+# conda run -n "$ENV_NAME" pip install -r requirements.txt
 
 OS=$(uname -s)
 
