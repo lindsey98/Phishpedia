@@ -60,7 +60,7 @@ git clone https://github.com/lindsey98/Phishpedia.git
 2. Setup
 ```bash
 chmod +x ./setup.sh
-./setup.sh
+export ENV_NAME="phishpedia" && ./setup.sh
 ```
 
 3. 
