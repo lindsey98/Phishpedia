@@ -1,4 +1,11 @@
 #!/bin/bash
+
+# Check if ENV_NAME is set
+if [ -z "$ENV_NAME" ]; then
+  echo "ENV_NAME is not set. Please set the environment name and try again."
+  exit 1
+fi
+
 retry_count=3  # Number of retries
 
 download_with_retry() {
@@ -8,14 +15,15 @@ download_with_retry() {
 
   until [ $count -ge $retry_count ]
   do
-    gdown --id "$file_id" -O "$file_name" && break  # attempt to download and break if successful
+    conda run -n "$ENV_NAME" gdown --id "$file_id" -O "$file_name" && break  # attempt to download and break if successful
     count=$((count+1))
     echo "Retry $count of $retry_count..."
-    sleep 1  # wait for 5 seconds before retrying
+    sleep 1  # wait for 1 second before retrying
   done
 
   if [ $count -ge $retry_count ]; then
     echo "Failed to download $file_name after $retry_count attempts."
+    exit 1
   fi
 }
 
@@ -27,11 +35,11 @@ conda info --envs | grep -w "phishpedia" > /dev/null
 
 if [ $? -eq 0 ]; then
    echo "Activating Conda environment phishpedia"
-   conda activate phishpedia
+   conda activate "$ENV_NAME"
 else
    echo "Creating and activating new Conda environment phishpedia with Python 3.8"
-   conda create -n phishpedia python=3.8
-   conda activate phishpedia
+   conda create -n "$ENV_NAME" python=3.8
+   conda activate "$ENV_NAME"
 fi
 
 
@@ -39,25 +47,25 @@ OS=$(uname -s)
 
 if [[ "$OS" == "Darwin" ]]; then
   echo "Installing PyTorch and torchvision for macOS."
-  pip install torch==1.9.0 torchvision==0.10.0 torchaudio==0.9.0
-  python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.9/index.html"
-  python -m pip install paddlepaddle==2.5.1 -i https://mirror.baidu.com/pypi/simple
+  conda run -n "$ENV_NAME" pip install torch==1.9.0 torchvision==0.10.0 torchaudio==0.9.0
+  conda run -n "$ENV_NAME" python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.9/index.html"
+  conda run -n "$ENV_NAME" python -m pip install paddlepaddle==2.5.1 -i https://mirror.baidu.com/pypi/simple
 else
   # Check if NVIDIA GPU is available for Linux and Windows
   if command -v nvcc || command -v nvidia-smi &> /dev/null; then
     echo "CUDA is detected, installing GPU-supported PyTorch and torchvision."
-    pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f "https://download.pytorch.org/whl/torch_stable.html"
-    python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html"
-    python -m pip install paddlepaddle-gpu==2.5.1 -i https://mirror.baidu.com/pypi/simple
+    conda run -n "$ENV_NAME" pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f "https://download.pytorch.org/whl/torch_stable.html"
+    conda run -n "$ENV_NAME" python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html"
+    conda run -n "$ENV_NAME" python -m pip install paddlepaddle-gpu==2.5.1 -i https://mirror.baidu.com/pypi/simple
   else
     echo "No CUDA detected, installing CPU-only PyTorch and torchvision."
-    pip install torch==1.9.0+cpu torchvision==0.10.0+cpu torchaudio==0.9.0 -f "https://download.pytorch.org/whl/torch_stable.html"
-    python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.9/index.html"
-    python -m pip install paddlepaddle==2.5.1 -i https://mirror.baidu.com/pypi/simple
+    conda run -n "$ENV_NAME" pip install torch==1.9.0+cpu torchvision==0.10.0+cpu torchaudio==0.9.0 -f "https://download.pytorch.org/whl/torch_stable.html"
+    conda run -n "$ENV_NAME" python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.9/index.html"
+    conda run -n "$ENV_NAME" python -m pip install paddlepaddle==2.5.1 -i https://mirror.baidu.com/pypi/simple
   fi
 fi
 
-pip install -r requirements.txt
+conda run -n "$ENV_NAME" pip install -r requirements.txt
 
 ## Download models
 echo "Going to the directory of package Phishpedia in Conda environment myenv."
