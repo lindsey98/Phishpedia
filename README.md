@@ -57,14 +57,18 @@ Requirements:
 git clone https://github.com/lindsey98/Phishpedia.git
 ```
 
-2. Setup
+2. Setup the phishpedia conda environment. 
+In this step, we would be installing the core dependencies of Phishpedia such as pytorch, detectron2, and paddlepaddle. 
+In addition, we would also download the model checkpoints and brand reference list.
+This step may take some time.
 ```bash
 chmod +x ./setup.sh
-export ENV_NAME="phishpedia" && ./setup.sh
+export ENV_NAME="phishpedia" 
+./setup.sh
 ```
 
 3. 
-```
+```bash
 conda activate phishpedia
 ```
 
