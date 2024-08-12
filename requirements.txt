@@ -11,4 +11,5 @@ pycocotools
 scikit-learn
 lxml
 gdown
-paddleocr>=2.0.1
+memory-profiler
+psutil
