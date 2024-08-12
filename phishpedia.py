@@ -18,19 +18,9 @@ import re
 import time
 import psutil
 import torch
-from memory_profiler import memory_usage
+from memory_profiler import profile
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
-def get_cpu_usage():
-    return psutil.cpu_percent(interval=1)
-
-def measure_gpu_memory():
-    if torch.cuda.is_available():
-        torch.cuda.synchronize()
-        allocated = torch.cuda.memory_allocated() / (1024 ** 3)  # Convert bytes to GB
-        cached = torch.cuda.memory_reserved() / (1024 ** 3)     # Convert bytes to GB
-        return allocated, cached
-    return 0, 0
 
 class PhishpediaWrapper:
     _caller_prefix = "PhishpediaWrapper"
@@ -45,10 +35,6 @@ class PhishpediaWrapper:
             self.LOGO_FEATS, self.LOGO_FILES, \
             self.DOMAIN_MAP_PATH = load_config()
 
-        # self.OCR_MODEL = PaddleOCR(use_angle_cls=True,
-        #                            lang='ch',
-        #                            show_log=False,
-        #                            use_gpu=torch.cuda.is_available())  # need to run only once to download and load model into memory
         print(f'Length of reference list = {len(self.LOGO_FEATS)}')
 
     def _to_device(self):
@@ -56,6 +42,7 @@ class PhishpediaWrapper:
 
 
     '''Phishpedia'''
+    @profile
     def test_orig_phishpedia(self, url, screenshot_path):
         # 0 for benign, 1 for phish, default is benign
         phish_category = 0
@@ -80,8 +67,6 @@ class PhishpediaWrapper:
             print('No logo is detected')
             return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
 
-        print('Entering siamese')
-
         ######################## Step2: Siamese (Logo matcher) ########################################
         start_time = time.time()
         pred_target, matched_domain, matched_coord, siamese_conf = check_domain_brand_inconsistency(logo_boxes=pred_boxes,
@@ -95,21 +80,11 @@ class PhishpediaWrapper:
         logo_match_time = time.time() - start_time
 
         if pred_target is None:
-            ### ask for email
-            # ask_for_emails, matched_email = check_email_credential_taking(self.OCR_MODEL, screenshot_path)
-            # if ask_for_emails and (tldextract.extract(url).domain not in matched_email.replace('@', '')):  # domain and brand are consistent
-            if True:
-                # matched_target = matched_email.replace('@', '')
-                cv2.putText(plotvis, "No logo but asks for email credentials",
-                            (20, 20),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
-                print('No logo but asks for specific email credentials')
-                return 1, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
-
-            # print('Did not match to any brand, report as benign')
-            # return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
+            print('Did not match to any brand, report as benign')
+            return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
 
         else:
+            print('Match to Target: {} with confidence {:.4f}'.format(pred_target, siamese_conf))
             phish_category = 1
             # Visualize, add annotations
             cv2.putText(plotvis, "Target: {} with confidence {:.4f}".format(pred_target, siamese_conf),
@@ -136,7 +111,7 @@ if __name__ == '__main__':
     today = datetime.now().strftime('%Y%m%d')
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--folder", default="datasets/test_sites", type=str)
+    parser.add_argument("--folder", required=True, type=str)
     parser.add_argument("--output_txt", default=f'{today}_results.txt', help="Output txt path")
     args = parser.parse_args()
 
@@ -150,7 +125,6 @@ if __name__ == '__main__':
     for folder in tqdm(os.listdir(request_dir)):
         html_path = os.path.join(request_dir, folder, "html.txt")
         screenshot_path = os.path.join(request_dir, folder, "shot.png")
-        # info_path = os.path.join(request_dir, folder, 'info.json')
         info_path = os.path.join(request_dir, folder, 'info.txt')
 
         if not os.path.exists(screenshot_path):
@@ -166,17 +140,10 @@ if __name__ == '__main__':
         if re.search(_forbidden_suffixes, url, re.IGNORECASE):
             continue
 
-        start_time = time.time()  # Start time for overall runtime
-        peak_memory_before = memory_usage(-1, interval=1, timeout=1)  # Measure memory usage before execution
-        cpu_usage_before = get_cpu_usage()  # CPU usage before execution
-
         phish_category, pred_target, matched_domain, \
                     plotvis, siamese_conf, pred_boxes, \
                     logo_recog_time, logo_match_time = phishpedia_cls.test_orig_phishpedia(url, screenshot_path)
 
-        peak_memory_after = memory_usage(-1, interval=1, timeout=1)  # Measure memory usage after execution
-        cpu_usage_after = get_cpu_usage()  # CPU usage after execution
-        total_time = time.time() - start_time  # Total time of execution
 
         try:
             with open(result_txt, "a+", encoding='ISO-8859-1') as f:
@@ -202,13 +169,4 @@ if __name__ == '__main__':
             os.makedirs(os.path.join(request_dir, folder), exist_ok=True)
             cv2.imwrite(os.path.join(request_dir, folder, "predict.png"), plotvis)
 
-        print(f"Total Execution Time: {total_time} seconds")
-        print(f"Peak Memory Usage Before: {peak_memory_before} MB")
-        print(f"Peak Memory Usage After: {peak_memory_after} MB")
-        print(f"CPU Usage Before: {cpu_usage_before}%")
-        print(f"CPU Usage After: {cpu_usage_after}%")
 
-
-    # import matplotlib.pyplot as plt
-    # plt.imshow(cropped)
-    # plt.savefig('./debug.png')
