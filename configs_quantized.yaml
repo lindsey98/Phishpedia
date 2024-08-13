@@ -1,0 +1,11 @@
+ELE_MODEL: # element recognition model -- logo only
+  CFG_PATH: models/faster_rcnn.yaml # os.path.join(os.path.dirname(__file__), xxx)
+  WEIGHTS_PATH: models/rcnn_bet365.pth
+  DETECT_THRE: 0.05
+
+SIAMESE_MODEL:
+  NUM_CLASSES: 277 # number of brands, users don't need to modify this even the targetlist is expanded
+  MATCH_THRE: 0.87 # FIXME: threshold is 0.87 in phish-discovery?
+  WEIGHTS_PATH: models/resnetv2_rgb_new.pth.tar
+  TARGETLIST_PATH: models/expand_targetlist.zip
+  DOMAIN_MAP_PATH: models/domain_map.pkl

@@ -59,7 +59,10 @@ def load_model_weights(num_classes: int, weights_path: str):
     weights = weights['model'] if 'model' in weights.keys() else weights
     new_state_dict = OrderedDict()
     for k, v in weights.items():
-        name = k.split('module.')[1]
+        if 'module.' in k:
+            name = k.split('module.')[1]
+        else:
+            name = k
         new_state_dict[name] = v
 
     model.load_state_dict(new_state_dict)

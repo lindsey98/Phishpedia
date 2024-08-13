@@ -7,7 +7,7 @@ import os
 import torch
 from tldextract import tldextract
 import cv2
-from configs import load_config
+from configs import load_config, load_quantized_config
 from logo_recog import pred_rcnn, vis
 from logo_matching import check_domain_brand_inconsistency
 from text_recog import check_email_credential_taking
@@ -35,7 +35,6 @@ class PhishpediaWrapper:
         self.ELE_MODEL, self.SIAMESE_THRE, self.SIAMESE_MODEL, \
             self.LOGO_FEATS, self.LOGO_FILES, \
             self.DOMAIN_MAP_PATH = load_config()
-
         print(f'Length of reference list = {len(self.LOGO_FEATS)}')
 
     def _to_device(self):
