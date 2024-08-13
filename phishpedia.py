@@ -13,6 +13,7 @@ from logo_matching import check_domain_brand_inconsistency
 from text_recog import check_email_credential_taking
 import pickle
 from tqdm import tqdm
+from lxml import html
 
 import re
 import time
@@ -40,16 +41,38 @@ class PhishpediaWrapper:
     def _to_device(self):
         self.SIAMESE_MODEL.to(self._DEVICE)
 
+    def simple_input_box_regex(self, html_path):
+        with open(html_path, 'r', encoding='ISO-8859-1') as f:
+            page = f.read()
+            tree = html.fromstring(page)
+        if tree is None:  # parsing into tree failed
+            return False
+
+        ## filter out search boxes
+        inputs = tree.xpath(
+            './/input[not(@type="hidden") and not(contains(@name, "search"))'
+            ' and not(contains(@placeholder, "search"))]'
+        )
+        search_pattern = re.compile(r'\b(search|query|find|keyword)\b', re.IGNORECASE)
+        sensitive_inputs = [
+            inp for inp in inputs
+            if not search_pattern.search(inp.get('name', '') + inp.get('placeholder', ''))
+        ]
+
+        ## a login form will have at least 1 input box
+        if len(sensitive_inputs) > 0:
+            return True
+        return False
 
     '''Phishpedia'''
-    @profile
-    def test_orig_phishpedia(self, url, screenshot_path):
+    # @profile
+    def test_orig_phishpedia(self, url, screenshot_path, html_path):
         # 0 for benign, 1 for phish, default is benign
         phish_category = 0
         pred_target = None
         matched_domain = None
         siamese_conf = None
-        logo_recog_time = 0
+        plotvis = None
         logo_match_time = 0
         print("Entering phishpedia")
 
@@ -70,19 +93,24 @@ class PhishpediaWrapper:
         ######################## Step2: Siamese (Logo matcher) ########################################
         start_time = time.time()
         pred_target, matched_domain, matched_coord, siamese_conf = check_domain_brand_inconsistency(logo_boxes=pred_boxes,
-                                                                                  domain_map_path=self.DOMAIN_MAP_PATH,
-                                                                                  model=self.SIAMESE_MODEL,
-                                                                                  logo_feat_list=self.LOGO_FEATS,
-                                                                                  file_name_list=self.LOGO_FILES,
-                                                                                  url=url,
-                                                                                  shot_path=screenshot_path,
-                                                                                  ts=self.SIAMESE_THRE)
+                                                                                                  domain_map_path=self.DOMAIN_MAP_PATH,
+                                                                                                  model=self.SIAMESE_MODEL,
+                                                                                                  logo_feat_list=self.LOGO_FEATS,
+                                                                                                  file_name_list=self.LOGO_FILES,
+                                                                                                  url=url,
+                                                                                                  shot_path=screenshot_path,
+                                                                                                  ts=self.SIAMESE_THRE)
         logo_match_time = time.time() - start_time
 
         if pred_target is None:
             print('Did not match to any brand, report as benign')
             return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
 
+        ######################## Step3: Simple input box check ###############
+        has_input_box = self.simple_input_box_regex(html_path=html_path)
+        if not has_input_box:
+            print('No input box')
+            return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
         else:
             print('Match to Target: {} with confidence {:.4f}'.format(pred_target, siamese_conf))
             phish_category = 1
@@ -129,6 +157,8 @@ if __name__ == '__main__':
 
         if not os.path.exists(screenshot_path):
             continue
+        if not os.path.exists(html_path):
+            html_path = os.path.join(request_dir, folder, "index.html")
 
         # url = eval(open(info_path).read())['url']
         url = open(info_path).read()
@@ -142,7 +172,7 @@ if __name__ == '__main__':
 
         phish_category, pred_target, matched_domain, \
                     plotvis, siamese_conf, pred_boxes, \
-                    logo_recog_time, logo_match_time = phishpedia_cls.test_orig_phishpedia(url, screenshot_path)
+                    logo_recog_time, logo_match_time = phishpedia_cls.test_orig_phishpedia(url, screenshot_path, html_path)
 
 
         try:
