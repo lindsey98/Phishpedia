@@ -78,7 +78,7 @@ class PhishpediaWrapper:
 
         ####################### Step1: Logo detector ##############################################
         start_time = time.time()
-        pred_boxes, _, _, _ = pred_rcnn(im=screenshot_path, predictor=self.ELE_MODEL)
+        pred_boxes = pred_rcnn(im=screenshot_path, predictor=self.ELE_MODEL)
         logo_recog_time = time.time() - start_time
 
         if pred_boxes is not None:
@@ -99,7 +99,8 @@ class PhishpediaWrapper:
                                                                                                   file_name_list=self.LOGO_FILES,
                                                                                                   url=url,
                                                                                                   shot_path=screenshot_path,
-                                                                                                  ts=self.SIAMESE_THRE)
+                                                                                                  ts=self.SIAMESE_THRE,
+                                                                                                  topk=1)
         logo_match_time = time.time() - start_time
 
         if pred_target is None:

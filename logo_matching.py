@@ -35,14 +35,12 @@ def check_domain_brand_inconsistency(logo_boxes,
             bbox = [float(min_x), float(min_y), float(max_x), float(max_y)]
             matched_target, matched_domain, this_conf = pred_brand(model, domain_map,
                                                                     logo_feat_list, file_name_list,
-                                                                    shot_path, bbox, t_s=ts, grayscale=False)
+                                                                    shot_path, bbox, t_s=ts, grayscale=False,
+                                                                   do_aspect_ratio_check=False, do_resolution_alignment=False)
             # print(target_this, domain_this, this_conf)
             # domain matcher to avoid FP
-            if matched_target is not None and matched_domain is not None:
+            if (matched_target is not None) and (matched_domain is not None):
                 matched_coord = coord
-                if matched_target in ["Free ISP", "Webmail Provider", "cloudns", "GoDaddy", "Strato AG"]: # fixme: skip those web hosting domains
-                    matched_target = None
-                    matched_domain = None
                 if tldextract.extract(url).domain in matched_domain: # domain and brand are consistent
                     matched_target = None
                     matched_domain = None
@@ -133,16 +131,18 @@ def get_embedding(img, model, grayscale=False):
     img = img.resize((img_size, img_size))
 
     # Predict the embedding
-    with torch.no_grad():
-        img = img_transforms(img)
-        img = img[None, ...].to(device)
-        logo_feat = model.features(img)
-        logo_feat = l2_norm(logo_feat).squeeze(0).cpu().numpy()  # L2-normalization final shape is (2048,)
+    img = img_transforms(img)
+    img = img[None, ...].to(device)
+    logo_feat = model.features(img)
+    logo_feat = l2_norm(logo_feat).squeeze(0).cpu().numpy()  # L2-normalization final shape is (2048,)
 
     return logo_feat
 
 
-def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str, gt_bbox, t_s, grayscale=False):
+def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str, gt_bbox, t_s,
+               grayscale=False,
+               do_resolution_alignment=True,
+               do_aspect_ratio_check=True):
     '''
     Return predicted brand for one cropped image
     :param model: model to use
@@ -152,6 +152,8 @@ def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str
     :param shot_path: path to the screenshot
     :param gt_bbox: 1x4 np.ndarray/list/tensor bounding box coords
     :param t_s: similarity threshold for siamese
+    :param do_resolution_alignment: if the similarity does not exceed the threshold, do we align their resolutions to have a retry
+    :param do_aspect_ratio_check: once two logos are similar, whether we want to a further check on their aspect ratios
     :param grayscale: convert image(cropped) to grayscale or not
     :return: predicted target, predicted target's domain
     '''
@@ -178,7 +180,6 @@ def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str
     sim_list = np.array(sim_list)[idx]
 
     # top1,2,3 candidate logos
-    top3_logolist = [Image.open(x) for x in pred_brand_list]
     top3_brandlist = [brand_converter(os.path.basename(os.path.dirname(x))) for x in pred_brand_list]
     top3_domainlist = [domain_map[x] for x in top3_brandlist]
     top3_simlist = sim_list
@@ -197,8 +198,9 @@ def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str
             final_sim = top3_simlist[j]
 
         ## Else if not exceed, try resolution alignment, see if can improve
-        else:
-            cropped, candidate_logo = resolution_alignment(cropped, top3_logolist[j])
+        elif do_resolution_alignment:
+            orig_candidate_logo = Image.open(pred_brand_list[j])
+            cropped, candidate_logo = resolution_alignment(cropped, orig_candidate_logo)
             img_feat = get_embedding(cropped, model, grayscale=grayscale)
             logo_feat = get_embedding(candidate_logo, model, grayscale=grayscale)
             final_sim = logo_feat.dot(img_feat)
@@ -210,13 +212,13 @@ def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str
 
         ## If there is a prediction, do aspect ratio check
         if predicted_brand is not None:
-            ratio_crop = cropped.size[0] / cropped.size[1]
-            ratio_logo = top3_logolist[j].size[0] / top3_logolist[j].size[1]
-            # aspect ratios of matched pair must not deviate by more than factor of 2.5
-            if max(ratio_crop, ratio_logo) / min(ratio_crop, ratio_logo) > 2.5:
-                continue  # did not pass aspect ratio check, try other
-            # If pass aspect ratio check, report a match
-            else:
-                return predicted_brand, predicted_domain, final_sim
+            if do_aspect_ratio_check:
+                orig_candidate_logo = Image.open(pred_brand_list[j])
+                ratio_crop = cropped.size[0] / cropped.size[1]
+                ratio_logo = orig_candidate_logo.size[0] / orig_candidate_logo.size[1]
+                # aspect ratios of matched pair must not deviate by more than factor of 2.5
+                if max(ratio_crop, ratio_logo) / min(ratio_crop, ratio_logo) > 2.5:
+                    continue  # did not pass aspect ratio check, try other
+            return predicted_brand, predicted_domain, final_sim
 
     return None, None, top3_simlist[0]

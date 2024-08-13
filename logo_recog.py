@@ -17,7 +17,7 @@ def pred_rcnn(im, predictor):
         if im.shape[-1] == 4:
             im = cv2.cvtColor(im, cv2.COLOR_BGRA2BGR)
     else:
-        return None, None, None, None
+        return None
 
     outputs = predictor(im)
 
@@ -26,13 +26,8 @@ def pred_rcnn(im, predictor):
     pred_boxes = instances.pred_boxes  # Boxes object
 
     logo_boxes = pred_boxes[pred_classes == 1].tensor
-    input_boxes = pred_boxes[pred_classes == 0].tensor
 
-    scores = instances.scores  # tensor
-    logo_scores = scores[pred_classes == 1]
-    input_scores = scores[pred_classes == 0]
-
-    return logo_boxes, logo_scores, input_boxes, input_scores
+    return logo_boxes
 
 
 def config_rcnn(cfg_path, weights_path, conf_threshold):
