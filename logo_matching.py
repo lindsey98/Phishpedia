@@ -25,7 +25,7 @@ def check_domain_brand_inconsistency(logo_boxes, domain_map_path: str, model, lo
     if not domain_map:
         return None, None, None, None
 
-    extracted_domain = tldextract.extract(url).domain
+    extracted_domain = tldextract.extract(url).domain + '.' + tldextract.extract(url).suffix
     logging.info('Number of logo boxes: {}'.format(len(logo_boxes)))
 
     matched_target, matched_domain, matched_coord, this_conf = None, None, None, None
@@ -111,7 +111,9 @@ def cache_reference_list(model, targetlist_path: str):
                 except Exception as e:
                     logging.error(f"Error processing {full_path}: {str(e)}")
 
-    return np.asarray(logo_feat_list), np.asarray(file_name_list)
+    logo_feat_arr = np.asarray(logo_feat_list)
+    logo_file_arr = np.asarray(file_name_list)
+    return logo_feat_arr, logo_file_arr
 
 @torch.inference_mode()
 def get_embedding(img, model):
@@ -124,7 +126,7 @@ def get_embedding(img, model):
     :return feature embedding of shape (2048,)
     '''
     img_size = 64
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
 
     # Define the image transformation pipeline
     img_transforms = transforms.Compose([
@@ -145,6 +147,7 @@ def get_embedding(img, model):
     ort_outputs = model.run(['features'], {'input': img.numpy()})
     logo_feat = ort_outputs[0]
     logo_feat = logo_feat / np.linalg.norm(logo_feat, ord=2)
+    logo_feat = logo_feat[0] # remove dummy dimension
     return logo_feat
 
 def load_image(image_path):

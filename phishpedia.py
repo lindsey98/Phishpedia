@@ -13,7 +13,7 @@ import time
 import torch
 import logging
 logging.basicConfig(level=logging.INFO)
-from memory_profiler import profile
+# from memory_profiler import profile
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 
@@ -24,7 +24,7 @@ class PhishpediaWrapper:
     def __init__(self):
         self._load_config()
 
-    @profile
+    # @profile
     def _load_config(self):
         self.ELE_MODEL, self.SIAMESE_THRE, self.SIAMESE_MODEL, \
             self.LOGO_FEATS, self.LOGO_FILES, \
@@ -55,7 +55,7 @@ class PhishpediaWrapper:
         return False
 
     '''Phishpedia'''
-    @profile
+    # @profile
     def test_orig_phishpedia(self, url, screenshot_path, html_path, save_vis):
         # 0 for benign, 1 for phish, default is benign
         phish_category = 0
@@ -76,7 +76,8 @@ class PhishpediaWrapper:
                                               save=False,
                                               save_txt=False,
                                               save_conf=False,
-                                              imgsz=320
+                                              imgsz=320,
+                                              verbose=False
                                               )
         pred_boxes = pred_results[0].boxes.xyxy.detach().cpu().numpy()
         logo_recog_time = time.time() - start_time
@@ -204,6 +205,5 @@ if __name__ == '__main__':
             os.makedirs(os.path.join(request_dir, folder), exist_ok=True)
             cv2.imwrite(os.path.join(request_dir, folder, "predict.png"), plotvis)
 
-        break
 
 

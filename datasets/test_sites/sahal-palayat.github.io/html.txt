@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix India</title>
+    <link rel="icon" href="https://images.ctfassets.net/4cd45et68cgf/Rx83JoRDMkYNlMC9MKzcB/2b14d5a59fc3937afd3f03191e19502d/Netflix-Symbol.png?w=700&h=456" type="image/icon type">
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+<div>    
+<img src="IN-en-20230724-popsignuptwoweeks-perspective_alpha_website_large.jpg" alt="">
+    <div class="main">
+            <div class="header">
+                <div class="left-head">
+                     <img src="https://images.ctfassets.net/4cd45et68cgf/7LrExJ6PAj6MSIPkDyCO86/542b1dfabbf3959908f69be546879952/Netflix-Brand-Logo.png?w=700&h=456" alt="" style="width: 200px;height: 120px; opacity: 100%; padding-left: 100px; padding-top: 0%;">
+                    
+                </div>
+                <div class="right-head">
+                    <select name="Language" id="langbuttn">
+                        <option>English</option>
+                        <option>Malayalam</option>
+                        <option>Hindi</option>
+                    </select>
+                    <button class="signbtn"> Sign In</button>
+            
+                </div>
+            </div>
+            <div class="inner">
+                <h1 class="h1">Unlimited movies, TV shows and more</h1>
+                <h3 class="h3">Watch anywhere. Cancel anytime.</h3>
+                <h2 class="h4">Ready to watch? Enter your email to create or restart your membership.</h2>
+                <input type="email" placeholder="Email address" class="email">
+                <button class="emailbtn">Get Started ></button>
+                <br>
+                <br>
+                <br><br>
+                <br>
+                <br><br><br><br><br><br>
+            </div>
+            <div class="line">
+
+            </div>
+            <div class="secndpart">
+                <img src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/tv.png" alt=""
+                 style="float: right; width: 500px;padding-right: 100px; padding-top: 50px;">
+                <p1>Enjoy on your TV</p1>
+                <br>
+                <div class="asst">
+                     <p2>Watch on smart TVs, PlayStation, Xbox,<br> Chromecast, Apple TV, Blu-ray players <br> and more.</p2>
+                </div>
+            </div>
+
+            <div class="line">
+
+            </div>
+
+            <div class="thirdpart">
+                <img src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/mobile-0819.jpg" alt="" 
+                style="float: left; width: 470px ; padding-top: 50px; padding-left: 200px;">
+                
+                <div class="thrdtxt">
+                  <k1 class="k1">Download your <br> shows to watch <br> offline</k1>
+                  <br>
+                  <k2 class="k2">Save your favourites easily and always have <br> something to watch.</k>
+                </div>
+             </div>
+
+            <div class="line">
+
+            </div>
+
+            <div class="fourthpart">
+                <img src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/device-pile-in.png" alt=""
+                style="float: right; width: 500px;padding-right: 100px; padding-top: 50px;">
+            
+               
+                 
+                <p1>Watch everywhere</p1>
+                <br>
+                <div class="asst">
+                     <p2>Stream unlimited movies and TV shows on<br> your phone, tablet, laptop, and TV.</p2>
+                </div>
+            </div>
+
+            <div class="line">
+
+            </div>
+
+            <div class="fifthpart">
+                <img src="https://occ-0-4995-2186.1.nflxso.net/dnm/api/v6/19OhWN2dO19C9txTON9tvTFtefw/AAAABVr8nYuAg0xDpXDv0VI9HUoH7r2aGp4TKRCsKNQrMwxzTtr-NlwOHeS8bCI2oeZddmu3nMYr3j9MjYhHyjBASb1FaOGYZNYvPBCL.png?r=54d" alt="" 
+                style="float: left; width: 470px ; padding-top: 50px; padding-left: 150px;">
+                
+                <div class="fifthtxt">
+                  <k1 class="k1">Create profiles for<br>kids</k1>
+                  <br>
+                  <k2 class="k2">Send children on adventures with their<br>favourite characters in a space made just <br>for them—free with your membership.</k>
+                </div>
+             </div>
+
+             <div class="line">
+
+             </div>
+           
+             <div class="sixthpart">
+                <br><br><br><br><br>
+                <y class="qstn">Frequently Asked Questions</y>
+                <br>
+                <br>
+                <div class="m1">
+                     <button class="d">
+                       <div style="float: left;">
+                           <p class="q">What is Netflix?</p>
+                       </div>
+                       <div style="float: right;">
+                            <img src="https://www.pngall.com/wp-content/uploads/10/Plus-Symbol-PNG-Images-HD.png" alt="" 
+                            style="width: 40px; height: 40px; padding-right: 10px; margin-top: 20px;">
+                       </div>
+                     </button>
+                </div>
+                <br>
+                <div class="m1">
+                    <button class="d">
+                        <div style="float: left;">
+                            <p class="q">How much does Netflix cost?</p>
+                        </div>
+                        <div style="float: right;">
+                             <img src="https://www.pngall.com/wp-content/uploads/10/Plus-Symbol-PNG-Images-HD.png" alt="" 
+                             style="width: 40px; height: 40px; padding-right: 10px;  margin-top: 20px;">
+                        </div>
+                      </button>
+                </div>
+                <br>
+                <div class="m1">
+                    <button class="d">
+                        <div style="float: left;">
+                            <p class="q">Where can I watch</p>
+                        </div>
+                        <div style="float: right;">
+                             <img src="https://www.pngall.com/wp-content/uploads/10/Plus-Symbol-PNG-Images-HD.png" alt="" 
+                             style="width: 40px; height: 40px; padding-right: 10px;  margin-top: 20px;">
+                        </div>
+                      </button>
+                </div>
+                <br>
+                <div class="m1">
+                    <button class="d">
+                        <div style="float: left;">
+                            <p class="q">How do I cancel?</p>
+                        </div>
+                        <div style="float: right;">
+                             <img src="https://www.pngall.com/wp-content/uploads/10/Plus-Symbol-PNG-Images-HD.png" alt="" 
+                             style="width: 40px; height: 40px; padding-right: 10px;  margin-top: 20px;">
+                        </div>
+                      </button>
+                </div>
+                <br>
+                <div class="m1">
+                    <button class="d">
+                        <div style="float: left;">
+                            <p class="q">What can I watch of Netflix?</p>
+                        </div>
+                        <div style="float: right;">
+                             <img src="https://www.pngall.com/wp-content/uploads/10/Plus-Symbol-PNG-Images-HD.png" alt="" 
+                             style="width: 40px; height: 40px; padding-right: 10px; margin-top: 20px;">
+                        </div>
+                      </button>
+                </div>
+                <br>
+                <div class="m1">
+                    <button class="d">
+                        <div style="float: left;">
+                            <p class="q">Is Netflix good for kids?</p>
+                        </div>
+                        <div style="float: right;">
+                             <img src="https://www.pngall.com/wp-content/uploads/10/Plus-Symbol-PNG-Images-HD.png" alt="" 
+                             style="width: 40px; height: 40px; padding-right: 10px;   margin-top: 20px;">
+                        </div>
+                      </button>
+                </div>
+                <br>
+
+                <div>
+                    <h6 class="lst">Ready to watch? Enter your email to create or restart your membership.</h6>
+                </div>
+                <input type="email" placeholder="Email address" class="email">
+                <button class="emailbtn">Get Started ></button>
+            
+            </div>
+            <div class="line">
+
+            </div>
+            <div class="footer">
+                <div class="up">
+                    <p class="ft">Questions? Call 000-800-919-1694</p>
+                </div>
+                <div class="dwn">
+                    <p class="ftr">FAQ</p>
+                    
+                    <p class="ftr">Media Centre</p>
+                    
+                    <p class="ftr">Ways to Watch</p>
+                    
+                    <p class="ftr">Cookie Preferences</p>
+                    
+                    <p class="ftr">Speed Test</p>
+                </div>
+                <div class="dwn2">
+                    <p class="ftr">Help Centre</p>
+                    
+                    <p class="ftr">Investor Relations</p>
+                    
+                    <p class="ftr">Terms of Use</p>
+                    
+                    <p class="ftr">Corporate Information</p>
+                    
+                    <p class="ftr">Legal Notices</p>
+                </div>
+                <div class="dwn3">
+                    <p class="ftr">Account</p>
+                    
+                    <p class="ftr">Jobs</p>
+                    
+                    <p class="ftr">Privacy</p>
+                    
+                    <p class="ftr">Contact Us</p>
+                    
+                    <p class="ftr">Only on Netflix</p>
+                    
+                </div>
+                <br>
+                <div class="end">
+                    <select name="Language" id="lngbtn">
+                        <option>English</option>
+                        <option>Malayalam</option>
+                        <option>Hindi</option>
+                    </select>
+                    <p style="color: white; padding-left: 20px; 
+                    font-family:Netflix Sans, Helvetica Neue, Segoe UI, Roboto, Ubuntu, sans-seri; font-size: 15px;">Netflix India</p>
+                </div>
+            </div>
+           
+        </div>
+        
+    </div>
+    
+</body>
+
+</htm
