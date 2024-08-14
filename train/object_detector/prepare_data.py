@@ -1,17 +1,4 @@
 import shutil
-###
-# custom_dataset
-# |– images
-# |   |– image1.jpg
-# |   |– image2.jpg
-# |   |– …
-# |– labels
-# |   |– image1.txt
-# |   |– image2.txt
-# |   |– …
-# |– train.txt: List of training
-# |– val.txt: List of testing
-# |– classes.txt
 from pathlib import Path
 import os
 from tqdm import tqdm
@@ -109,43 +96,3 @@ if __name__ == "__main__":
                 else:
                     continue
 
-
-    # for annotator_dir in os.listdir(ground_truth_dir):
-    #     file_list = os.listdir(os.path.join(ground_truth_dir, annotator_dir))
-    #     sorted_file_list = sorted(file_list, key=lambda s: s.lower())
-    #     for ct, app_dir in enumerate(sorted_file_list):
-    #         for file in os.listdir(os.path.join(ground_truth_dir, annotator_dir, app_dir)):
-    #             if file.endswith('json'):
-    #                 json_file_path = os.path.join(ground_truth_dir, annotator_dir, app_dir, file)
-    #                 data = json.load(open(json_file_path, encoding="utf-8"))
-    #                 ws = [Widget.from_labelme(d, i) for i, d in enumerate(data["shapes"])]
-    #                 image_height = data["imageHeight"]
-    #                 image_width = data["imageWidth"]
-    #                 if ct < 28:  # training
-    #                     Annotation.write_yolo_labels(
-    #                         os.path.join(train_label_dir, app_dir+'_'+file.replace("json", "txt")),
-    #                                      label2id,
-    #                                      ws,
-    #                                      image_width,
-    #                                      image_height)
-    #                 else:
-    #                     Widget.write_yolo_labels(
-    #                         os.path.join(val_label_dir, app_dir + '_' + file.replace("json", "txt")),
-    #                         label2id,
-    #                         ws,
-    #                         image_width,
-    #                         image_height)
-    #
-    #                 if os.path.exists(json_file_path.replace('.json', '.png')):
-    #                     image_path = file.replace('.json', '.png')
-    #                 elif os.path.exists(json_file_path.replace('.json', '.jpg')):
-    #                     image_path = file.replace('.json', '.jpg')
-    #                 else:
-    #                     image_path = file.replace('.json', '.jpeg')
-    #
-    #                 if ct < 28:  # training
-    #                     shutil.copy(os.path.join(ground_truth_dir, annotator_dir, app_dir, image_path),
-    #                                 os.path.join(train_img_dir, app_dir + '_' + image_path))
-    #                 else:
-    #                     shutil.copy(os.path.join(ground_truth_dir, annotator_dir, app_dir, image_path),
-    #                                 os.path.join(val_img_dir, app_dir + '_' + image_path))
