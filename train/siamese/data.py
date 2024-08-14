@@ -4,6 +4,7 @@ import pickle
 import numpy as np
 import os
 import torchvision as tv
+import pickle
 
 
 class GetLoader(data.Dataset):
@@ -61,7 +62,6 @@ if __name__ == '__main__':
     for it, line in enumerate(open('./datasets/siamese_training/List/Logo-2K+classes.txt').readlines()):
         label2id_dict[line.strip()] = it
 
-    import pickle
     with open('./datasets/siamese_training/List/logo2k_labeldict.pkl', 'wb') as f:
         pickle.dump(label2id_dict, f)
 
@@ -70,7 +70,6 @@ if __name__ == '__main__':
     for it, brand in enumerate(os.listdir('./models/expand_targetlist')):
         label2id_dict[brand] = it
 
-    import pickle
     with open('./datasets/siamese_training/target_dict.pkl', 'wb') as f:
         pickle.dump(label2id_dict, f)
 

@@ -165,9 +165,9 @@ class MobileNetV2(nn.Module):
         # (this one) needs to have a name other than `forward` that can be accessed in a subclass
         x = self.features(x)
         # Cannot use "squeeze" as batch-size can be 1 => must use reshape with x.shape[0]
-        x = nn.functional.adaptive_avg_pool2d(x, 1).reshape(x.shape[0], -1)
-        x = self.classifier(x)
-        return x
+        features = nn.functional.adaptive_avg_pool2d(x, 1).reshape(x.shape[0], -1)
+        x = self.classifier(features)
+        return x, features
 
     def forward(self, x):
         return self._forward_impl(x)

@@ -77,12 +77,12 @@ def mktrainval(args, logger):
                               transform=val_tx)
 
     elif args.dataset == "targetlist":
-        train_set = GetLoader(data_root='./models/expand_targetlist',
+        train_set = GetLoader(data_root='./datasets/siamese_training/expand_targetlist',
                               data_list='./datasets/siamese_training/train_targets.txt',
                               label_dict='./datasets/siamese_training/target_dict.pkl',
                               transform=train_tx)
 
-        valid_set = GetLoader(data_root='./models/expand_targetlist',
+        valid_set = GetLoader(data_root='./datasets/siamese_training/expand_targetlist',
                               data_list='./datasets/siamese_training/test_targets.txt',
                               label_dict='./datasets/siamese_training/target_dict.pkl',
                               transform=val_tx)
@@ -131,7 +131,7 @@ def run_eval(model, data_loader, device, chrono, logger, step):
 
             # compute output, measure accuracy and record loss.
             with chrono.measure("eval fprop"):
-                logits = model(x)
+                logits, _ = model(x)
                 c = torch.nn.CrossEntropyLoss(reduction='none')(logits, y)
                 top1, top5 = topk(logits, y, ks=(1, 5))
                 all_c.extend(c.cpu())  # Also ensures a sync point.
@@ -264,7 +264,7 @@ def main(args):
                 x, y_a, y_b = mixup_data(x, y, mixup_l)
 
             # compute output
-            logits = model(x)
+            logits, _ = model(x)
             if mixup > 0.0:
                 c = mixup_criterion(cri, logits, y_a, y_b, mixup_l)
             else:
@@ -311,3 +311,10 @@ if __name__ == "__main__":
                         help="Number of background threads used to load data.")
     parser.add_argument("--no-save", dest="save", action="store_false")
     main(parser.parse_args())
+
+
+## image size of 32: top1 71.80%, top5 86.51%
+
+## image size of 64: top1 90.37%, top5 96.15%
+
+## image size of 128, top1 90%, top5 97%

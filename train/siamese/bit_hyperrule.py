@@ -17,8 +17,8 @@ def get_resolution(original_resolution):
 
 
 known_dataset_sizes = {
-    'logo_2k': (128, 128),
-    'targetlist': (128, 128),
+    'logo_2k': (64, 64),
+    'targetlist': (64, 64),
 }
 
 
