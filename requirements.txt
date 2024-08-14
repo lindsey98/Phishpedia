@@ -4,12 +4,14 @@ opencv-python
 pandas
 numpy
 tqdm
-Pillow==8.4.0
+Pillow
 pathlib
 fvcore
-pycocotools
 scikit-learn
 lxml
 gdown
 memory-profiler
 psutil
+ultralytics
+onnxruntime
+PyYAML

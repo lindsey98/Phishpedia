@@ -1,111 +1,47 @@
-# Phishpedia A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages
-
-<div align="center">
-
-![Dialogues](https://img.shields.io/badge/Proctected\_Brands\_Size-277-green?style=flat-square)
-![Dialogues](https://img.shields.io/badge/Phishing\_Benchmark\_Size-30k-green?style=flat-square)
+### Memory efficient Phishpedia
 
 
-</div>
-<p align="center">
-  <a href="https://www.usenix.org/conference/usenixsecurity21/presentation/lin">Paper</a> •
-  <a href="https://sites.google.com/view/phishpedia-site/">Website</a> •
-  <a href="https://www.youtube.com/watch?v=ZQOH1RW5DmY">Video</a> •
-   <a href="https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=drive_link">Dataset</a> •
-  <a href="#citation">Citation</a>
-</p>
+### Setup instructions
+1. Install torch, torchvision that are compatible with your CUDA. For your reference, I am using torch==2.4.0, torchvision==0.19.0.
 
-- This is the official implementation of "Phishpedia: A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages" USENIX'21 [link to paper](https://www.usenix.org/conference/usenixsecurity21/presentation/lin), [link to our website](https://sites.google.com/view/phishpedia-site/), [link to our dataset](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=drive_link).
-
-- Existing reference-based phishing detectors:
-  - :x: Lack of **interpretability**, only give binary decision (legit or phish)
-  - :x: **Not robust against distribution shift**, because the classifier is biased towards the phishing training set
-  - :x: Lack of a large-scale phishing benchmark dataset
-    
-- The contributions of our paper:
-   - :white_check_mark: We propose a phishing identification system Phishpedia, which has high identification accuracy and low runtime overhead, outperforming the relevant state-of-the-art identification approaches. 
-   - :white_check_mark: We are the first to propose to use **consistency-based method** for phishing detection, in place of the traditional classification-based method. We investigate the consistency between the webpage domain and its brand intention. The detected brand intention provides a **visual explanation** for phishing decision.
-   - :white_check_mark: Phishpedia is **NOT trained on any phishing dataset**, addressing the potential test-time distribution shift problem.
-   - :white_check_mark: We release a **30k phishing benchmark dataset**, each website is annotated with its URL, HTML, screenshot, and target brand: https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=drive_link.
-   - :white_check_mark: We set up a **phishing monitoring system**, investigating emerging domains fed from CertStream, and we have discovered 1,704 real phishing, out of which 1133 are zero-days not reported by industrial antivirus engine (Virustotal).  
-
-## Framework
-    
-<img src="./datasets/overview.png" style="width:2000px;height:350px"/>
-
-```Input```: A URL and its screenshot ```Output```: Phish/Benign, Phishing target
-- Step 1: Enter <b>Deep Object Detection Model</b>, get predicted logos and inputs (inputs are not used for later prediction, just for explanation)
-
-- Step 2: Enter <b>Deep Siamese Model</b>
-    - If Siamese report no target, ```Return  Benign, None```
-    - Else Siamese report a target, ```Return Phish, Phishing target``` 
-    
-## Project structure
+2. Install the requirements.txt
 ```
-- logo_recog.py: Deep Object Detection Model
-- logo_matching.py: Deep Siamese Model 
-- configs.yaml: Configuration file
-- phishpedia.py: Main script
+conda activate [your_env_name]
+pip install -r requirements.txt
 ```
 
-## Instructions
-Requirements: 
-- Anaconda installed, please refer to the official installation guide: https://docs.anaconda.com/free/anaconda/install/index.html 
-
-1. Create a local clone of Phishpedia
-```bash
-git clone https://github.com/lindsey98/Phishpedia.git
+### Download the pretrained models
+```commandline
+pip install gdown
+mkdir models/
+cd models
+gdown --id 1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1 -O domain_map.pkl
+gdown --id 17anjM7tdDOVkOnpCy_I-dmAmBknYeJHJ -O yolo_nano_320.onnx
+gdown --id 1HKefBeT7VDiVxgPx06Qyki5c93_xN89X -O mobilenetv2_64.onnx
+cd ../
+gdown --id 1N76ehGTI45TC2paUNRygn0VZzNjT8QG8 -O LOGO_FEATS.npy
+gdown --id 1B-W7h9h1n_na7Q6e87sPfdq1F9C-Y5nY -O LOGO_FILES.npy
 ```
 
-2. Setup the phishpedia conda environment. 
-In this step, we would be installing the core dependencies of Phishpedia such as pytorch, and detectron2. 
-In addition, we would also download the model checkpoints and brand reference list.
-This step may take some time.
-```bash
-chmod +x ./setup.sh
-export ENV_NAME="phishpedia" 
-./setup.sh
+### The expected directory structure would be:
+```
+models/
+|– domain_map.pkl
+|– yolo_nano_320.onnx
+|– mobilenetv2_64.onnx
+configs.py # model loading logics
+configs.yaml # specify the model paths, hyperparameter configurations
+logo_matching.py # siamese matching logics
+phishpedia.py # main phishpedia code
+LOGO_FEATS.npy # cached logo embeddings
+LOGO_FILES.npy # ground-truth brands for those logo embeddings
+utils.py # other utils 
 ```
 
-3. 
-```bash
-conda activate phishpedia
+### Run Phishpedia, the inference are done on cpu
+```commandline
+python phishpedia.py --folder [folder_to_test]
 ```
 
-4. Run in bash 
-```bash
-python phishpedia.py --folder <folder you want to test e.g. ./datasets/test_sites>
-```
-
-The testing folder should be in the structure of:
-
-```
-test_site_1
-|__ info.txt (Write the URL)
-|__ shot.png (Save the screenshot)
-test_site_2
-|__ info.txt (Write the URL)
-|__ shot.png (Save the screenshot)
-......
-```
-
-## Miscellaneous
-- In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
-- The logo targetlist described in our paper includes 181 brands, we have further expanded the targetlist to include 277 brands in this code repository 
-- For the phish discovery experiment, we obtain feed from [Certstream phish_catcher](https://github.com/x0rz/phishing_catcher), we lower the score threshold to be 40 to process more suspicious websites, readers can refer to their repo for details
-- We use Scrapy for website crawling 
-
-## Citation 
-If you find our work useful in your research, please consider citing our paper by:
-
-```bibtex
-@inproceedings{lin2021phishpedia,
-  title={Phishpedia: A Hybrid Deep Learning Based Approach to Visually Identify Phishing Webpages},
-  author={Lin, Yun and Liu, Ruofan and Divakaran, Dinil Mon and Ng, Jun Yang and Chan, Qing Zhou and Lu, Yiwen and Si, Yuxuan and Zhang, Fan and Dong, Jin Song},
-  booktitle={30th $\{$USENIX$\}$ Security Symposium ($\{$USENIX$\}$ Security 21)},
-  year={2021}
-}
-```
-
-## Contacts
-If you have any issues running our code, you can raise an issue or send an email to liu.ruofan16@u.nus.edu, lin_yun@sjtu.edu.cn, and dcsdjs@nus.edu.sg
+### Training scripts
+The training scripts are in train/object_detector and train/siamese

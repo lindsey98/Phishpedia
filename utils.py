@@ -1,7 +1,8 @@
 import torch.nn.functional as F
 from PIL import Image
 import math
-
+import cv2
+import numpy as np
 def resolution_alignment(img1, img2):
     '''
     Resize two images according to the minimum resolution between the two
@@ -132,3 +133,26 @@ def l2_norm(x):
     if len(x.shape):
         x = x.reshape((x.shape[0], -1))
     return F.normalize(x, p=2, dim=1)
+
+def vis(img_path, pred_boxes):
+    '''
+    Visualize rcnn predictions
+    :param img_path: str
+    :param pred_boxes: torch.Tensor of shape Nx4, bounding box coordinates in (x1, y1, x2, y2)
+    :param pred_classes: torch.Tensor of shape Nx1 0 for logo, 1 for input, 2 for button, 3 for label(text near input), 4 for block
+    :return None
+    '''
+
+    check = cv2.imread(img_path)
+    if pred_boxes is None or len(pred_boxes) == 0:
+        return check
+    pred_boxes = pred_boxes.numpy() if not isinstance(pred_boxes, np.ndarray) else pred_boxes
+
+    # draw rectangle
+    for j, box in enumerate(pred_boxes):
+        if j == 0:
+            cv2.rectangle(check, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), (255, 255, 0), 2)
+        else:
+            cv2.rectangle(check, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), (36, 255, 12), 2)
+
+    return check

@@ -1,24 +1,18 @@
 
-import time
-import sys
 from datetime import datetime
 import argparse
 import os
-import torch
-from tldextract import tldextract
 import cv2
-from configs import load_config, load_quantized_config
-from logo_recog import pred_rcnn, vis
+from configs import load_config
 from logo_matching import check_domain_brand_inconsistency
-from text_recog import check_email_credential_taking
-import pickle
+from utils import vis
 from tqdm import tqdm
 from lxml import html
-
 import re
 import time
-import psutil
 import torch
+import logging
+logging.basicConfig(level=logging.INFO)
 from memory_profiler import profile
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
@@ -29,16 +23,13 @@ class PhishpediaWrapper:
 
     def __init__(self):
         self._load_config()
-        self._to_device()
 
+    @profile
     def _load_config(self):
         self.ELE_MODEL, self.SIAMESE_THRE, self.SIAMESE_MODEL, \
             self.LOGO_FEATS, self.LOGO_FILES, \
             self.DOMAIN_MAP_PATH = load_config()
-        print(f'Length of reference list = {len(self.LOGO_FEATS)}')
-
-    def _to_device(self):
-        self.SIAMESE_MODEL.to(self._DEVICE)
+        logging.info(f'Length of reference list = {len(self.LOGO_FEATS)}')
 
     def simple_input_box_regex(self, html_path):
         with open(html_path, 'r', encoding='ISO-8859-1') as f:
@@ -64,8 +55,8 @@ class PhishpediaWrapper:
         return False
 
     '''Phishpedia'''
-    # @profile
-    def test_orig_phishpedia(self, url, screenshot_path, html_path):
+    @profile
+    def test_orig_phishpedia(self, url, screenshot_path, html_path, save_vis):
         # 0 for benign, 1 for phish, default is benign
         phish_category = 0
         pred_target = None
@@ -73,20 +64,30 @@ class PhishpediaWrapper:
         siamese_conf = None
         plotvis = None
         logo_match_time = 0
-        print("Entering phishpedia")
+        logging.info("Entering phishpedia")
 
         ####################### Step1: Logo detector ##############################################
+        torch.cuda.empty_cache()
         start_time = time.time()
-        pred_boxes = pred_rcnn(im=screenshot_path, predictor=self.ELE_MODEL)
+        pred_results = self.ELE_MODEL.predict([screenshot_path],
+                                              device="cpu",
+                                              classes=[1],
+                                              max_det=100,
+                                              save=False,
+                                              save_txt=False,
+                                              save_conf=False,
+                                              imgsz=320
+                                              )
+        pred_boxes = pred_results[0].boxes.xyxy.detach().cpu().numpy()
         logo_recog_time = time.time() - start_time
+        torch.cuda.empty_cache()
 
-        if pred_boxes is not None:
-            pred_boxes = pred_boxes.detach().cpu().numpy()
-        plotvis = vis(screenshot_path, pred_boxes)
+        if save_vis:
+            plotvis = vis(screenshot_path, pred_boxes)
 
         # If no element is reported
-        if pred_boxes is None or len(pred_boxes) == 0:
-            print('No logo is detected')
+        if len(pred_boxes) == 0:
+            logging.info('No logo is detected')
             return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
 
         ######################## Step2: Siamese (Logo matcher) ########################################
@@ -103,21 +104,22 @@ class PhishpediaWrapper:
         logo_match_time = time.time() - start_time
 
         if pred_target is None:
-            print('Did not match to any brand, report as benign')
+            logging.info('Did not match to any brand, report as benign')
             return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
 
         ######################## Step3: Simple input box check ###############
         has_input_box = self.simple_input_box_regex(html_path=html_path)
         if not has_input_box:
-            print('No input box')
+            logging.info('No input box')
             return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
         else:
-            print('Match to Target: {} with confidence {:.4f}'.format(pred_target, siamese_conf))
+            logging.info('Match to Target: {} with confidence {:.4f}'.format(pred_target, siamese_conf))
             phish_category = 1
             # Visualize, add annotations
-            cv2.putText(plotvis, "Target: {} with confidence {:.4f}".format(pred_target, siamese_conf),
-                        (int(matched_coord[0] + 20), int(matched_coord[1] + 20)),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
+            if save_vis:
+                cv2.putText(plotvis, "Target: {} with confidence {:.4f}".format(pred_target, siamese_conf),
+                            (int(matched_coord[0] + 20), int(matched_coord[1] + 20)),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
 
 
         return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
@@ -141,6 +143,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--folder", required=True, type=str)
     parser.add_argument("--output_txt", default=f'{today}_results.txt', help="Output txt path")
+    parser.add_argument("--save_vis", action='store_true', help="Save the predicted screenshot or not")
     args = parser.parse_args()
 
     request_dir = args.folder
@@ -160,8 +163,10 @@ if __name__ == '__main__':
         if not os.path.exists(html_path):
             html_path = os.path.join(request_dir, folder, "index.html")
 
-        # url = eval(open(info_path).read())['url']
-        url = open(info_path).read()
+        if os.path.exists(info_path):
+            url = open(info_path).read()
+        else:
+            url = 'https://' + folder
 
         if os.path.exists(result_txt) and url in open(result_txt, encoding='ISO-8859-1').read():
             continue
@@ -172,7 +177,7 @@ if __name__ == '__main__':
 
         phish_category, pred_target, matched_domain, \
                     plotvis, siamese_conf, pred_boxes, \
-                    logo_recog_time, logo_match_time = phishpedia_cls.test_orig_phishpedia(url, screenshot_path, html_path)
+                    logo_recog_time, logo_match_time = phishpedia_cls.test_orig_phishpedia(url, screenshot_path, html_path, args.save_vis)
 
 
         try:
@@ -195,8 +200,10 @@ if __name__ == '__main__':
                 f.write(str(siamese_conf) + "\t")
                 f.write(str(round(logo_recog_time, 4)) + "\t")
                 f.write(str(round(logo_match_time, 4)) + "\n")
-        if phish_category:
+        if phish_category and args.save_vis:
             os.makedirs(os.path.join(request_dir, folder), exist_ok=True)
             cv2.imwrite(os.path.join(request_dir, folder, "predict.png"), plotvis)
+
+        break
 
 
