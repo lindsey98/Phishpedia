@@ -1,8 +1,9 @@
 ELE_MODEL: # element recognition model -- logo only
 #  CONFIGS_PATH: train/object_detector/detectron2/configs/faster_rcnn.yaml
 #  WEIGHTS_PATH: models/rcnn.pth
-  WEIGHTS_PATH: models/yolo_nano_640.onnx
-#  WEIGHTS_PATH: models/yolo_small_640.onnx
+  WEIGHTS_PATH: models/yolov10_nano_640.onnx
+#  WEIGHTS_PATH: models/yolov10_small_640.onnx
+#  WEIGHTS_PATH: models/yolo_middle_640.onnx
 
 SIAMESE_MODEL:
   NUM_CLASSES: 270 # number of brands, users don't need to modify this even the targetlist is expanded
