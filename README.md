@@ -46,10 +46,10 @@ utils.py # other utils
 python phishpedia.py --folder [folder_to_test]
 ```
 
-### Re-training scripts
+## Re-training 
 All the training scripts are in [train/object_detector](train/object_detector/README.md) and [train/siamese](train/siamese/README.md).
 
-### Benchmarking Phishpedia on Phish30k and Benign30k datasets
+## Benchmarking Phishpedia on Phish30k and Benign30k datasets
 1. Download the 30k benign + 30k phishing datasets
 ```commandline
 mkdir datasets
