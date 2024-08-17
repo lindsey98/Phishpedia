@@ -8,7 +8,7 @@ import torchvision as tv
 from tqdm import tqdm
 from train.siamese import mobilenet
 from collections import OrderedDict
-
+from train.siamese import resnetv2
 
 def load_and_prepare_model(weights_path, num_classes=270, device='cuda'):
     """
@@ -19,7 +19,8 @@ def load_and_prepare_model(weights_path, num_classes=270, device='cuda'):
     :param device: Device to load the model on ('cuda' or 'cpu').
     :return: Loaded model.
     """
-    model = mobilenet.mobilenet_v2(num_classes=num_classes)
+    # model = mobilenet.mobilenet_v2(num_classes=num_classes)
+    model = resnetv2.KNOWN_MODELS["BiT-M-R50x1"](head_size=num_classes, zero_head=True)
 
     # Load weights safely
     try:
@@ -110,7 +111,7 @@ def prepare_validation_dataset(data_root, data_list, label_dict):
     :return: Prepared validation dataset.
     """
     val_tx = tv.transforms.Compose([
-        tv.transforms.Resize((64, 64)),
+        tv.transforms.Resize((128, 128)),
         tv.transforms.ToTensor(),
         tv.transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
     ])
@@ -119,17 +120,24 @@ def prepare_validation_dataset(data_root, data_list, label_dict):
 
 if __name__ == '__main__':
     # Set paths
-    weights_path = "./runs/targetlist_finetuned/bit.pth.tar"
-    onnx_model_path = "./models/mobilenetv2_64.onnx"
+    # weights_path = "./runs/targetlist_finetuned/bit.pth.tar"
+    # onnx_model_path = "./models/mobilenetv2_64.onnx"
+    # weights_path = "./models/mobilenetv2_128.pth.tar"
+    # onnx_model_path = "./models/mobilenetv2_128.onnx"
+    weights_path = "./models/resnetv2_rgb_new.pth.tar"
+    onnx_model_path = "./models/resnetv2_128.onnx"
     data_root = './models/expand_targetlist'
     data_list = './datasets/siamese_training/test_targets.txt'
-    label_dict = './datasets/siamese_training/target_dict.pkl'
+    # label_dict = './datasets/siamese_training/target_dict.pkl'
+    label_dict = './datasets/old_target_dict.json'
 
     # Load and prepare model
-    model = load_and_prepare_model(weights_path, num_classes=270, device='cuda')
+    # model = load_and_prepare_model(weights_path, num_classes=270, device='cuda')
+    model = load_and_prepare_model(weights_path, num_classes=277, device='cuda')
 
     # Export the model to ONNX
-    export_to_onnx(model, onnx_model_path, device='cuda', input_size=(1, 3, 64, 64))
+    # export_to_onnx(model, onnx_model_path, device='cuda', input_size=(1, 3, 64, 64))
+    export_to_onnx(model, onnx_model_path, device='cuda', input_size=(1, 3, 128, 128))
 
     # Create ONNX session
     session = create_onnx_session(onnx_model_path, use_cuda=True)
@@ -140,6 +148,10 @@ if __name__ == '__main__':
     # Run evaluation
     run_eval(session, valid_set)
 
-    ##
-    # top1 90.37%,
-    # top5 96.15%
+    ## For MobileNetV2
+    # Top-1 Accuracy: 94.05%
+    # Top-5 Accuracy: 97.90%
+
+    ## For ResNet
+    # Top-1 Accuracy: 95.45%
+    # Top-5 Accuracy: 99.12%

@@ -77,12 +77,12 @@ def mktrainval(args, logger):
                               transform=val_tx)
 
     elif args.dataset == "targetlist":
-        train_set = GetLoader(data_root='./datasets/siamese_training/expand_targetlist',
+        train_set = GetLoader(data_root='./models/expand_targetlist',
                               data_list='./datasets/siamese_training/train_targets.txt',
                               label_dict='./datasets/siamese_training/target_dict.pkl',
                               transform=train_tx)
 
-        valid_set = GetLoader(data_root='./datasets/siamese_training/expand_targetlist',
+        valid_set = GetLoader(data_root='./models/expand_targetlist',
                               data_list='./datasets/siamese_training/test_targets.txt',
                               label_dict='./datasets/siamese_training/target_dict.pkl',
                               transform=val_tx)
@@ -146,7 +146,7 @@ def run_eval(model, data_loader, device, chrono, logger, step):
     logger.info("top1 {:.2%}, ".format(np.mean(all_top1)))
     logger.info("top5 {:.2%}".format(np.mean(all_top5)))
     logger.flush()
-    return all_c, all_top1, all_top5
+    return np.mean(all_c), all_top1, all_top5
 
 
 def mixup_data(x, y, l):
@@ -240,6 +240,7 @@ def main(args):
 
     mixup_l = np.random.beta(mixup, mixup) if mixup > 0 else 1
     end = time.time()
+    best_loss = float('inf')  # Initialize the best loss with infinity
 
     with lb.Uninterrupt() as u:
         for x, y in recycle(train_loader):
@@ -288,11 +289,16 @@ def main(args):
             # Save model
             end = time.time()
             if step % 50 == 0:
-                torch.save({
-                    "step": step,
-                    "model": model.state_dict(),
-                    "optim": optim.state_dict(),
-                }, savename)
+                val_loss, _, _ = run_eval(model, valid_loader, device, chrono, logger, step=step)
+                if val_loss < best_loss:
+                    best_loss = val_loss
+                    torch.save({
+                        "step": step,
+                        "model": model.state_dict(),
+                        "optim": optim.state_dict(),
+                        "best_loss": best_loss,
+                    }, savename)
+                    logger.info(f"New best model saved at step {step} with validation loss {val_loss:.5f}")
 
         # Final eval at end of training.
         run_eval(model, valid_loader, device, chrono, logger, step='end')
@@ -317,4 +323,4 @@ if __name__ == "__main__":
 
 ## image size of 64: top1 90.37%, top5 96.15%
 
-## image size of 128, top1 90%, top5 97%
+## image size of 128, Top-1 Accuracy: 94.05% Top-5 Accuracy: 97.90%

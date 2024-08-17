@@ -9,20 +9,15 @@ from tqdm import tqdm
 from tldextract import tldextract
 import pickle
 import onnxruntime
+from typing import Dict
+from memory_profiler import profile
 
 logging.basicConfig(level=logging.INFO)
-def load_domain_map(domain_map_path):
-    try:
-        with open(domain_map_path, 'rb') as handle:
-            return pickle.load(handle)
-    except Exception as e:
-        logging.error(f"Failed to load domain map: {e}")
-        return None
 
-def check_domain_brand_inconsistency(logo_boxes, domain_map_path: str, model, logo_feat_list,
+def check_domain_brand_inconsistency(logo_boxes, domain_map: Dict, model, logo_feat_list,
                                      file_name_list, shot_path: str, url: str, ts: float, topk: int = 3):
-    domain_map = load_domain_map(domain_map_path)
-    if not domain_map:
+
+    if tldextract.extract(url).domain == 'google': # ignore Google which has many variants of tlds
         return None, None, None, None
 
     extracted_domain = tldextract.extract(url).domain + '.' + tldextract.extract(url).suffix
@@ -51,31 +46,10 @@ def check_domain_brand_inconsistency(logo_boxes, domain_map_path: str, model, lo
     return brand_converter(matched_target), matched_domain, matched_coord, this_conf
 
 def load_model_weights(weights_path: str):
-    # if not os.path.exists(weights_path):
-    #     raise FileNotFoundError(f"The specified weights path does not exist: {weights_path}")
-    #
-    # # Assume 'mobilenet_v2' is imported or defined somewhere else correctly
-    # device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    # model = mobilenet.mobilenet_v2(num_classes=num_classes)
-    #
-    # # Safely load weights
-    # try:
-    #     weights = torch.load(weights_path, map_location='cpu')
-    #     state_dict = weights.get('model', weights)  # more concise
-    #
-    #     # Remove 'module.' prefix if model trained with DataParallel
-    #     new_state_dict = OrderedDict((k.replace('module.', ''), v) for k, v in state_dict.items())
-    #     model.load_state_dict(new_state_dict)
-    # except KeyError as e:
-    #     raise KeyError(f"Failed to load state dict from {weights_path}: {e}")
-    #
-    # model = model.to(device)
-    # model.eval()
-
     sess_options = onnxruntime.SessionOptions()
     session = onnxruntime.InferenceSession(weights_path,
                                            sess_options,
-                                           providers=["CUDAExecutionProvider", "CPUExecutionProvider"])
+                                           providers=["CPUExecutionProvider"])
     return session
 
 def cache_reference_list(model, targetlist_path: str):
@@ -125,12 +99,11 @@ def get_embedding(img, model):
     :param title: title of displayed image
     :return feature embedding of shape (2048,)
     '''
-    img_size = 64
-
+    # img_size = 64
+    img_size = 128
 
     # Define the image transformation pipeline
     img_transforms = transforms.Compose([
-        transforms.Resize((img_size, img_size)),  # Resize directly in one step
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5]),
     ])
@@ -140,13 +113,20 @@ def get_embedding(img, model):
         img = Image.open(img)
     img = img.convert("RGB")
 
+    ## Resize the image while keeping the original aspect ratio
+    img = ImageOps.expand(img, (
+        (max(img.size) - img.size[0]) // 2, (max(img.size) - img.size[1]) // 2,
+        (max(img.size) - img.size[0]) // 2, (max(img.size) - img.size[1]) // 2), fill=(255, 255, 255))
+
+    img = img.resize((img_size, img_size))
+
     # Apply transformations and add batch dimension
     img = img_transforms(img).unsqueeze(0)  # (1, 3, 64, 64)
 
     # Run inference using ONNX model
     ort_outputs = model.run(['features'], {'input': img.numpy()})
     logo_feat = ort_outputs[0]
-    logo_feat = logo_feat / np.linalg.norm(logo_feat, ord=2)
+    logo_feat = logo_feat / np.linalg.norm(logo_feat, ord=2) # l2 normalization
     logo_feat = logo_feat[0] # remove dummy dimension
     return logo_feat
 

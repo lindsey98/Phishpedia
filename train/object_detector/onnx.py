@@ -4,15 +4,14 @@ def load_model(model_path):
     """Load the YOLO model from a given path."""
     return YOLO(model_path)
 
-def export_model_to_onnx(model, export_path):
+def export_model_to_onnx(model):
     """
     Export the YOLO model to ONNX format.
 
     :param model: The YOLO model object to export.
     :param export_path: Path where the ONNX model will be saved.
     """
-    model.export(format="onnx", save_path=export_path)
-    print(f"Model exported to ONNX format at {export_path}")
+    model.export(format="onnx")
 
 def evaluate_model(model_path, data_path, eval_name="onnx_eval", batch_size=16, device="cpu", img_size=320):
     """
@@ -33,30 +32,27 @@ def evaluate_model(model_path, data_path, eval_name="onnx_eval", batch_size=16, 
         batch=batch_size,
         device=device,
         imgsz=img_size,
-        task="detect"
     )
     return results
 
 if __name__ == "__main__":
     # Paths
-    yolo_pt_model_path = "./runs/detect/rcnn_nano2/weights/best.pt"
-    yolo_onnx_model_path = "./models/yolo_nano_320.onnx"
+    yolo_pt_model_path = "./runs/detect/yolo_middle_640/weights/best.pt"
     data_config_path = "./datasets/object_detector_training/config.yaml"
 
     # Load the YOLOv8 model
     model = load_model(yolo_pt_model_path)
 
     # Export the model to ONNX format
-    export_model_to_onnx(model, export_path=yolo_onnx_model_path)
+    export_model_to_onnx(model)
 
-    # Evaluate the exported ONNX model
+    # # Evaluate the exported ONNX model
     results = evaluate_model(
-        model_path=yolo_onnx_model_path,
+        model_path=yolo_pt_model_path.replace('.pt', '.onnx'),
         data_path=data_config_path,
-        eval_name="rcnn_nano_onnx_eval",
         batch_size=16,
         device="cpu",
-        img_size=320
+        img_size=640
     )
 
     # Print results
