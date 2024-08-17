@@ -177,6 +177,15 @@ def optimizer_to(optim, device):
                         subparam._grad.data = subparam._grad.data.to(device)
 
 
+def get_next_available_dir(base_dir, base_name):
+    """Generates a new directory name if the original is non-empty."""
+    counter = 2
+    new_dir = pjoin(base_dir, base_name)
+    while os.path.exists(new_dir) and os.listdir(new_dir):
+        new_dir = pjoin(base_dir, f"{base_name}_{counter}")
+        counter += 1
+    return new_dir
+
 def main(args):
     logger = bit_common.setup_logger(args)
 
@@ -212,19 +221,11 @@ def main(args):
         model.load_state_dict(checkpoint["model"], strict=False)
 
     # Resume fine-tuning if we find a saved model.
-    savename = pjoin(args.logdir, args.name, "bit.pth.tar")
-    try:
-        logger.info("Model will be saved in '{}'".format(savename))
-        checkpoint = torch.load(savename, map_location="cpu")
-        logger.info("Found saved model to resume from at '{}'".format(savename))
+    model_dir = get_next_available_dir(args.logdir, args.name)
+    os.makedirs(model_dir, exist_ok=True)
 
-        step = checkpoint["step"]
-        model.load_state_dict(checkpoint["model"])
-        optim.load_state_dict(checkpoint["optim"])
-        logger.info("Resumed at step {}".format(step))
-
-    except FileNotFoundError:
-        logger.info("Fine-tuning from BiT")
+    savename = pjoin(model_dir, "bit.pth.tar")
+    logger.info(f"Model will be saved in '{savename}'")
 
     # Send to GPU
     model = model.to(device)

@@ -60,7 +60,7 @@ class PhishpediaWrapper:
 
     '''Phishpedia'''
 
-    @profile
+    # @profile
     def test_orig_phishpedia(self, url, screenshot_path, html_path, save_vis):
         # 0 for benign, 1 for phish, default is benign
         phish_category = 0
@@ -104,11 +104,11 @@ class PhishpediaWrapper:
             return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
 
         ######################## Step3: Simple input box check ###############
-        if os.path.exists(html_path):
-            has_input_box = self.simple_input_box_regex(html_path=html_path)
-            if not has_input_box:
-                logging.info('No input box')
-                return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
+        # if os.path.exists(html_path):
+        #     has_input_box = self.simple_input_box_regex(html_path=html_path)
+        #     if not has_input_box:
+        #         logging.info('No input box')
+        #         return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
         logging.info('Match to Target: {} with confidence {:.4f}'.format(pred_target, siamese_conf))
         phish_category = 1 # flag as phish
         # Visualize, add annotations

@@ -21,6 +21,9 @@ gdown --id 1GirhWiOVQpJWafhHA93elMfsUrxJzr9f -O test_targets.txt
 
 ## Prepare the label2id Dict
 Run data.py to convert class names to class ids.
+```commandline
+python -m train.siamese.data
+```
 
 ## Pretraining on Logo2k
 This command runs the fine-tuning on the downloaded model:

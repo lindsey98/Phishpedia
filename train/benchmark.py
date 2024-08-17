@@ -9,14 +9,19 @@ import itertools
 
 if __name__ == '__main__':
 
+    parser = argparse.ArgumentParser(description="Process some parameters.")
+    parser.add_argument('--mode', type=str, default='phish', choices=['phish', 'benign'],
+                        help='Mode of operation, can be phish or benign')
+    parser.add_argument('--threshold', type=float, default=0.85, help='Threshold value for decision making')
+    args = parser.parse_args()
+
     phishpedia_cls = PhishpediaWrapper()
-    # mode = 'benign'
-    mode = 'phish'
-    threshold = 0.85 # also 0.83
+    mode = args.mode
+    threshold = args.threshold
 
     data_dir = f'./datasets/{mode}_sample_30k'
     result_txt = f'./train/benchmark30k_{mode}_{threshold}.txt'
-    phishpedia_cls.SIAMESE_THRE = threshold # reset threshold
+    phishpedia_cls.SIAMESE_THRE = threshold  # reset threshold
 
     for folder in tqdm(os.listdir(data_dir)):
 

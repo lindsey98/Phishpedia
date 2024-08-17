@@ -122,18 +122,18 @@ if __name__ == '__main__':
     # Set paths
     # weights_path = "./runs/targetlist_finetuned/bit.pth.tar"
     # onnx_model_path = "./models/mobilenetv2_64.onnx"
-    # weights_path = "./models/mobilenetv2_128.pth.tar"
-    # onnx_model_path = "./models/mobilenetv2_128.onnx"
-    weights_path = "./models/resnetv2_rgb_new.pth.tar"
-    onnx_model_path = "./models/resnetv2_128.onnx"
+    weights_path = "./models/mobilenetv2_128.pth.tar"
+    onnx_model_path = "./models/mobilenetv2_128.onnx"
+    # weights_path = "./models/resnetv2_rgb_new.pth.tar"
+    # onnx_model_path = "./models/resnetv2_128.onnx"
     data_root = './models/expand_targetlist'
     data_list = './datasets/siamese_training/test_targets.txt'
     # label_dict = './datasets/siamese_training/target_dict.pkl'
     label_dict = './datasets/old_target_dict.json'
 
     # Load and prepare model
-    # model = load_and_prepare_model(weights_path, num_classes=270, device='cuda')
-    model = load_and_prepare_model(weights_path, num_classes=277, device='cuda')
+    model = load_and_prepare_model(weights_path, num_classes=270, device='cuda')
+    # model = load_and_prepare_model(weights_path, num_classes=277, device='cuda')
 
     # Export the model to ONNX
     # export_to_onnx(model, onnx_model_path, device='cuda', input_size=(1, 3, 64, 64))
