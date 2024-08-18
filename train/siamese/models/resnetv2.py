@@ -110,7 +110,7 @@ class PreActBottleneck(nn.Module):
 class ResNetV2(nn.Module):
     """Implementation of Pre-activation (v2) ResNet mode."""
 
-    def __init__(self, block_units, width_factor, head_size=21843, zero_head=False):
+    def __init__(self, block_units, width_factor, num_classes=21843, zero_head=False):
         super().__init__()
         wf = width_factor    # shortcut 'cause we'll use it a lot.
 
@@ -149,7 +149,7 @@ class ResNetV2(nn.Module):
                 ('gn', nn.GroupNorm(32, 2048*wf)),
                 ('relu', nn.ReLU(inplace=True)),
                 ('avg', nn.AdaptiveAvgPool2d(output_size=1)),
-                ('conv', nn.Conv2d(2048*wf, head_size, kernel_size=1, bias=True)),
+                ('conv', nn.Conv2d(2048 * wf, num_classes, kernel_size=1, bias=True)),
         ]))
 
     def forward(self, x):
@@ -176,17 +176,21 @@ class ResNetV2(nn.Module):
                     unit.load_from(weights, prefix=f'{prefix}{bname}/{uname}/')
 
 
-KNOWN_MODELS = OrderedDict([
-        ('BiT-M-R50x1', lambda *a, **kw: ResNetV2([3, 4, 6, 3], 1, *a, **kw)),
-        ('BiT-M-R50x3', lambda *a, **kw: ResNetV2([3, 4, 6, 3], 3, *a, **kw)),
-        ('BiT-M-R101x1', lambda *a, **kw: ResNetV2([3, 4, 23, 3], 1, *a, **kw)),
-        ('BiT-M-R101x3', lambda *a, **kw: ResNetV2([3, 4, 23, 3], 3, *a, **kw)),
-        ('BiT-M-R152x2', lambda *a, **kw: ResNetV2([3, 8, 36, 3], 2, *a, **kw)),
-        ('BiT-M-R152x4', lambda *a, **kw: ResNetV2([3, 8, 36, 3], 4, *a, **kw)),
-        ('BiT-S-R50x1', lambda *a, **kw: ResNetV2([3, 4, 6, 3], 1, *a, **kw)),
-        ('BiT-S-R50x3', lambda *a, **kw: ResNetV2([3, 4, 6, 3], 3, *a, **kw)),
-        ('BiT-S-R101x1', lambda *a, **kw: ResNetV2([3, 4, 23, 3], 1, *a, **kw)),
-        ('BiT-S-R101x3', lambda *a, **kw: ResNetV2([3, 4, 23, 3], 3, *a, **kw)),
-        ('BiT-S-R152x2', lambda *a, **kw: ResNetV2([3, 8, 36, 3], 2, *a, **kw)),
-        ('BiT-S-R152x4', lambda *a, **kw: ResNetV2([3, 8, 36, 3], 4, *a, **kw)),
-])
+
+def resnetv2_50x3(**kwargs):
+    return ResNetV2([3, 4, 6, 3], 3, **kwargs)
+
+# KNOWN_MODELS = OrderedDict([
+#         ('BiT-M-R50x1', lambda *a, **kw: ResNetV2([3, 4, 6, 3], 1, *a, **kw)),
+#         ('BiT-M-R50x3', lambda *a, **kw: ResNetV2([3, 4, 6, 3], 3, *a, **kw)),
+#         ('BiT-M-R101x1', lambda *a, **kw: ResNetV2([3, 4, 23, 3], 1, *a, **kw)),
+#         ('BiT-M-R101x3', lambda *a, **kw: ResNetV2([3, 4, 23, 3], 3, *a, **kw)),
+#         ('BiT-M-R152x2', lambda *a, **kw: ResNetV2([3, 8, 36, 3], 2, *a, **kw)),
+#         ('BiT-M-R152x4', lambda *a, **kw: ResNetV2([3, 8, 36, 3], 4, *a, **kw)),
+#         ('BiT-S-R50x1', lambda *a, **kw: ResNetV2([3, 4, 6, 3], 1, *a, **kw)),
+#         ('BiT-S-R50x3', lambda *a, **kw: ResNetV2([3, 4, 6, 3], 3, *a, **kw)),
+#         ('BiT-S-R101x1', lambda *a, **kw: ResNetV2([3, 4, 23, 3], 1, *a, **kw)),
+#         ('BiT-S-R101x3', lambda *a, **kw: ResNetV2([3, 4, 23, 3], 3, *a, **kw)),
+#         ('BiT-S-R152x2', lambda *a, **kw: ResNetV2([3, 8, 36, 3], 2, *a, **kw)),
+#         ('BiT-S-R152x4', lambda *a, **kw: ResNetV2([3, 8, 36, 3], 4, *a, **kw)),
+# ])
