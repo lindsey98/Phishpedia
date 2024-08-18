@@ -24,7 +24,7 @@ import torch
 import torchvision as tv
 
 import train.siamese.lbtoolbox as lb
-import train.siamese.mobilenet as models
+import train.siamese.models as models
 import train.siamese.bit_common as bit_common
 import train.siamese.bit_hyperrule as bit_hyperrule
 from train.siamese.data import GetLoader
@@ -198,7 +198,7 @@ def main(args):
 
     train_set, valid_set, train_loader, valid_loader = mktrainval(args, logger)
 
-    model = models.__all__[args.model](pretrained=True, num_classes=len(valid_set.classes))
+    model = models.__all__[args.model](num_classes=len(valid_set.classes))
 
     logger.info("Moving model onto all GPUs")
     model = torch.nn.DataParallel(model)
@@ -299,15 +299,17 @@ def main(args):
                         "optim": optim.state_dict(),
                         "best_loss": best_loss,
                     }, savename)
-                    logger.info(f"New best model saved at step {step} with validation loss {val_loss:.5f}")
+                    logger.info(f"New best model saved in {savename} at step {step} with validation loss {val_loss:.5f}")
 
         # Final eval at end of training.
-        run_eval(model, valid_loader, device, chrono, logger, step='end')
-        torch.save({
-            "step": step,
-            "model": model.state_dict(),
-            "optim": optim.state_dict(),
-        }, savename)
+        val_loss, _, _ = run_eval(model, valid_loader, device, chrono, logger, step='end')
+        if val_loss < best_loss:
+            torch.save({
+                "step": step,
+                "model": model.state_dict(),
+                "optim": optim.state_dict(),
+            }, savename)
+            logger.info(f"New best model saved in {savename} at the end of training with validation loss {val_loss:.5f}")
 
     logger.info("Timings:\n{}".format(chrono))
 
