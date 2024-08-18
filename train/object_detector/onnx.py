@@ -37,7 +37,7 @@ def evaluate_model(model_path, data_path, eval_name="onnx_eval", batch_size=16, 
 
 if __name__ == "__main__":
     # Paths
-    yolo_pt_model_path = "./runs/detect/yolo_middle_640/weights/best.pt"
+    yolo_pt_model_path = "./runs/detect/yolov10_small_640/weights/best.pt"
     data_config_path = "./datasets/object_detector_training/config.yaml"
 
     # Load the YOLOv8 model
@@ -47,16 +47,15 @@ if __name__ == "__main__":
     export_model_to_onnx(model)
 
     # # Evaluate the exported ONNX model
-    results = evaluate_model(
-        model_path=yolo_pt_model_path.replace('.pt', '.onnx'),
-        data_path=data_config_path,
-        batch_size=16,
-        device="cpu",
-        img_size=640
-    )
+    # results = evaluate_model(
+    #     model_path=yolo_pt_model_path.replace('.pt', '.onnx'),
+    #     data_path=data_config_path,
+    #     batch_size=16,
+    #     device="cpu",
+    #     img_size=640
+    # )
 
     # Print results
-    print(results)
 
 #                  Class     Images  Instances      Box(P          R      mAP50  mAP50-95):
 #                    all       1561       3744      0.828       0.75      0.809      0.522

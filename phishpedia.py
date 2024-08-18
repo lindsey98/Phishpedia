@@ -26,7 +26,7 @@ class PhishpediaWrapper:
     def __init__(self):
         self._load_config()
 
-    # @profile
+    @profile
     def _load_config(self):
         self.ELE_MODEL, self.SIAMESE_THRE, self.SIAMESE_MODEL, \
             self.LOGO_FEATS, self.LOGO_FILES, \
@@ -60,7 +60,7 @@ class PhishpediaWrapper:
 
     '''Phishpedia'''
 
-    # @profile
+    @profile
     def test_orig_phishpedia(self, url, screenshot_path, html_path, save_vis):
         # 0 for benign, 1 for phish, default is benign
         phish_category = 0

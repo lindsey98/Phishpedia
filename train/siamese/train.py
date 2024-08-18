@@ -51,7 +51,7 @@ def recycle(iterable):
 
 def mktrainval(args, logger):
     """Returns train and validation datasets."""
-    precrop, crop = bit_hyperrule.get_resolution_from_dataset(args.dataset)
+    precrop, crop = args.imgsz, args.imgsz
     train_tx = tv.transforms.Compose([
         tv.transforms.Resize((precrop, precrop)),
         tv.transforms.RandomCrop((crop, crop)),
@@ -193,7 +193,7 @@ def main(args):
     # Only good if sizes stay the same within the main loop!
     torch.backends.cudnn.benchmark = True
 
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     logger.info("Going to train on {}".format(device))
 
     train_set, valid_set, train_loader, valid_loader = mktrainval(args, logger)
@@ -216,8 +216,19 @@ def main(args):
         logger.info("Loading weights from {}".format(args.weights_path))
         checkpoint = torch.load(args.weights_path, map_location="cpu")
         # New task might have different classes; remove the pretrained classifier weights
-        del checkpoint['model']['module.classifier.1.weight']
-        del checkpoint['model']['module.classifier.1.bias']
+        model_state_dict = checkpoint['model']
+        keys_to_remove = [key for key in model_state_dict if
+                          key.startswith('module.classifier.') and key.endswith('.weight')]
+
+        # Remove the matching weights
+        for key in keys_to_remove:
+            del model_state_dict[key]
+
+        # If needed, also remove the corresponding bias weights
+        bias_keys_to_remove = [key.replace('.weight', '.bias') for key in keys_to_remove]
+        for key in bias_keys_to_remove:
+            if key in model_state_dict:
+                del model_state_dict[key]
         model.load_state_dict(checkpoint["model"], strict=False)
 
     # Resume fine-tuning if we find a saved model.

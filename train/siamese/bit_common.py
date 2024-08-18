@@ -47,6 +47,8 @@ def argparser(known_models):
 
     parser.add_argument("--batch", type=int, default=512,
                                             help="Batch size.")
+    parser.add_argument("--imgsz", type=int, default=128,
+                        help="Input Image size.")
     parser.add_argument("--batch_split", type=int, default=1,
                                             help="Number of batches to compute gradient on before updating weights.")
     parser.add_argument("--base_lr", type=float, default=0.003,

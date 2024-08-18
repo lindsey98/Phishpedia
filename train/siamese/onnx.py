@@ -1,14 +1,12 @@
-from logo_matching import load_model_weights
 import torch
 import onnxruntime
-from memory_profiler import profile
 import numpy as np
 from train.siamese.data import GetLoader
 import torchvision as tv
 from tqdm import tqdm
-from train.siamese import mobilenet
 from collections import OrderedDict
-from train.siamese import resnetv2
+from train.siamese.models import resnetv2
+
 
 def load_and_prepare_model(weights_path, num_classes=270, device='cuda'):
     """

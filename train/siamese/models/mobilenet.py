@@ -198,6 +198,24 @@ Andrew Howard, Mark Sandler, Grace Chu, Liang-Chieh Chen, Bo Chen, Mingxing Tan,
 Searching for MobileNetV3
 arXiv preprint arXiv:1905.02244.
 """
+def _make_divisiblev3(v, divisor, min_value=None):
+    """
+    This function is taken from the original tf repo.
+    It ensures that all layers have a channel number that is divisible by 8
+    It can be seen here:
+    https://github.com/tensorflow/models/blob/master/research/slim/nets/mobilenet/mobilenet.py
+    :param v:
+    :param divisor:
+    :param min_value:
+    :return:
+    """
+    if min_value is None:
+        min_value = divisor
+    new_v = max(min_value, int(v + divisor / 2) // divisor * divisor)
+    # Make sure that round down does not go down by more than 10%.
+    if new_v < 0.9 * v:
+        new_v += divisor
+    return new_v
 
 class h_sigmoid(nn.Module):
     def __init__(self, inplace=True):
@@ -222,9 +240,9 @@ class SELayer(nn.Module):
         super(SELayer, self).__init__()
         self.avg_pool = nn.AdaptiveAvgPool2d(1)
         self.fc = nn.Sequential(
-                nn.Linear(channel, _make_divisible(channel // reduction, 8)),
+                nn.Linear(channel, _make_divisiblev3(channel // reduction, 8)),
                 nn.ReLU(inplace=True),
-                nn.Linear(_make_divisible(channel // reduction, 8), channel),
+                nn.Linear(_make_divisiblev3(channel // reduction, 8), channel),
                 h_sigmoid()
         )
 
@@ -302,13 +320,13 @@ class MobileNetV3(nn.Module):
         assert mode in ['large', 'small']
 
         # building first layer
-        input_channel = _make_divisible(16 * width_mult, 8)
+        input_channel = _make_divisiblev3(16 * width_mult, 8)
         layers = [conv_3x3_bn(3, input_channel, 2)]
         # building inverted residual blocks
         block = InvertedResidualV3
         for k, t, c, use_se, use_hs, s in self.cfgs:
-            output_channel = _make_divisible(c * width_mult, 8)
-            exp_size = _make_divisible(input_channel * t, 8)
+            output_channel = _make_divisiblev3(c * width_mult, 8)
+            exp_size = _make_divisiblev3(input_channel * t, 8)
             layers.append(block(input_channel, exp_size, output_channel, k, s, use_se, use_hs))
             input_channel = output_channel
         self.features = nn.Sequential(*layers)
@@ -316,7 +334,7 @@ class MobileNetV3(nn.Module):
         self.conv = conv_1x1_bn(input_channel, exp_size)
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         output_channel = {'large': 1280, 'small': 1024}
-        output_channel = _make_divisible(output_channel[mode] * width_mult, 8) if width_mult > 1.0 else output_channel[mode]
+        output_channel = _make_divisiblev3(output_channel[mode] * width_mult, 8) if width_mult > 1.0 else output_channel[mode]
         self.classifier = nn.Sequential(
             nn.Linear(exp_size, output_channel),
             h_swish(),
