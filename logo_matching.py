@@ -21,7 +21,9 @@ def check_domain_brand_inconsistency(logo_boxes,
     with open(domain_map_path, 'rb') as handle:
         domain_map = pickle.load(handle)
 
+                                       
     print('number of logo boxes:', len(logo_boxes))
+    extracted_domain = tldextract.extract(url).domain + '.' + tldextract.extract(url).suffix
     matched_target, matched_domain, matched_coord, this_conf = None, None, None, None
 
     if len(logo_boxes) > 0:
@@ -39,13 +41,13 @@ def check_domain_brand_inconsistency(logo_boxes,
                                                                    do_aspect_ratio_check=False, do_resolution_alignment=False)
             # print(target_this, domain_this, this_conf)
             # domain matcher to avoid FP
-            if (matched_target is not None) and (matched_domain is not None):
+            if matched_target and matched_domain:
                 matched_coord = coord
-                if tldextract.extract(url).domain in matched_domain: # domain and brand are consistent
-                    matched_target = None
-                    matched_domain = None
+                # Check if the domain is part of any domain listed under the brand
+                if extracted_domain in matched_domain:
+                    matched_target, matched_domain = None, None  # Clear if domains are consistent
                 else:
-                    break  # break if target is matched
+                    break  # Inconsistent domain found, break the loop
 
     return brand_converter(matched_target), matched_domain, matched_coord, this_conf
 
