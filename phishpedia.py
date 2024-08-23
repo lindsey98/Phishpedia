@@ -99,7 +99,7 @@ class PhishpediaWrapper:
                                                                                                   url=url,
                                                                                                   shot_path=screenshot_path,
                                                                                                   ts=self.SIAMESE_THRE,
-                                                                                                  topk=3)
+                                                                                                  topk=1)
         logo_match_time = time.time() - start_time
 
         if pred_target is None:
