@@ -8,8 +8,9 @@ def logo_recog(object_detector, screenshot_path, imgsz):
     if isinstance(object_detector, YOLO):
         pred_results = object_detector.predict([screenshot_path],
                                               device="cpu",
-                                              classes=[1], # only keep logo class
-                                              save=False,
+                                              # classes=[1], # only keep logo class
+                                               classes=[0], # only keep logo class
+                                               save=False,
                                               save_txt=False,
                                               save_conf=False,
                                               imgsz=imgsz, # input image size
@@ -30,7 +31,8 @@ def logo_recog(object_detector, screenshot_path, imgsz):
             pred_classes = instances.pred_classes  # tensor
             pred_boxes = instances.pred_boxes  # Boxes object
 
-            pred_boxes = pred_boxes[pred_classes == 1].tensor.detach().cpu().numpy()
+            # pred_boxes = pred_boxes[pred_classes == 1].tensor.detach().cpu().numpy()
+            pred_boxes = pred_boxes[pred_classes == 0].tensor.detach().cpu().numpy() # fixme: for the new model, class 0  is the logo class
 
     return pred_boxes
 
