@@ -10,9 +10,9 @@ import itertools
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Process some parameters.")
-    parser.add_argument('--mode', type=str, default='benign', choices=['phish', 'benign'],
+    parser.add_argument('--mode', type=str, default='phish', choices=['phish', 'benign'],
                         help='Mode of operation, can be phish or benign')
-    parser.add_argument('--threshold', type=float, default=0.85, help='Threshold value for decision making')
+    parser.add_argument('--threshold', type=float, default=0.83, help='Threshold value for decision making')
     args = parser.parse_args()
 
     phishpedia_cls = PhishpediaWrapper()

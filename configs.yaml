@@ -1,7 +1,7 @@
 ELE_MODEL: # element recognition model -- logo only
-#  CONFIGS_PATH: train/object_detector/detectron2/configs/faster_rcnn.yaml
-#  WEIGHTS_PATH: models/rcnn.pth
-  WEIGHTS_PATH: models/yolov10_nano_640.onnx
+  CONFIGS_PATH: train/object_detector/detectron2/configs/faster_rcnn.yaml
+  WEIGHTS_PATH: models/rcnn.pth
+#  WEIGHTS_PATH: models/yolov10_nano_640.onnx
 #  WEIGHTS_PATH: models/yolov10_small_640.onnx
 #  WEIGHTS_PATH: models/yolo_middle_640.onnx
 
