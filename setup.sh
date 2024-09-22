@@ -1,113 +1,127 @@
 #!/bin/bash
 
+# Exit immediately if a command exits with a non-zero status.
+set -e
+
+# Function to display error messages and exit
+error_exit() {
+  echo "$1" >&2
+  exit 1
+}
+
+# 1. Set ENV_NAME with default value "phishpedia" if not already set
 ENV_NAME="${ENV_NAME:-phishpedia}"
 
-# Check if ENV_NAME is set
+# 2. Check if ENV_NAME is set (it always will be now, but kept for flexibility)
 if [ -z "$ENV_NAME" ]; then
-  echo "ENV_NAME is not set. Please set the environment name and try again."
-  exit 1
+  error_exit "ENV_NAME is not set. Please set the environment name and try again."
 fi
 
-retry_count=3  # Number of retries
+# 3. Set retry count for downloads
+RETRY_COUNT=3
 
+# 4. Function to download files with retry mechanism
 download_with_retry() {
-  local file_id=$1
-  local file_name=$2
+  local file_id="$1"
+  local file_name="$2"
   local count=0
 
-  until [ $count -ge $retry_count ]
+  until [ $count -ge $RETRY_COUNT ]
   do
-    conda run -n "$ENV_NAME" gdown --id "$file_id" -O "$file_name" && break  # attempt to download and break if successful
-    count=$((count+1))
-    echo "Retry $count of $retry_count..."
-    sleep 1  # wait for 1 second before retrying
+    echo "Attempting to download $file_name (Attempt $((count + 1))/$RETRY_COUNT)..."
+    conda run -n "$ENV_NAME" gdown --id "$file_id" -O "$file_name" && break
+    count=$((count + 1))
+    echo "Retry $count of $RETRY_COUNT for $file_name..."
+    sleep 2  # Increased wait time to 2 seconds
   done
 
-  if [ $count -ge $retry_count ]; then
-    echo "Failed to download $file_name after $retry_count attempts."
-    exit 1
+  if [ $count -ge $RETRY_COUNT ]; then
+    error_exit "Failed to download $file_name after $RETRY_COUNT attempts."
   fi
 }
 
-FILEDIR=$(pwd)
+# 5. Ensure Conda is installed
+if ! command -v conda &> /dev/null; then
+  error_exit "Conda is not installed. Please install Conda and try again."
+fi
+
+# 6. Initialize Conda for bash
 CONDA_BASE=$(conda info --base)
 source "$CONDA_BASE/etc/profile.d/conda.sh"
 
-conda info --envs | grep -w "phishpedia" > /dev/null
-
-if [ $? -eq 0 ]; then
-   echo "Activating Conda environment phishpedia"
-   conda activate "$ENV_NAME"
+# 7. Check if the environment exists
+if conda info --envs | grep -w "^$ENV_NAME" > /dev/null 2>&1; then
+  echo "Activating existing Conda environment: $ENV_NAME"
 else
-   echo "Creating and activating new Conda environment phishpedia with Python 3.8"
-   conda create -n "$ENV_NAME" python=3.8
-   conda activate "$ENV_NAME"
+  echo "Creating new Conda environment: $ENV_NAME with Python 3.8"
+  conda create -y -n "$ENV_NAME" python=3.8
 fi
 
+# 8. Activate the Conda environment
+echo "Activating Conda environment: $ENV_NAME"
+conda activate "$ENV_NAME"
 
+# 9. Ensure gdown is installed in the environment
+if ! conda run -n "$ENV_NAME" pip show gdown > /dev/null 2>&1; then
+  echo "Installing gdown in the Conda environment..."
+  conda run -n "$ENV_NAME" pip install gdown
+fi
+
+# 10. Determine the Operating System
 OS=$(uname -s)
 
-if [[ "$OS" == "Darwin" ]]; then
-  echo "Installing PyTorch and torchvision for macOS."
-  conda run -n "$ENV_NAME" pip install torch==1.9.0 torchvision==0.10.0 torchaudio==0.9.0
-  conda run -n "$ENV_NAME"  python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
-else
-  # Check if NVIDIA GPU is available for Linux and Windows
-  if command -v nvcc || command -v nvidia-smi &> /dev/null; then
-    echo "CUDA is detected, installing GPU-supported PyTorch and torchvision."
-    conda run -n "$ENV_NAME" pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f "https://download.pytorch.org/whl/torch_stable.html"
-    conda run -n "$ENV_NAME" python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html"
+# 11. Install PyTorch, torchvision, torchaudio, and detectron2 based on OS and CUDA availability
+install_dependencies() {
+  if [[ "$OS" == "Darwin" ]]; then
+    echo "Detected macOS. Installing PyTorch and torchvision for macOS..."
+    conda run -n "$ENV_NAME" pip install torch==1.9.0 torchvision==0.10.0 torchaudio==0.9.0
+    conda run -n "$ENV_NAME" pip install 'git+https://github.com/facebookresearch/detectron2.git'
   else
-    echo "No CUDA detected, installing CPU-only PyTorch and torchvision."
-    conda run -n "$ENV_NAME" pip install torch==1.9.0+cpu torchvision==0.10.0+cpu torchaudio==0.9.0 -f "https://download.pytorch.org/whl/torch_stable.html"
-    conda run -n "$ENV_NAME" python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.9/index.html"
+    # Check for NVIDIA GPU by looking for 'nvcc' or 'nvidia-smi'
+    if command -v nvcc > /dev/null 2>&1 || command -v nvidia-smi > /dev/null 2>&1; then
+      echo "CUDA detected. Installing GPU-supported PyTorch and torchvision..."
+      conda run -n "$ENV_NAME" pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f "https://download.pytorch.org/whl/torch_stable.html"
+      conda run -n "$ENV_NAME" pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html"
+    else
+      echo "No CUDA detected. Installing CPU-only PyTorch and torchvision..."
+      conda run -n "$ENV_NAME" pip install torch==1.9.0+cpu torchvision==0.10.0+cpu torchaudio==0.9.0 -f "https://download.pytorch.org/whl/torch_stable.html"
+      conda run -n "$ENV_NAME" pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.9/index.html"
+    fi
   fi
-fi
+}
 
-conda run -n "$ENV_NAME" pip install -r requirements.txt
+install_dependencies
 
-## Download models
-echo "Going to the directory of package Phishpedia in Conda environment myenv."
-mkdir -p models/
-cd models/
-
-
-# RCNN model weights
-if [ -f "rcnn_bet365.pth" ]; then
-  echo "RCNN model weights exists... skip"
+# 12. Install additional Python dependencies from requirements.txt
+if [ -f "requirements.txt" ]; then
+  echo "Installing additional Python dependencies from requirements.txt..."
+  conda run -n "$ENV_NAME" pip install -r requirements.txt
 else
-  download_with_retry 1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH rcnn_bet365.pth
+  error_exit "requirements.txt not found in the current directory."
 fi
 
-# Faster RCNN config
-if [ -f "faster_rcnn.yaml" ]; then
-  echo "RCNN model config exists... skip"
-else
-  download_with_retry 1Q6lqjpl4exW7q_dPbComcj0udBMDl8CW faster_rcnn.yaml
-fi
+# 13. Create models directory if it doesn't exist
+MODELS_DIR="$FILEDIR/models"
+mkdir -p "$MODELS_DIR"
+cd "$MODELS_DIR"
 
-# Siamese model weights
-if [ -f "resnetv2_rgb_new.pth.tar" ]; then
-  echo "Siamese model weights exists... skip"
-else
-  download_with_retry 1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS resnetv2_rgb_new.pth.tar
-fi
+# 14. Download model files with retry mechanism
+declare -A MODEL_FILES=(
+  ["rcnn_bet365.pth"]="1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH"
+  ["faster_rcnn.yaml"]="1Q6lqjpl4exW7q_dPbComcj0udBMDl8CW"
+  ["resnetv2_rgb_new.pth.tar"]="1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS"
+  ["expand_targetlist.zip"]="1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I"
+  ["domain_map.pkl"]="1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1"
+)
 
-# Reference list
-if [ -f "expand_targetlist.zip" ]; then
-  echo "Reference list exists... skip"
-else
-  download_with_retry 1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I expand_targetlist.zip
-fi
+for FILE_NAME in "${!MODEL_FILES[@]}"; do
+  FILE_ID="${MODEL_FILES[$FILE_NAME]}"
+  if [ -f "$FILE_NAME" ]; then
+    echo "$FILE_NAME already exists. Skipping download."
+  else
+    download_with_retry "$FILE_ID" "$FILE_NAME"
+  fi
+done
 
-# Domain map
-if [ -f "domain_map.pkl" ]; then
-  echo "Domain map exists... skip"
-else
-  download_with_retry 1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1 domain_map.pkl
-fi
-
-
-
-# Replace the placeholder in the YAML template
-echo "All packages installed successfully!"
+# 15. Final message
+echo "All packages installed and models downloaded successfully!"
