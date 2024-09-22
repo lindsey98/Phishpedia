@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ENV_NAME="${ENV_NAME:-phishpedia}"
+
 # Check if ENV_NAME is set
 if [ -z "$ENV_NAME" ]; then
   echo "ENV_NAME is not set. Please set the environment name and try again."
