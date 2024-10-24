@@ -124,5 +124,29 @@ for FILE_NAME in "${!MODEL_FILES[@]}"; do
   fi
 done
 
+# Unzip the file
+unzip expand_targetlist.zip -d expand_targetlist
+
+# Change to the extracted directory
+cd expand_targetlist || exit 1  # Exit if the directory doesn't exist
+
+# Check if there's a nested 'expand_targetlist/' directory
+if [ -d "expand_targetlist" ]; then
+  echo "Nested directory 'expand_targetlist/' detected. Moving contents up..."
+  
+  # Move everything from the nested directory to the current directory
+  mv expand_targetlist/* .
+
+  # Remove the now-empty nested directory
+  rmdir expand_targetlist
+  cd ../
+else
+  echo "No nested 'expand_targetlist/' directory found. No action needed."
+fi
+
+echo "Extraction completed successfully."
+
+
+
 # 15. Final message
 echo "All packages installed and models downloaded successfully!"
