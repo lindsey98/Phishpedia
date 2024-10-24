@@ -101,6 +101,7 @@ else
 fi
 
 # 13. Create models directory if it doesn't exist
+FILEDIR=$(pwd)  # Set to current working directory
 MODELS_DIR="$FILEDIR/models"
 mkdir -p "$MODELS_DIR"
 cd "$MODELS_DIR"
