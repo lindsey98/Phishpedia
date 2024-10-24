@@ -39,9 +39,19 @@
 - Step 2: Enter <b>Deep Siamese Model</b>
     - If Siamese report no target, ```Return  Benign, None```
     - Else Siamese report a target, ```Return Phish, Phishing target``` 
-    
+
 ## Project structure
+:pushpin: We need to move everything under expand_targetlist/expand_targetlist to expand_targetlist/ so that there are no nested directories.
 ```
+- models/
+|___ rcnn_bet365.pth
+|___ faster_rcnn.yaml
+|___ resnetv2_rgb_new.pth.tar
+|___ expand_targetlist/
+  |___ Adobe/
+  |___ Amazon/
+  |___ ......
+|___ domain_map.pkl
 - logo_recog.py: Deep Object Detection Model
 - logo_matching.py: Deep Siamese Model 
 - configs.yaml: Configuration file
