@@ -177,8 +177,8 @@ class ResNetV2(nn.Module):
 
 
 
-def resnetv2_50x3(**kwargs):
-    return ResNetV2([3, 4, 6, 3], 3, **kwargs)
+def resnetv2_50x1(**kwargs):
+    return ResNetV2([3, 4, 6, 3], 1, **kwargs)
 
 # KNOWN_MODELS = OrderedDict([
 #         ('BiT-M-R50x1', lambda *a, **kw: ResNetV2([3, 4, 6, 3], 1, *a, **kw)),

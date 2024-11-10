@@ -4,6 +4,6 @@ from .nasnet import nasnetamobile
 
 __all__ = {'mobilenet_v2': mobilenet_v2,
            'mobilenet_v3': mobilenetv3_small,
-           'resnet_v2': resnetv2_50x3,
+           'resnet_v2': resnetv2_50x1,
            'nasnet': nasnetamobile
            }

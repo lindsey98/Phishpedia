@@ -25,12 +25,17 @@ Run data.py to convert class names to class ids.
 python -m train.siamese.data
 ```
 
+## Download a checkpoint
+```commandline
+wget https://storage.googleapis.com/bit_models/BiT-M-R50x1.npz
+```
+
 ## Pretraining on Logo2k
 This command runs the fine-tuning on the downloaded model:
 ```commandline
 python -m train.siamese.train \
     --name logo2k \  # Name of this run. Used for monitoring and checkpointing.
-    --model mobilenet_v2 \  # Which pretrained model to use.
+    --model resnet_v2 \  # Which pretrained model to use.
     --logdir ./runs \  # Where to log training info.
     --dataset logo_2k \  # Name of custom dataset as specified and self-implemented above.
     --base_lr 0.01 # learning rate
