@@ -199,8 +199,8 @@ def main(args):
     train_set, valid_set, train_loader, valid_loader = mktrainval(args, logger)
 
     model = models.__all__[args.model](num_classes=len(valid_set.classes))
-    if args.model == 'resnet_v2':
-        model.load_from(np.load(f"BiT-M-R50x1.npz"))
+    # if args.model == 'resnet_v2':
+    #     model.load_from(np.load(f"BiT-M-R50x1.npz"))
 
     logger.info("Moving model onto all GPUs")
     model = torch.nn.DataParallel(model)
