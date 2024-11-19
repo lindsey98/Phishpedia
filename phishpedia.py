@@ -153,11 +153,13 @@ if __name__ == '__main__':
         if not os.path.exists(html_path):
             html_path = os.path.join(request_dir, folder, "index.html")
 
-        # url = eval(open(info_path).read())['url']
-        url = open(info_path).read()
+        with open(info_path, 'r') as file:
+            url = file.read()
 
-        if os.path.exists(result_txt) and url in open(result_txt, encoding='ISO-8859-1').read():
-            continue
+        if os.path.exists(result_txt):
+            with open(result_txt, 'r', encoding='ISO-8859-1') as file:
+                if url in file.read():
+                    continue
 
         _forbidden_suffixes = r"\.(mp3|wav|wma|ogg|mkv|zip|tar|xz|rar|z|deb|bin|iso|csv|tsv|dat|txt|css|log|xml|sql|mdb|apk|bat|exe|jar|wsf|fnt|fon|otf|ttf|ai|bmp|gif|ico|jp(e)?g|png|ps|psd|svg|tif|tiff|cer|rss|key|odp|pps|ppt|pptx|c|class|cpp|cs|h|java|sh|swift|vb|odf|xlr|xls|xlsx|bak|cab|cfg|cpl|cur|dll|dmp|drv|icns|ini|lnk|msi|sys|tmp|3g2|3gp|avi|flv|h264|m4v|mov|mp4|mp(e)?g|rm|swf|vob|wmv|doc(x)?|odt|rtf|tex|wks|wps|wpd)$"
         if re.search(_forbidden_suffixes, url, re.IGNORECASE):
