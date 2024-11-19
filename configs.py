@@ -1,6 +1,4 @@
 # Global configuration
-import subprocess
-from typing import Union
 import yaml
 from logo_matching import cache_reference_list, load_model_weights
 from logo_recog import config_rcnn

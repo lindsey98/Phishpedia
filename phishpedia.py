@@ -1,25 +1,18 @@
 
 import time
-import sys
 from datetime import datetime
 import argparse
 import os
 import torch
-from tldextract import tldextract
 import cv2
-from configs import load_config, load_quantized_config
+from configs import load_config
 from logo_recog import pred_rcnn, vis
 from logo_matching import check_domain_brand_inconsistency
 # from text_recog import check_email_credential_taking
 import pickle
 from tqdm import tqdm
-from lxml import html
 
 import re
-import time
-import psutil
-import torch
-from memory_profiler import profile
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 

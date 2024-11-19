@@ -1,5 +1,4 @@
 import torch.nn.functional as F
-from PIL import Image
 import math
 
 def resolution_alignment(img1, img2):
