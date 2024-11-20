@@ -1,8 +1,8 @@
 import re
 
-def pred_text_in_image(OCR_MODEL, shot_path):
+def pred_text_in_image(ocr_model, shot_path):
 
-    result = OCR_MODEL.ocr(shot_path, cls=True)
+    result = ocr_model.ocr(shot_path, cls=True)
     if result is None or result[0] is None:
         return ''
 
@@ -12,8 +12,8 @@ def pred_text_in_image(OCR_MODEL, shot_path):
 
     return detected_text
 
-def check_email_credential_taking(OCR_MODEL, shot_path):
-    detected_text = pred_text_in_image(OCR_MODEL, shot_path)
+def check_email_credential_taking(ocr_model, shot_path):
+    detected_text = pred_text_in_image(ocr_model, shot_path)
     if len(detected_text) > 0:
         return rule_matching(detected_text)
     return False, None

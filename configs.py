@@ -1,6 +1,4 @@
 # Global configuration
-import subprocess
-from typing import Union
 import yaml
 from logo_matching import cache_reference_list, load_model_weights
 from logo_recog import config_rcnn
@@ -47,16 +45,19 @@ def load_config(reload_targetlist=False):
     SIAMESE_MODEL = load_model_weights( num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
                                         weights_path=configs['SIAMESE_MODEL']['WEIGHTS_PATH'])
 
-    if reload_targetlist or (not os.path.exists(os.path.join(os.path.dirname(__file__), 'LOGO_FEATS.npy'))):
+    LOGO_FEATS_NAME = 'LOGO_FEATS.npy'
+    LOGO_FILES_NAME = 'LOGO_FILES.npy'
+
+    if reload_targetlist or (not os.path.exists(os.path.join(os.path.dirname(__file__), LOGO_FEATS_NAME))):
         LOGO_FEATS, LOGO_FILES = cache_reference_list(model=SIAMESE_MODEL,
                                                       targetlist_path=full_targetlist_folder_dir)
         print('Finish loading protected logo list')
-        np.save(os.path.join(os.path.dirname(__file__),'LOGO_FEATS.npy'), LOGO_FEATS)
-        np.save(os.path.join(os.path.dirname(__file__),'LOGO_FILES.npy'), LOGO_FILES)
+        np.save(os.path.join(os.path.dirname(__file__),LOGO_FEATS_NAME), LOGO_FEATS)
+        np.save(os.path.join(os.path.dirname(__file__),LOGO_FILES_NAME), LOGO_FILES)
 
     else:
-        LOGO_FEATS, LOGO_FILES = np.load(os.path.join(os.path.dirname(__file__),'LOGO_FEATS.npy')), \
-                                 np.load(os.path.join(os.path.dirname(__file__),'LOGO_FILES.npy'))
+        LOGO_FEATS, LOGO_FILES = np.load(os.path.join(os.path.dirname(__file__),LOGO_FEATS_NAME)), \
+                                 np.load(os.path.join(os.path.dirname(__file__),LOGO_FILES_NAME))
 
     DOMAIN_MAP_PATH = configs['SIAMESE_MODEL']['DOMAIN_MAP_PATH']
 
