@@ -10,6 +10,7 @@ from tqdm import tqdm
 from tldextract import tldextract
 import pickle
 
+
 def check_domain_brand_inconsistency(logo_boxes,
                                      domain_map_path: str,
                                      model, logo_feat_list,
@@ -21,7 +22,6 @@ def check_domain_brand_inconsistency(logo_boxes,
     with open(domain_map_path, 'rb') as handle:
         domain_map = pickle.load(handle)
 
-                                       
     print('number of logo boxes:', len(logo_boxes))
     extracted_domain = tldextract.extract(url).domain + '.' + tldextract.extract(url).suffix
     matched_target, matched_domain, matched_coord, this_conf = None, None, None, None
@@ -51,7 +51,13 @@ def check_domain_brand_inconsistency(logo_boxes,
 
     return brand_converter(matched_target), matched_domain, matched_coord, this_conf
 
+
 def load_model_weights(num_classes: int, weights_path: str):
+    '''
+    :param num_classes: number of protected brands
+    :param weights_path: siamese weights
+    :return model: siamese model
+    '''
     # Initialize model
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = KNOWN_MODELS["BiT-M-R50x1"](head_size=num_classes, zero_head=True)
@@ -72,28 +78,25 @@ def load_model_weights(num_classes: int, weights_path: str):
     model.eval()
     return model
 
+
 def cache_reference_list(model, targetlist_path: str, grayscale=False):
     '''
     cache the embeddings of the reference list
-    :param num_classes: number of protected brands
-    :param weights_path: siamese weights
     :param targetlist_path: targetlist folder
     :param grayscale: convert logo to grayscale or not, default is RGB
-    :return model: siamese model
     :return logo_feat_list: targetlist embeddings
     :return file_name_list: targetlist paths
     '''
 
-    #     Prediction for targetlists
+    # Prediction for targetlists
     logo_feat_list = []
     file_name_list = []
-
+    SUPPORTED_EXTENSIONS = {'.png', '.jpeg', '.jpg', '.PNG', '.JPG', '.JPEG'}
     for target in tqdm(os.listdir(targetlist_path)):
         if target.startswith('.'):  # skip hidden files
             continue
         for logo_path in os.listdir(os.path.join(targetlist_path, target)):
-            if logo_path.endswith('.png') or logo_path.endswith('.jpeg') or logo_path.endswith('.jpg') or logo_path.endswith('.PNG') \
-                    or logo_path.endswith('.JPG') or logo_path.endswith('.JPEG'):
+            if any(logo_path.endswith(ext) for ext in SUPPORTED_EXTENSIONS):
                 if logo_path.startswith('loginpage') or logo_path.startswith('homepage'):  # skip homepage/loginpage
                     continue
                 logo_feat_list.append(get_embedding(img=os.path.join(targetlist_path, target, logo_path),
@@ -101,6 +104,7 @@ def cache_reference_list(model, targetlist_path: str, grayscale=False):
                 file_name_list.append(str(os.path.join(targetlist_path, target, logo_path)))
 
     return np.asarray(logo_feat_list), np.asarray(file_name_list)
+
 
 @torch.no_grad()
 def get_embedding(img, model, grayscale=False):
@@ -113,7 +117,7 @@ def get_embedding(img, model, grayscale=False):
     :param grayscale: convert image to grayscale or not
     :return feature embedding of shape (2048,)
     '''
-    #     img_size = 224
+    # img_size = 224
     img_size = 128
     mean = [0.5, 0.5, 0.5]
     std = [0.5, 0.5, 0.5]
@@ -122,12 +126,12 @@ def get_embedding(img, model, grayscale=False):
     img_transforms = transforms.Compose(
         [transforms.ToTensor(),
          transforms.Normalize(mean=mean, std=std),
-     ])
+        ])
 
     img = Image.open(img) if isinstance(img, str) else img
     img = img.convert("L").convert("RGB") if grayscale else img.convert("RGB")
 
-    ## Resize the image while keeping the original aspect ratio
+    # Resize the image while keeping the original aspect ratio
     pad_color = 255 if grayscale else (255, 255, 255)
     img = ImageOps.expand(img, (
         (max(img.size) - img.size[0]) // 2, (max(img.size) - img.size[1]) // 2,
@@ -169,17 +173,17 @@ def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str
         print('Screenshot cannot be open')
         return None, None, None
 
-    ## get predicted box --> crop from screenshot
+    # get predicted box --> crop from screenshot
     cropped = img.crop((gt_bbox[0], gt_bbox[1], gt_bbox[2], gt_bbox[3]))
     img_feat = get_embedding(cropped, model, grayscale=grayscale)
 
-    ## get cosine similarity with every protected logo
+    # get cosine similarity with every protected logo
     sim_list = logo_feat_list @ img_feat.T  # take dot product for every pair of embeddings (Cosine Similarity)
     pred_brand_list = file_name_list
 
     assert len(sim_list) == len(pred_brand_list)
 
-    ## get top 3 brands
+    # get top 3 brands
     idx = np.argsort(sim_list)[::-1][:3]
     pred_brand_list = np.array(pred_brand_list)[idx]
     sim_list = np.array(sim_list)[idx]
@@ -192,17 +196,17 @@ def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str
     for j in range(3):
         predicted_brand, predicted_domain = None, None
 
-        ## If we are trying those lower rank logo, the predicted brand of them should be the same as top1 logo, otherwise might be false positive
+        # If we are trying those lower rank logo, the predicted brand of them should be the same as top1 logo, otherwise might be false positive
         if top3_brandlist[j] != top3_brandlist[0]:
             continue
 
-        ## If the largest similarity exceeds threshold
+        # If the largest similarity exceeds threshold
         if top3_simlist[j] >= t_s:
             predicted_brand = top3_brandlist[j]
             predicted_domain = top3_domainlist[j]
             final_sim = top3_simlist[j]
 
-        ## Else if not exceed, try resolution alignment, see if can improve
+        # Else if not exceed, try resolution alignment, see if can improve
         elif do_resolution_alignment:
             orig_candidate_logo = Image.open(pred_brand_list[j])
             cropped, candidate_logo = resolution_alignment(cropped, orig_candidate_logo)
@@ -215,7 +219,7 @@ def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str
             else:
                 break  # no hope, do not try other lower rank logos
 
-        ## If there is a prediction, do aspect ratio check
+        # If there is a prediction, do aspect ratio check
         if predicted_brand is not None:
             if do_aspect_ratio_check:
                 orig_candidate_logo = Image.open(pred_brand_list[j])
