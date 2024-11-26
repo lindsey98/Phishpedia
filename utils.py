@@ -1,6 +1,7 @@
 import torch.nn.functional as F
 import math
 
+
 def resolution_alignment(img1, img2):
     '''
     Resize two images according to the minimum resolution between the two
@@ -11,15 +12,16 @@ def resolution_alignment(img1, img2):
     w1, h1 = img1.size
     w2, h2 = img2.size
     w_min, h_min = min(w1, w2), min(h1, h2)
-    if w_min == 0 or h_min == 0:  ## something wrong, stop resizing
+    if w_min == 0 or h_min == 0:  # something wrong, stop resizing
         return img1, img2
     if w_min < h_min:
-        img1_resize = img1.resize((int(w_min), math.ceil(h1 * (w_min/w1)))) # ceiling to prevent rounding to 0
+        img1_resize = img1.resize((int(w_min), math.ceil(h1 * (w_min/w1))))  # ceiling to prevent rounding to 0
         img2_resize = img2.resize((int(w_min), math.ceil(h2 * (w_min/w2))))
     else:
         img1_resize = img1.resize((math.ceil(w1 * (h_min/h1)), int(h_min)))
         img2_resize = img2.resize((math.ceil(w2 * (h_min/h2)), int(h_min)))
     return img1_resize, img2_resize
+
 
 def brand_converter(brand_name):
     '''
@@ -121,6 +123,7 @@ def brand_converter(brand_name):
         return 'bcp'
     else:
         return brand_name
+
 
 def l2_norm(x):
     """

@@ -42,7 +42,7 @@ def load_config(reload_targetlist=False):
     #     os.makedirs(full_targetlist_folder_dir, exist_ok=True)
     #     subprocess.run(f'unzip -o "{targetlist_zip_path}" -d "{full_targetlist_folder_dir}"', shell=True)
 
-    SIAMESE_MODEL = load_model_weights( num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
+    SIAMESE_MODEL = load_model_weights(num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
                                         weights_path=configs['SIAMESE_MODEL']['WEIGHTS_PATH'])
 
     LOGO_FEATS_NAME = 'LOGO_FEATS.npy'
@@ -52,12 +52,12 @@ def load_config(reload_targetlist=False):
         LOGO_FEATS, LOGO_FILES = cache_reference_list(model=SIAMESE_MODEL,
                                                       targetlist_path=full_targetlist_folder_dir)
         print('Finish loading protected logo list')
-        np.save(os.path.join(os.path.dirname(__file__),LOGO_FEATS_NAME), LOGO_FEATS)
-        np.save(os.path.join(os.path.dirname(__file__),LOGO_FILES_NAME), LOGO_FILES)
+        np.save(os.path.join(os.path.dirname(__file__), LOGO_FEATS_NAME), LOGO_FEATS)
+        np.save(os.path.join(os.path.dirname(__file__), LOGO_FILES_NAME), LOGO_FILES)
 
     else:
-        LOGO_FEATS, LOGO_FILES = np.load(os.path.join(os.path.dirname(__file__),LOGO_FEATS_NAME)), \
-                                 np.load(os.path.join(os.path.dirname(__file__),LOGO_FILES_NAME))
+        LOGO_FEATS, LOGO_FILES = np.load(os.path.join(os.path.dirname(__file__), LOGO_FEATS_NAME)), \
+                                 np.load(os.path.join(os.path.dirname(__file__), LOGO_FILES_NAME))
 
     DOMAIN_MAP_PATH = configs['SIAMESE_MODEL']['DOMAIN_MAP_PATH']
 

@@ -9,11 +9,10 @@ from configs import load_config
 from logo_recog import pred_rcnn, vis
 from logo_matching import check_domain_brand_inconsistency
 # from text_recog import check_email_credential_taking
-import pickle
 from tqdm import tqdm
 
 import re
-os.environ['KMP_DUPLICATE_LIB_OK']='True'
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
 
 class PhishpediaWrapper:
@@ -111,8 +110,6 @@ class PhishpediaWrapper:
         cv2.putText(plotvis, "Target: {} with confidence {:.4f}".format(pred_target, siamese_conf),
                     (int(matched_coord[0] + 20), int(matched_coord[1] + 20)),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
-
-
         return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
 
 
@@ -142,7 +139,6 @@ if __name__ == '__main__':
 
     os.makedirs(request_dir, exist_ok=True)
 
-
     for folder in tqdm(os.listdir(request_dir)):
         html_path = os.path.join(request_dir, folder, "html.txt")
         screenshot_path = os.path.join(request_dir, folder, "shot.png")
@@ -169,7 +165,6 @@ if __name__ == '__main__':
                     plotvis, siamese_conf, pred_boxes, \
                     logo_recog_time, logo_match_time = phishpedia_cls.test_orig_phishpedia(url, screenshot_path, html_path)
 
-
         try:
             with open(result_txt, "a+", encoding='ISO-8859-1') as f:
                 f.write(folder + "\t")
@@ -193,5 +188,3 @@ if __name__ == '__main__':
         if phish_category:
             os.makedirs(os.path.join(request_dir, folder), exist_ok=True)
             cv2.imwrite(os.path.join(request_dir, folder, "predict.png"), plotvis)
-
-
