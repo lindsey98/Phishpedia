@@ -1,0 +1,6 @@
+projectKey=Phishpedia
+serverUrl=http://192.168.55.31:9000
+serverVersion=10.7.0.96327
+dashboardUrl=http://192.168.55.31:9000/dashboard?id=Phishpedia
+ceTaskId=8fe77a9d-3c94-40f1-a0bc-5e46b480bc33
+ceTaskUrl=http://192.168.55.31:9000/api/ce/task?id=8fe77a9d-3c94-40f1-a0bc-5e46b480bc33
