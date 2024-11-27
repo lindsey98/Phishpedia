@@ -12,6 +12,7 @@ class PhishpediaGUI(QWidget):
         super().__init__()
         self.initUI()
         self.phishpedia_cls = PhishpediaWrapper()
+        self.current_pixmap = None
 
     def initUI(self):
         self.setWindowTitle('Phishpedia GUI')
@@ -49,13 +50,14 @@ class PhishpediaGUI(QWidget):
         result_layout.addWidget(self.result_label)
         self.result_display = QTextEdit()
         self.result_display.setReadOnly(True)
-        self.result_display.setFixedHeight(100)  # 设置固定高度
+        self.result_display.setFixedHeight(150)  # 设置固定高度
         result_layout.addWidget(self.result_display)
         main_layout.addLayout(result_layout)
 
         # Visualization Display
         visualization_layout = QVBoxLayout()
         self.visualization_label = QLabel('Visualization Result:')
+        self.visualization_label.setFixedHeight(self.visualization_label.fontMetrics().height())  # 设置固定高度为一行字的高度
         visualization_layout.addWidget(self.visualization_label)
         self.visualization_display = QLabel()
         self.visualization_display.setAlignment(Qt.AlignCenter)
@@ -64,6 +66,9 @@ class PhishpediaGUI(QWidget):
         main_layout.addLayout(visualization_layout)
 
         self.setLayout(main_layout)
+
+        # Connect resize event to handle image scaling
+        self.resizeEvent = self.on_resize
 
     def upload_image(self):
         options = QFileDialog.Options()
@@ -92,9 +97,10 @@ class PhishpediaGUI(QWidget):
 
         if phish_category == 1 and plotvis is not None:
             self.display_image(plotvis)
-        if phish_category ==0:
+        if phish_category == 0:
             # 展示已经上传的屏幕截图
             self.display_image(plotvis)
+
     def display_image(self, plotvis):
         try:
             # Convert plotvis to QImage
@@ -103,10 +109,23 @@ class PhishpediaGUI(QWidget):
             plotvis_qimage = QImage(plotvis.data, width, height, bytes_per_line, QImage.Format_RGB888)
             
             # Convert QImage to QPixmap
-            plotvis_pixmap = QPixmap.fromImage(plotvis_qimage)
-            self.visualization_display.setPixmap(plotvis_pixmap.scaled(self.visualization_display.size(), Qt.KeepAspectRatio))
+            self.current_pixmap = QPixmap.fromImage(plotvis_qimage)
+            self.update_image_display()
         except Exception as e:
             print(f"Error converting image: {e}")
+
+    def update_image_display(self):
+        if self.current_pixmap:
+            # Calculate the available space for the image
+            available_width = self.width()
+            available_height = self.height() - self.visualization_label.geometry().bottom() - 20
+
+            # Calculate the scaled size while maintaining aspect ratio
+            scaled_pixmap = self.current_pixmap.scaled(available_width, available_height, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            self.visualization_display.setPixmap(scaled_pixmap)
+
+    def on_resize(self, event):
+        self.update_image_display()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
