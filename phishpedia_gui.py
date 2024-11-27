@@ -118,7 +118,7 @@ class PhishpediaGUI(QWidget):
         if self.current_pixmap:
             # Calculate the available space for the image
             available_width = self.width()
-            available_height = self.height() - self.visualization_label.geometry().bottom() - 20
+            available_height = self.height() - self.visualization_label.geometry().bottom() - 50
 
             # Calculate the scaled size while maintaining aspect ratio
             scaled_pixmap = self.current_pixmap.scaled(available_width, available_height, Qt.KeepAspectRatio, Qt.SmoothTransformation)
