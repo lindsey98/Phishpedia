@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog, QTextEdit, QHBoxLayout
-from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtGui import QPixmap, QImage, QIcon
 from PyQt5.QtCore import Qt
 from phishpedia import PhishpediaWrapper
 import cv2
@@ -67,6 +67,32 @@ class PhishpediaGUI(QWidget):
 
         self.setLayout(main_layout)
 
+        # Apply stylesheet
+        self.setStyleSheet("""
+            QWidget {
+                font-family: Arial, sans-serif;
+                font-size: 18px;  /* 增大字体大小 */
+            }
+            QLabel {
+                color: #333;
+            }
+            QLineEdit, QTextEdit {
+                border: 1px solid #ccc;
+                padding: 5px;
+                border-radius: 4px;
+            }
+            QPushButton {
+                background-color: #007BFF;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+            }
+            QPushButton:hover {
+                background-color: #0056b3;
+            }
+        """)
+
         # Connect resize event to handle image scaling
         self.resizeEvent = self.on_resize
 
@@ -86,12 +112,14 @@ class PhishpediaGUI(QWidget):
 
         phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time = self.phishpedia_cls.test_orig_phishpedia(url, screenshot_path, None)
 
-        result_text = f"Phish Category(0 for benign, 1 for phish, default is benign): {phish_category}\n"
-        result_text += f"Predicted Target: {pred_target}\n"
-        result_text += f"Matched Domain: {matched_domain}\n"
-        result_text += f"Siamese Confidence: {siamese_conf}\n"
-        result_text += f"Logo Recognition Time: {logo_recog_time} seconds\n"
-        result_text += f"Logo Match Time: {logo_match_time} seconds\n"
+        # 根据 phish_category 改变颜色
+        phish_category_color = 'green' if phish_category == 0 else 'red'
+        result_text = f'<span style="color: {phish_category_color};">Phish Category(0 for benign, 1 for phish, default is benign): {phish_category}</span><br>'
+        result_text += f"Predicted Target: {pred_target}<br>"
+        result_text += f"Matched Domain: {matched_domain}<br>"
+        result_text += f"Siamese Confidence: {siamese_conf}<br>"
+        result_text += f"Logo Recognition Time: {logo_recog_time} seconds<br>"
+        result_text += f"Logo Match Time: {logo_match_time} seconds<br>"
 
         self.result_display.setText(result_text)
 
