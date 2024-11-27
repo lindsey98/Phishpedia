@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QFileDialog, QTextEdit, QHBoxLayout
-from PyQt5.QtGui import QPixmap, QImage, QIcon
+from PyQt5.QtGui import QPixmap, QImage, QIcon, QFont
 from PyQt5.QtCore import Qt
 from phishpedia import PhishpediaWrapper
 import cv2
@@ -69,10 +69,6 @@ class PhishpediaGUI(QWidget):
 
         # Apply stylesheet
         self.setStyleSheet("""
-            QWidget {
-                font-family: Arial, sans-serif;
-                font-size: 18px;  /* 增大字体大小 */
-            }
             QLabel {
                 color: #333;
             }
@@ -95,6 +91,21 @@ class PhishpediaGUI(QWidget):
 
         # Connect resize event to handle image scaling
         self.resizeEvent = self.on_resize
+
+        # Set dynamic font size based on screen DPI
+        self.set_dynamic_font_size()
+
+    def set_dynamic_font_size(self):
+        screen = QApplication.primaryScreen()
+        dpi = screen.logicalDotsPerInch()
+        base_font_size = 18  # Base font size for 96 DPI
+        font_size = base_font_size * (dpi / 150)
+
+        font = QFont()
+        font.setPointSizeF(font_size)
+
+        for widget in self.findChildren(QLabel) + self.findChildren(QLineEdit) + self.findChildren(QPushButton) + [self.result_display]:
+            widget.setFont(font)
 
     def upload_image(self):
         options = QFileDialog.Options()
