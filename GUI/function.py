@@ -44,9 +44,11 @@ class PhishpediaFunction:
 
     def display_image(self, plotvis):
         try:
-            height, width, channel = plotvis.shape
+            # Convert BGR to RGB
+            plotvis_rgb = cv2.cvtColor(plotvis, cv2.COLOR_BGR2RGB)
+            height, width, channel = plotvis_rgb.shape
             bytes_per_line = 3 * width
-            plotvis_qimage = QImage(plotvis.data, width, height, bytes_per_line, QImage.Format_RGB888)
+            plotvis_qimage = QImage(plotvis_rgb.data, width, height, bytes_per_line, QImage.Format_RGB888)
             
             self.current_pixmap = QPixmap.fromImage(plotvis_qimage)
             self.update_image_display()
