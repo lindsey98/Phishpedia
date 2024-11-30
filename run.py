@@ -1,1 +1,1 @@
-if print()
+if print():
