@@ -16,8 +16,7 @@ def check_domain_brand_inconsistency(logo_boxes,
                                      model, logo_feat_list,
                                      file_name_list, shot_path: str,
                                      url: str, ts: float,
-                                     topk: float=3):
-
+                                     topk: float = 3):
     # targetlist domain list
     with open(domain_map_path, 'rb') as handle:
         domain_map = pickle.load(handle)
@@ -36,9 +35,10 @@ def check_domain_brand_inconsistency(logo_boxes,
             min_x, min_y, max_x, max_y = coord
             bbox = [float(min_x), float(min_y), float(max_x), float(max_y)]
             matched_target, matched_domain, this_conf = pred_brand(model, domain_map,
-                                                                    logo_feat_list, file_name_list,
-                                                                    shot_path, bbox, t_s=ts, grayscale=False,
-                                                                   do_aspect_ratio_check=False, do_resolution_alignment=False)
+                                                                   logo_feat_list, file_name_list,
+                                                                   shot_path, bbox, t_s=ts, grayscale=False,
+                                                                   do_aspect_ratio_check=False,
+                                                                   do_resolution_alignment=False)
             # print(target_this, domain_this, this_conf)
             # domain matcher to avoid FP
             if matched_target and matched_domain:

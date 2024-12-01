@@ -2,3 +2,4 @@
 *.pkl
 *.pth*
 .scannerwork
+.mypy_cache

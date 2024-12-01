@@ -1,4 +1,3 @@
-
 import time
 from datetime import datetime
 import argparse
@@ -9,10 +8,24 @@ from configs import load_config
 from logo_recog import pred_rcnn, vis
 from logo_matching import check_domain_brand_inconsistency
 # from text_recog import check_email_credential_taking
+# import pickle
 from tqdm import tqdm
 
 import re
+
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
+
+
+def result_file_write(f, folder, url, phish_category, pred_target, matched_domain, siamese_conf, logo_recog_time,
+                      logo_match_time):
+    f.write(folder + "\t")
+    f.write(url + "\t")
+    f.write(str(phish_category) + "\t")
+    f.write(str(pred_target) + "\t")  # write top1 prediction only
+    f.write(str(matched_domain) + "\t")
+    f.write(str(siamese_conf) + "\t")
+    f.write(str(round(logo_recog_time, 4)) + "\t")
+    f.write(str(round(logo_match_time, 4)) + "\n")
 
 
 class PhishpediaWrapper:
@@ -56,6 +69,7 @@ class PhishpediaWrapper:
     #     return False
 
     '''Phishpedia'''
+
     # @profile
     def test_orig_phishpedia(self, url, screenshot_path, html_path):
         # 0 for benign, 1 for phish, default is benign
@@ -83,15 +97,16 @@ class PhishpediaWrapper:
 
         ######################## Step2: Siamese (Logo matcher) ########################################
         start_time = time.time()
-        pred_target, matched_domain, matched_coord, siamese_conf = check_domain_brand_inconsistency(logo_boxes=pred_boxes,
-                                                                                                  domain_map_path=self.DOMAIN_MAP_PATH,
-                                                                                                  model=self.SIAMESE_MODEL,
-                                                                                                  logo_feat_list=self.LOGO_FEATS,
-                                                                                                  file_name_list=self.LOGO_FILES,
-                                                                                                  url=url,
-                                                                                                  shot_path=screenshot_path,
-                                                                                                  ts=self.SIAMESE_THRE,
-                                                                                                  topk=1)
+        pred_target, matched_domain, matched_coord, siamese_conf = check_domain_brand_inconsistency(
+            logo_boxes=pred_boxes,
+            domain_map_path=self.DOMAIN_MAP_PATH,
+            model=self.SIAMESE_MODEL,
+            logo_feat_list=self.LOGO_FEATS,
+            file_name_list=self.LOGO_FILES,
+            url=url,
+            shot_path=screenshot_path,
+            ts=self.SIAMESE_THRE,
+            topk=1)
         logo_match_time = time.time() - start_time
 
         if pred_target is None:
@@ -101,8 +116,8 @@ class PhishpediaWrapper:
         ######################## Step3: Simple input box check ###############
         # has_input_box = self.simple_input_box_regex(html_path=html_path)
         # if not has_input_box:
-            # print('No input box')
-            # return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
+        # print('No input box')
+        # return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
         # else:
         print('Match to Target: {} with confidence {:.4f}'.format(pred_target, siamese_conf))
         phish_category = 1
@@ -162,29 +177,17 @@ if __name__ == '__main__':
             continue
 
         phish_category, pred_target, matched_domain, \
-                    plotvis, siamese_conf, pred_boxes, \
-                    logo_recog_time, logo_match_time = phishpedia_cls.test_orig_phishpedia(url, screenshot_path, html_path)
+            plotvis, siamese_conf, pred_boxes, \
+            logo_recog_time, logo_match_time = phishpedia_cls.test_orig_phishpedia(url, screenshot_path, html_path)
 
         try:
             with open(result_txt, "a+", encoding='ISO-8859-1') as f:
-                f.write(folder + "\t")
-                f.write(url + "\t")
-                f.write(str(phish_category) + "\t")
-                f.write(str(pred_target) + "\t")  # write top1 prediction only
-                f.write(str(matched_domain) + "\t")
-                f.write(str(siamese_conf) + "\t")
-                f.write(str(round(logo_recog_time, 4)) + "\t")
-                f.write(str(round(logo_match_time, 4)) + "\n")
+                result_file_write(f, folder, url, phish_category, pred_target, matched_domain, siamese_conf,
+                                  logo_recog_time, logo_match_time)
         except UnicodeError:
             with open(result_txt, "a+", encoding='utf-8') as f:
-                f.write(folder + "\t")
-                f.write(url + "\t")
-                f.write(str(phish_category) + "\t")
-                f.write(str(pred_target) + "\t")  # write top1 prediction only
-                f.write(str(matched_domain) + "\t")
-                f.write(str(siamese_conf) + "\t")
-                f.write(str(round(logo_recog_time, 4)) + "\t")
-                f.write(str(round(logo_match_time, 4)) + "\n")
+                result_file_write(f, folder, url, phish_category, pred_target, matched_domain, siamese_conf,
+                                  logo_recog_time, logo_match_time)
         if phish_category:
             os.makedirs(os.path.join(request_dir, folder), exist_ok=True)
             cv2.imwrite(os.path.join(request_dir, folder, "predict.png"), plotvis)

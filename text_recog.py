@@ -2,7 +2,6 @@ import re
 
 
 def pred_text_in_image(ocr_model, shot_path):
-
     result = ocr_model.ocr(shot_path, cls=True)
     if result is None or result[0] is None:
         return ''
