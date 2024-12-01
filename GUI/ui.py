@@ -4,6 +4,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 from .function import PhishpediaFunction
 
+
 class PhishpediaUI(QWidget):
     def __init__(self):
         super().__init__()
@@ -117,7 +118,8 @@ class PhishpediaUI(QWidget):
         font = QFont()
         font.setPointSizeF(font_size)
 
-        for widget in self.findChildren(QLabel) + self.findChildren(QLineEdit) + self.findChildren(QPushButton) + [self.result_display]:
+        for widget in self.findChildren(QLabel) + self.findChildren(QLineEdit) + self.findChildren(QPushButton) + [
+            self.result_display]:
             widget.setFont(font)
 
     def init_phish_test_page(self):

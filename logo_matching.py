@@ -10,18 +10,17 @@ from tqdm import tqdm
 from tldextract import tldextract
 import pickle
 
+
 def check_domain_brand_inconsistency(logo_boxes,
                                      domain_map_path: str,
                                      model, logo_feat_list,
                                      file_name_list, shot_path: str,
                                      url: str, ts: float,
-                                     topk: float=3):
-
+                                     topk: float = 3):
     # targetlist domain list
     with open(domain_map_path, 'rb') as handle:
         domain_map = pickle.load(handle)
 
-                                       
     print('number of logo boxes:', len(logo_boxes))
     extracted_domain = tldextract.extract(url).domain + '.' + tldextract.extract(url).suffix
     matched_target, matched_domain, matched_coord, this_conf = None, None, None, None
@@ -36,9 +35,10 @@ def check_domain_brand_inconsistency(logo_boxes,
             min_x, min_y, max_x, max_y = coord
             bbox = [float(min_x), float(min_y), float(max_x), float(max_y)]
             matched_target, matched_domain, this_conf = pred_brand(model, domain_map,
-                                                                    logo_feat_list, file_name_list,
-                                                                    shot_path, bbox, t_s=ts, grayscale=False,
-                                                                   do_aspect_ratio_check=False, do_resolution_alignment=False)
+                                                                   logo_feat_list, file_name_list,
+                                                                   shot_path, bbox, t_s=ts, grayscale=False,
+                                                                   do_aspect_ratio_check=False,
+                                                                   do_resolution_alignment=False)
             # print(target_this, domain_this, this_conf)
             # domain matcher to avoid FP
             if matched_target and matched_domain:
@@ -50,6 +50,7 @@ def check_domain_brand_inconsistency(logo_boxes,
                     break  # Inconsistent domain found, break the loop
 
     return brand_converter(matched_target), matched_domain, matched_coord, this_conf
+
 
 def load_model_weights(num_classes: int, weights_path: str):
     # Initialize model
@@ -72,6 +73,7 @@ def load_model_weights(num_classes: int, weights_path: str):
     model.eval()
     return model
 
+
 def cache_reference_list(model, targetlist_path: str, grayscale=False):
     '''
     cache the embeddings of the reference list
@@ -92,7 +94,8 @@ def cache_reference_list(model, targetlist_path: str, grayscale=False):
         if target.startswith('.'):  # skip hidden files
             continue
         for logo_path in os.listdir(os.path.join(targetlist_path, target)):
-            if logo_path.endswith('.png') or logo_path.endswith('.jpeg') or logo_path.endswith('.jpg') or logo_path.endswith('.PNG') \
+            if logo_path.endswith('.png') or logo_path.endswith('.jpeg') or logo_path.endswith(
+                    '.jpg') or logo_path.endswith('.PNG') \
                     or logo_path.endswith('.JPG') or logo_path.endswith('.JPEG'):
                 if logo_path.startswith('loginpage') or logo_path.startswith('homepage'):  # skip homepage/loginpage
                     continue
@@ -101,6 +104,7 @@ def cache_reference_list(model, targetlist_path: str, grayscale=False):
                 file_name_list.append(str(os.path.join(targetlist_path, target, logo_path)))
 
     return np.asarray(logo_feat_list), np.asarray(file_name_list)
+
 
 @torch.no_grad()
 def get_embedding(img, model, grayscale=False):
@@ -122,7 +126,7 @@ def get_embedding(img, model, grayscale=False):
     img_transforms = transforms.Compose(
         [transforms.ToTensor(),
          transforms.Normalize(mean=mean, std=std),
-     ])
+         ])
 
     img = Image.open(img) if isinstance(img, str) else img
     img = img.convert("L").convert("RGB") if grayscale else img.convert("RGB")
