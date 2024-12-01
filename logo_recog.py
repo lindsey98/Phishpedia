@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 import torch
 
+
 def pred_rcnn(im, predictor):
     '''
     Perform inference for RCNN
