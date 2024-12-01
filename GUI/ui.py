@@ -119,7 +119,7 @@ class PhishpediaUI(QWidget):
         font.setPointSizeF(font_size)
 
         for widget in self.findChildren(QLabel) + self.findChildren(QLineEdit) + self.findChildren(QPushButton) + [
-            self.result_display]:
+                self.result_display]:
             widget.setFont(font)
 
     def init_phish_test_page(self):

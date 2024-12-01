@@ -12,7 +12,7 @@ def resolution_alignment(img1, img2):
     w1, h1 = img1.size
     w2, h2 = img2.size
     w_min, h_min = min(w1, w2), min(h1, h2)
-    if w_min == 0 or h_min == 0:  ## something wrong, stop resizing
+    if w_min == 0 or h_min == 0:  # something wrong, stop resizing
         return img1, img2
     if w_min < h_min:
         img1_resize = img1.resize((int(w_min), math.ceil(h1 * (w_min / w1))))  # ceiling to prevent rounding to 0
