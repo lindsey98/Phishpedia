@@ -15,15 +15,6 @@ from tqdm import tqdm
 import re
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
-def result_file_write(f,folder,url,phish_category,pred_target,matched_domain,siamese_conf,logo_recog_time,logo_match_time):
-    f.write(folder + "\t")
-    f.write(url + "\t")
-    f.write(str(phish_category) + "\t")
-    f.write(str(pred_target) + "\t")  # write top1 prediction only
-    f.write(str(matched_domain) + "\t")
-    f.write(str(siamese_conf) + "\t")
-    f.write(str(round(logo_recog_time, 4)) + "\t")
-    f.write(str(round(logo_match_time, 4)) + "\n")
 
 class PhishpediaWrapper:
     _caller_prefix = "PhishpediaWrapper"
@@ -181,10 +172,24 @@ if __name__ == '__main__':
 
         try:
             with open(result_txt, "a+", encoding='ISO-8859-1') as f:
-                 result_file_write(f,folder,url,phish_category,pred_target,matched_domain,siamese_conf,logo_recog_time,logo_match_time)
+                f.write(folder + "\t")
+                f.write(url + "\t")
+                f.write(str(phish_category) + "\t")
+                f.write(str(pred_target) + "\t")  # write top1 prediction only
+                f.write(str(matched_domain) + "\t")
+                f.write(str(siamese_conf) + "\t")
+                f.write(str(round(logo_recog_time, 4)) + "\t")
+                f.write(str(round(logo_match_time, 4)) + "\n")
         except UnicodeError:
             with open(result_txt, "a+", encoding='utf-8') as f:
-                 result_file_write(f,folder,url,phish_category,pred_target,matched_domain,siamese_conf,logo_recog_time,logo_match_time)
+                f.write(folder + "\t")
+                f.write(url + "\t")
+                f.write(str(phish_category) + "\t")
+                f.write(str(pred_target) + "\t")  # write top1 prediction only
+                f.write(str(matched_domain) + "\t")
+                f.write(str(siamese_conf) + "\t")
+                f.write(str(round(logo_recog_time, 4)) + "\t")
+                f.write(str(round(logo_match_time, 4)) + "\n")
         if phish_category:
             os.makedirs(os.path.join(request_dir, folder), exist_ok=True)
             cv2.imwrite(os.path.join(request_dir, folder, "predict.png"), plotvis)
