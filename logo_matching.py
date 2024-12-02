@@ -10,18 +10,17 @@ from tqdm import tqdm
 from tldextract import tldextract
 import pickle
 
+
 def check_domain_brand_inconsistency(logo_boxes,
                                      domain_map_path: str,
                                      model, logo_feat_list,
                                      file_name_list, shot_path: str,
-                                     url: str, ts: float,
-                                     topk: float=3):
-
+                                     url: str, similarity_threshold: float,
+                                     topk: float = 3):
     # targetlist domain list
     with open(domain_map_path, 'rb') as handle:
         domain_map = pickle.load(handle)
 
-                                       
     print('number of logo boxes:', len(logo_boxes))
     extracted_domain = tldextract.extract(url).domain + '.' + tldextract.extract(url).suffix
     matched_target, matched_domain, matched_coord, this_conf = None, None, None, None
@@ -36,9 +35,10 @@ def check_domain_brand_inconsistency(logo_boxes,
             min_x, min_y, max_x, max_y = coord
             bbox = [float(min_x), float(min_y), float(max_x), float(max_y)]
             matched_target, matched_domain, this_conf = pred_brand(model, domain_map,
-                                                                    logo_feat_list, file_name_list,
-                                                                    shot_path, bbox, t_s=ts, grayscale=False,
-                                                                   do_aspect_ratio_check=False, do_resolution_alignment=False)
+                                                                   logo_feat_list, file_name_list,
+                                                                   shot_path, bbox, similarity_threshold=similarity_threshold, grayscale=False,
+                                                                   do_aspect_ratio_check=False,
+                                                                   do_resolution_alignment=False)
             # print(target_this, domain_this, this_conf)
             # domain matcher to avoid FP
             if matched_target and matched_domain:
@@ -51,7 +51,13 @@ def check_domain_brand_inconsistency(logo_boxes,
 
     return brand_converter(matched_target), matched_domain, matched_coord, this_conf
 
+
 def load_model_weights(num_classes: int, weights_path: str):
+    '''
+    :param num_classes: number of protected brands
+    :param weights_path: siamese weights
+    :return model: siamese model
+    '''
     # Initialize model
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = KNOWN_MODELS["BiT-M-R50x1"](head_size=num_classes, zero_head=True)
@@ -72,14 +78,12 @@ def load_model_weights(num_classes: int, weights_path: str):
     model.eval()
     return model
 
+
 def cache_reference_list(model, targetlist_path: str, grayscale=False):
     '''
     cache the embeddings of the reference list
-    :param num_classes: number of protected brands
-    :param weights_path: siamese weights
     :param targetlist_path: targetlist folder
     :param grayscale: convert logo to grayscale or not, default is RGB
-    :return model: siamese model
     :return logo_feat_list: targetlist embeddings
     :return file_name_list: targetlist paths
     '''
@@ -92,7 +96,8 @@ def cache_reference_list(model, targetlist_path: str, grayscale=False):
         if target.startswith('.'):  # skip hidden files
             continue
         for logo_path in os.listdir(os.path.join(targetlist_path, target)):
-            if logo_path.endswith('.png') or logo_path.endswith('.jpeg') or logo_path.endswith('.jpg') or logo_path.endswith('.PNG') \
+            if logo_path.endswith('.png') or logo_path.endswith('.jpeg') or logo_path.endswith(
+                    '.jpg') or logo_path.endswith('.PNG') \
                     or logo_path.endswith('.JPG') or logo_path.endswith('.JPEG'):
                 if logo_path.startswith('loginpage') or logo_path.startswith('homepage'):  # skip homepage/loginpage
                     continue
@@ -102,14 +107,13 @@ def cache_reference_list(model, targetlist_path: str, grayscale=False):
 
     return np.asarray(logo_feat_list), np.asarray(file_name_list)
 
+
 @torch.no_grad()
 def get_embedding(img, model, grayscale=False):
     '''
     Inference for a single image
     :param img: image path in str or image in PIL.Image
     :param model: model to make inference
-    :param imshow: enable display of image or not
-    :param title: title of displayed image
     :param grayscale: convert image to grayscale or not
     :return feature embedding of shape (2048,)
     '''
@@ -122,7 +126,7 @@ def get_embedding(img, model, grayscale=False):
     img_transforms = transforms.Compose(
         [transforms.ToTensor(),
          transforms.Normalize(mean=mean, std=std),
-     ])
+         ])
 
     img = Image.open(img) if isinstance(img, str) else img
     img = img.convert("L").convert("RGB") if grayscale else img.convert("RGB")
@@ -144,7 +148,7 @@ def get_embedding(img, model, grayscale=False):
     return logo_feat
 
 
-def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str, gt_bbox, t_s,
+def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str, gt_bbox, similarity_threshold,
                grayscale=False,
                do_resolution_alignment=True,
                do_aspect_ratio_check=True):
@@ -156,7 +160,7 @@ def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str
     :param file_name_list: reference logo paths
     :param shot_path: path to the screenshot
     :param gt_bbox: 1x4 np.ndarray/list/tensor bounding box coords
-    :param t_s: similarity threshold for siamese
+    :param similarity_threshold: similarity threshold for siamese
     :param do_resolution_alignment: if the similarity does not exceed the threshold, do we align their resolutions to have a retry
     :param do_aspect_ratio_check: once two logos are similar, whether we want to a further check on their aspect ratios
     :param grayscale: convert image(cropped) to grayscale or not
@@ -197,7 +201,7 @@ def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str
             continue
 
         ## If the largest similarity exceeds threshold
-        if top3_simlist[j] >= t_s:
+        if top3_simlist[j] >= similarity_threshold:
             predicted_brand = top3_brandlist[j]
             predicted_domain = top3_domainlist[j]
             final_sim = top3_simlist[j]
@@ -209,7 +213,7 @@ def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str
             img_feat = get_embedding(cropped, model, grayscale=grayscale)
             logo_feat = get_embedding(candidate_logo, model, grayscale=grayscale)
             final_sim = logo_feat.dot(img_feat)
-            if final_sim >= t_s:
+            if final_sim >= similarity_threshold:
                 predicted_brand = top3_brandlist[j]
                 predicted_domain = top3_domainlist[j]
             else:

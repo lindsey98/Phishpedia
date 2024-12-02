@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 import torch
 
+
 def pred_rcnn(im, predictor):
     '''
     Perform inference for RCNN
@@ -17,6 +18,7 @@ def pred_rcnn(im, predictor):
         if im.shape[-1] == 4:
             im = cv2.cvtColor(im, cv2.COLOR_BGRA2BGR)
     else:
+        print(f"Image at path {im} is None")
         return None
 
     outputs = predictor(im)
@@ -62,6 +64,7 @@ def vis(img_path, pred_boxes):
 
     check = cv2.imread(img_path)
     if pred_boxes is None or len(pred_boxes) == 0:
+        print("Pred_boxes is None or the length of pred_boxes is 0")
         return check
     pred_boxes = pred_boxes.numpy() if not isinstance(pred_boxes, np.ndarray) else pred_boxes
 
