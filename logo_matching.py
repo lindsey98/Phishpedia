@@ -117,7 +117,7 @@ def get_embedding(img, model, grayscale=False):
     :param grayscale: convert image to grayscale or not
     :return feature embedding of shape (2048,)
     '''
-    # img_size = 224
+    #  img_size = 224
     img_size = 128
     mean = [0.5, 0.5, 0.5]
     std = [0.5, 0.5, 0.5]
@@ -126,7 +126,7 @@ def get_embedding(img, model, grayscale=False):
     img_transforms = transforms.Compose(
         [transforms.ToTensor(),
          transforms.Normalize(mean=mean, std=std),
-        ])
+         ])
 
     img = Image.open(img) if isinstance(img, str) else img
     img = img.convert("L").convert("RGB") if grayscale else img.convert("RGB")

@@ -39,7 +39,7 @@ def load_config(reload_targetlist=False):
     targetlist_folder = zip_file_name.split('.zip')[0]
     full_targetlist_folder_dir = os.path.join(targetlist_dir, targetlist_folder)
 
-    # if reload_targetlist or targetlist_zip_path.endswith('.zip') and not os.path.isdir(full_targetlist_folder_dir):
+    #  if reload_targetlist or targetlist_zip_path.endswith('.zip') and not os.path.isdir(full_targetlist_folder_dir):
     #     os.makedirs(full_targetlist_folder_dir, exist_ok=True)
     #     subprocess.run(f'unzip -o "{targetlist_zip_path}" -d "{full_targetlist_folder_dir}"', shell=True)
 
