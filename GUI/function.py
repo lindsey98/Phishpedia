@@ -60,11 +60,22 @@ class PhishpediaFunction:
 
     def update_image_display(self):
         if self.current_pixmap:
-            available_width = self.ui.width()
-            available_height = self.ui.height() - self.ui.visualization_label.geometry().bottom() - 50
-
-            scaled_pixmap = self.current_pixmap.scaled(available_width, available_height, Qt.KeepAspectRatio,
-                                                       Qt.SmoothTransformation)
+            # Get the actual size of the visualization_display
+            display_height = self.ui.visualization_display.height()
+            display_width = self.ui.visualization_display.width()
+            # Get the original dimensions of the image
+            original_width = self.current_pixmap.width()
+            original_height = self.current_pixmap.height()
+            # Calculate the scaling ratio
+            width_ratio = display_width / original_width
+            height_ratio = display_height / original_height
+            # Use the smaller ratio to ensure the image fits completely within the display area
+            scale_ratio = min(width_ratio, height_ratio)
+            # Calculate the scaled dimensions
+            new_width = int(original_width * scale_ratio)
+            new_height = int(original_height * scale_ratio)
+            # Scale the image
+            scaled_pixmap = self.current_pixmap.scaled(new_width, new_height, Qt.KeepAspectRatio, Qt.SmoothTransformation)
             self.ui.visualization_display.setPixmap(scaled_pixmap)
 
     def on_resize(self, event):
