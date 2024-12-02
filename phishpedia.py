@@ -7,10 +7,7 @@ import cv2
 from configs import load_config
 from logo_recog import pred_rcnn, vis
 from logo_matching import check_domain_brand_inconsistency
-# from text_recog import check_email_credential_taking
-# import pickle
 from tqdm import tqdm
-
 import re
 
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
@@ -125,7 +122,6 @@ class PhishpediaWrapper:
         cv2.putText(plotvis, "Target: {} with confidence {:.4f}".format(pred_target, siamese_conf),
                     (int(matched_coord[0] + 20), int(matched_coord[1] + 20)),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
-
         return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
 
 
