@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "页面捕获插件",
+  "version": "1.0",
+  "description": "捕获当前页面URL和截图",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "commands"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "commands": {
+    "capture-page": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+S"
+      },
+      "description": "捕获当前页面"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}
