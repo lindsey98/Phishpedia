@@ -105,7 +105,7 @@ class PhishpediaWrapper:
             file_name_list=self.LOGO_FILES,
             url=url,
             shot_path=screenshot_path,
-            ts=self.SIAMESE_THRE,
+            similarity_threshold=self.SIAMESE_THRE,
             topk=1)
         logo_match_time = time.time() - start_time
 
