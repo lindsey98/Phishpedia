@@ -168,10 +168,10 @@ class PhishpediaUI(QWidget):
         self.visualization_display = QLabel()
         self.visualization_display.setAlignment(Qt.AlignCenter)
         self.visualization_display.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.visualization_display.setMinimumSize(300, 300)  
-        visualization_layout.addWidget(self.visualization_display, 1)  
+        self.visualization_display.setMinimumSize(300, 300)
+        visualization_layout.addWidget(self.visualization_display, 1)
         
-        layout.addLayout(visualization_layout, 1)  
+        layout.addLayout(visualization_layout, 1)
 
         self.phish_test_page.setLayout(layout)
 
