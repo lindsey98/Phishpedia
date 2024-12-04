@@ -10,6 +10,7 @@ from logo_matching import check_domain_brand_inconsistency
 # from text_recog import check_email_credential_taking
 # import pickle
 from tqdm import tqdm
+import validators
 
 import re
 
@@ -167,6 +168,13 @@ if __name__ == '__main__':
 
         with open(info_path, 'r') as file:
             url = file.read()
+        
+        ##if you wanna check the string from info_path is a url or not, please use the package validators "pip install validators"
+        if validators.url(url):
+            print(f"{url} 是一个有效的网址")
+        else:
+            print(f"{url} 不是一个有效的网址")
+            break
 
         if os.path.exists(result_txt):
             with open(result_txt, 'r', encoding='ISO-8859-1') as file:
