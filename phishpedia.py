@@ -169,7 +169,7 @@ if __name__ == '__main__':
         with open(info_path, 'r') as file:
             url = file.read()
         
-        ##if you wanna check the string from info_path is a url or not, please use the package validators "pip install validators"
+        # if you wanna check the string from info_path is a url or not, please use the package validators "pip install validators"
         if validators.url(url):
             print(f"{url} 是一个有效的网址")
         else:
