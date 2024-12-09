@@ -1,32 +1,30 @@
 {
   "manifest_version": 3,
-  "name": "页面捕获插件",
+  "name": "Phishing Detector",
   "version": "1.0",
-  "description": "捕获当前页面URL和截图",
+  "description": "Detect phishing websites using screenshot and URL analysis",
   "permissions": [
     "activeTab",
-    "tabs",
+    "scripting",
     "storage",
-    "commands"
+    "tabs"
   ],
+  "host_permissions": [
+    "http://localhost:5000/*"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html"
+  },
   "background": {
     "service_worker": "background.js"
   },
-  "action": {
-    "default_popup": "popup.html"
-  },
   "commands": {
-    "capture-page": {
+    "_execute_action": {
       "suggested_key": {
-        "default": "Ctrl+Shift+S"
+        "default": "Ctrl+Shift+H",
+        "mac": "Command+Shift+P"
       },
-      "description": "捕获当前页面"
+      "description": "Analyze current page for phishing"
     }
-  },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
-    }
-  ]
+  }
 }

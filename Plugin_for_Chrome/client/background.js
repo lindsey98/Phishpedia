@@ -1,33 +1,61 @@
-chrome.commands.onCommand.addListener((command) => {
-  if (command === "capture-page") {
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-      const currentTab = tabs[0];
-      
-      // 获取页面截图
-      chrome.tabs.captureVisibleTab(null, {format: 'png'}, function(dataUrl) {
-        // 将截图和URL发送到服务器
-        const data = {
-          url: currentTab.url,
-          screenshot: dataUrl
-        };
-        
-        fetch('http://localhost:5000/upload', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(result => {
-          // 显示结果通知
-          chrome.tabs.sendMessage(currentTab.id, {
-            type: 'show_result',
-            result: result
-          });
-        })
-        .catch(error => console.error('Error:', error));
-      });
+// 处理截图和URL获取
+async function captureTabInfo(tab) {
+  try {
+    // 获取截图
+    const screenshot = await chrome.tabs.captureVisibleTab(null, {
+      format: 'png'
+    });
+    
+    // 获取当前URL
+    const url = tab.url;
+    
+    // 发送到服务器进行分析
+    const response = await fetch('http://localhost:5000/analyze', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        url: url,
+        screenshot: screenshot
+      })
+    });
+    
+    const result = await response.json();
+    
+    // 将结果发送到popup
+    chrome.runtime.sendMessage({
+      type: 'analysisResult',
+      data: result
+    });
+    
+  } catch (error) {
+    console.error('Error capturing tab info:', error);
+    chrome.runtime.sendMessage({
+      type: 'error',
+      data: error.message
     });
   }
+}
+
+// 监听快捷键命令
+chrome.commands.onCommand.addListener(async (command) => {
+  if (command === '_execute_action') {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (tab) {
+      await captureTabInfo(tab);
+    }
+  }
+});
+
+// 监听来自popup的消息
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.type === 'analyze') {
+    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+      if (tabs[0]) {
+        await captureTabInfo(tabs[0]);
+      }
+    });
+  }
+  return true;
 });

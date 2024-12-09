@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Phishing Detector</h1>
+    <button id="analyzeBtn">分析当前页面</button>
+    <div id="loading" class="hidden">
+      分析中...
+    </div>
+    <div id="result" class="hidden">
+      <h2>分析结果:</h2>
+      <div id="status"></div>
+      <div id="legitUrl" class="hidden">
+        <h3>对应的正版网站:</h3>
+        <a id="legitUrlLink" href="#" target="_blank"></a>
+      </div>
+    </div>
+    <div id="error" class="hidden">
+      <p class="error-message"></p>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
