@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit, QHBoxLayout, QTabWidget
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit, QHBoxLayout, QTabWidget, QSizePolicy
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
@@ -164,11 +164,14 @@ class PhishpediaUI(QWidget):
         self.visualization_label = QLabel('Visualization Result:')
         self.visualization_label.setFixedHeight(self.visualization_label.fontMetrics().height())
         visualization_layout.addWidget(self.visualization_label)
+        
         self.visualization_display = QLabel()
         self.visualization_display.setAlignment(Qt.AlignCenter)
-        self.visualization_display.setMinimumSize(300, 200)
-        visualization_layout.addWidget(self.visualization_display)
-        layout.addLayout(visualization_layout)
+        self.visualization_display.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.visualization_display.setMinimumSize(300, 300)
+        visualization_layout.addWidget(self.visualization_display, 1)
+        
+        layout.addLayout(visualization_layout, 1)
 
         self.phish_test_page.setLayout(layout)
 
