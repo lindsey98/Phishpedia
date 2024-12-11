@@ -23,8 +23,8 @@ CORS(app)
 with app.app_context():
     log_dir = os.path.join(current_dir, 'logs')
     os.makedirs(log_dir, exist_ok=True)
-    global phishpedia_cls
     phishpedia_cls = PhishpediaWrapper()
+
 
 @app.route('/analyze', methods=['POST'])
 def analyze():
@@ -68,6 +68,7 @@ def analyze():
     except Exception as e:
         print(e)
         return jsonify({"error": str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
