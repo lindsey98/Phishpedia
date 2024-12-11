@@ -22,7 +22,7 @@
     "_execute_action": {
       "suggested_key": {
         "default": "Ctrl+Shift+H",
-        "mac": "Command+Shift+P"
+        "mac": "Command+Shift+H"
       },
       "description": "Analyze current page for phishing"
     }
