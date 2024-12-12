@@ -53,8 +53,8 @@ source "$CONDA_BASE/etc/profile.d/conda.sh"
 if conda info --envs | grep -w "^$ENV_NAME" > /dev/null 2>&1; then
   echo "Activating existing Conda environment: $ENV_NAME"
 else
-  echo "Creating new Conda environment: $ENV_NAME with Python 3.8"
-  conda create -y -n "$ENV_NAME" python=3.8
+  echo "Creating new Conda environment: $ENV_NAME with Python 3.9"
+  conda create -y -n "$ENV_NAME" python=3.9
 fi
 
 # 8. Activate the Conda environment
