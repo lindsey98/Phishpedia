@@ -120,7 +120,7 @@ class PhishpediaWrapper:
         # return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
         # else:
         print('Match to Target: {} with confidence {:.4f}'.format(pred_target, siamese_conf))
-        phish_category = 1 if benign_flag==False else 0
+        phish_category = 1 if benign_flag == False else 0
         # Visualize, add annotations
         cv2.putText(plotvis, "Target: {} with confidence {:.4f}".format(pred_target, siamese_conf),
                     (int(matched_coord[0] + 20), int(matched_coord[1] + 20)),
