@@ -24,6 +24,7 @@ def check_domain_brand_inconsistency(logo_boxes,
     print('number of logo boxes:', len(logo_boxes))
     extracted_domain = tldextract.extract(url).domain + '.' + tldextract.extract(url).suffix
     matched_target, matched_domain, matched_coord, this_conf = None, None, None, None
+    benign_flag = False
 
     if len(logo_boxes) > 0:
         # siamese prediction for logo box
@@ -45,11 +46,12 @@ def check_domain_brand_inconsistency(logo_boxes,
                 matched_coord = coord
                 # Check if the domain is part of any domain listed under the brand
                 if extracted_domain in matched_domain:
-                    matched_target, matched_domain = None, None  # Clear if domains are consistent
+                    # matched_target, matched_domain = None, None  # we don't clear if domains are consistent now, instead, set the benign_flag = True
+                    benign_flag = True
                 else:
                     break  # Inconsistent domain found, break the loop
 
-    return brand_converter(matched_target), matched_domain, matched_coord, this_conf
+    return brand_converter(matched_target), matched_domain, matched_coord, this_conf, benign_flag
 
 
 def load_model_weights(num_classes: int, weights_path: str):
