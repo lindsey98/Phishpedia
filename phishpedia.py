@@ -97,7 +97,7 @@ class PhishpediaWrapper:
 
         ######################## Step2: Siamese (Logo matcher) ########################################
         start_time = time.time()
-        pred_target, matched_domain, matched_coord, siamese_conf = check_domain_brand_inconsistency(
+        pred_target, matched_domain, matched_coord, siamese_conf, benign_flag = check_domain_brand_inconsistency(
             logo_boxes=pred_boxes,
             domain_map_path=self.DOMAIN_MAP_PATH,
             model=self.SIAMESE_MODEL,
@@ -120,7 +120,7 @@ class PhishpediaWrapper:
         # return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
         # else:
         print('Match to Target: {} with confidence {:.4f}'.format(pred_target, siamese_conf))
-        phish_category = 1
+        phish_category = 1 if benign_flag is False else 0
         # Visualize, add annotations
         cv2.putText(plotvis, "Target: {} with confidence {:.4f}".format(pred_target, siamese_conf),
                     (int(matched_coord[0] + 20), int(matched_coord[1] + 20)),
