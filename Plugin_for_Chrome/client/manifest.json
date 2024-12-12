@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Phishing Detector",
+  "version": "1.0",
+  "description": "Detect phishing websites using screenshot and URL analysis",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "http://localhost:5000/*"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+H",
+        "mac": "Command+Shift+H"
+      },
+      "description": "Analyze current page for phishing"
+    }
+  }
+}
