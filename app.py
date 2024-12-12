@@ -63,7 +63,7 @@ def analyze():
     
     except Exception as e:
         print(e)
-        log_error_path = os.path.join(log_dir, f'log_error.txt')
+        log_error_path = os.path.join(log_dir, 'log_error.txt')
         with open(log_error_path, "a+", encoding='utf-8') as f:
             f.write(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} - {str(e)}\n')
         return jsonify("ERROR"), 500
