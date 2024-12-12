@@ -133,9 +133,15 @@ cd expand_targetlist || exit 1  # Exit if the directory doesn't exist
 # Check if there's a nested 'expand_targetlist/' directory
 if [ -d "expand_targetlist" ]; then
   echo "Nested directory 'expand_targetlist/' detected. Moving contents up..."
-  
+
+  # Enable dotglob to include hidden files
+  shopt -s dotglob
+
   # Move everything from the nested directory to the current directory
   mv expand_targetlist/* .
+
+  # Disable dotglob to revert back to normal behavior
+  shopt -u dotglob
 
   # Remove the now-empty nested directory
   rmdir expand_targetlist
