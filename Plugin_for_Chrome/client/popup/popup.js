@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (message.data.legitUrl) {
           legitUrl.classList.remove('hidden');
           legitUrlLink.href = message.data.legitUrl;
-          legitUrlLink.textContent = message.data.legitUrl;
+          legitUrlLink.textContent = message.data.brand;
         }
       } else {
         status.innerHTML = '<span class="safe">✓ 这是一个安全的网站</span>';

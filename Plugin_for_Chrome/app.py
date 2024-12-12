@@ -4,16 +4,10 @@ import base64
 from io import BytesIO
 from PIL import Image
 from datetime import datetime
-import os
-import sys
+import os, sys
+sys.path.append("..")
+from phishpedia import PhishpediaWrapper, result_file_write
 
-current_dir = os.path.dirname(os.path.realpath(__file__))
-root_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
-root_dir = os.path.abspath(os.path.join(root_dir, os.pardir))
-sys.path.append(root_dir)
-
-from phishpedia import PhishpediaWrapper
-from phishpedia import result_file_write
 
 app = Flask(__name__)
 CORS(app)
@@ -21,6 +15,7 @@ CORS(app)
 
 # 在创建应用时初始化模型
 with app.app_context():
+    current_dir = os.path.dirname(os.path.realpath(__file__))
     log_dir = os.path.join(current_dir, 'logs')
     os.makedirs(log_dir, exist_ok=True)
     phishpedia_cls = PhishpediaWrapper()
@@ -59,10 +54,11 @@ def analyze():
         # 目前返回示例数据
         result = {
             "isPhishing": bool(phish_category),
-            "legitUrl": pred_target,
+            "brand": pred_target,
+            "legitUrl": "https://"+matched_domain[0],
             "confidence": float(siamese_conf)
         }
-        
+        print(matched_domain)
         return jsonify(result)
     
     except Exception as e:
@@ -71,4 +67,4 @@ def analyze():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

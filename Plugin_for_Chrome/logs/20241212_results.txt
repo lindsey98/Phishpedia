@@ -1,0 +1,14 @@
+C:\Users\Areedd\Documents\GitRepo\Phishpedia\Plugin_for_Chrome	file:///C:/Users/Areedd/Desktop/Experience%20League%20_%20Adobe.html	1	Adobe	['adobe.com']	0.8715651	0.6723	0.152
+C:\Users\Areedd\Documents\GitRepo\Phishpedia\Plugin_for_Chrome	file:///C:/Users/Areedd/Desktop/Experience%20League%20_%20Adobe.html	1	Adobe	['adobe.com']	0.8715651	0.0922	0.0499
+C:\Users\Areedd\Documents\GitRepo\Phishpedia\Plugin_for_Chrome	file:///C:/Users/Areedd/Desktop/Experience%20League%20_%20Adobe.html	1	Adobe	['adobe.com']	0.8715651	0.0904	0.0514
+C:\Users\Areedd\Documents\GitRepo\Phishpedia\Plugin_for_Chrome	file:///C:/Users/Areedd/Desktop/Experience%20League%20_%20Adobe.html	1	Adobe	['adobe.com']	0.8715651	0.4287	0.1309
+C:\Users\Areedd\Documents\GitRepo\Phishpedia\Plugin_for_Chrome	chrome-extension://ljfmkehpohiaikajnpcjbionknfhgdho/popup/adobe.com	0	None	None	0.6350205	0.445	0.1278
+C:\Users\Areedd\Documents\GitRepo\Phishpedia\Plugin_for_Chrome	file:///C:/Users/Areedd/Desktop/Experience%20League%20_%20Adobe.html	1	Adobe	['adobe.com']	0.8715651	0.0936	0.0569
+C:\Users\Areedd\Documents\GitRepo\Phishpedia\Plugin_for_Chrome	file:///C:/Users/Areedd/Desktop/Experience%20League%20_%20Adobe.html	1	Adobe	['adobe.com']	0.8715651	0.4273	0.1313
+C:\Users\Areedd\Documents\GitRepo\Phishpedia\Plugin_for_Chrome	file:///C:/Users/Areedd/Desktop/Experience%20League%20_%20Adobe.html	1	Adobe	['adobe.com']	0.8715651	0.4363	0.1363
+C:\Users\Areedd\Documents\GitRepo\Phishpedia\Plugin_for_Chrome	file:///C:/Users/Areedd/Desktop/Experience%20League%20_%20Adobe.html	1	Adobe	['adobe.com']	0.8715651	0.0858	0.0471
+C:\Users\Areedd\Documents\GitRepo\Phishpedia\Plugin_for_Chrome	file:///C:/Users/Areedd/Desktop/Experience%20League%20_%20Adobe.html	1	Adobe	['adobe.com']	0.8715651	0.1032	0.0741
+C:\Users\Areedd\Documents\GitRepo\Phishpedia\Plugin_for_Chrome	https://lobe.aicnn.xyz/chat/3425a828-1832-41b0-9d3b-5874d818cc4b	0	None	None	0.6955235	0.447	0.135
+C:\Users\Areedd\Documents\GitRepo\Phishpedia\Plugin_for_Chrome	file:///C:/Users/Areedd/Desktop/Experience%20League%20_%20Adobe.html	1	Adobe	['adobe.com']	0.8715651	0.0832	0.046
+C:\Users\Areedd\Documents\GitRepo\Phishpedia\Plugin_for_Chrome	file:///C:/Users/Areedd/Desktop/Experience%20League%20_%20Adobe.html	1	Adobe	['adobe.com']	0.8715651	0.0822	0.0451
+C:\Users\Areedd\Documents\GitRepo\Phishpedia\Plugin_for_Chrome	file:///C:/Users/Areedd/Desktop/Experience%20League%20_%20Adobe.html	1	Adobe	['adobe.com']	0.8715651	0.4083	0.1292
