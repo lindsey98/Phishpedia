@@ -4,8 +4,8 @@ import base64
 from io import BytesIO
 from PIL import Image
 from datetime import datetime
-import os, sys
-sys.path.append("..")
+import os
+import sys
 from phishpedia import PhishpediaWrapper, result_file_write
 
 
@@ -16,7 +16,7 @@ CORS(app)
 # 在创建应用时初始化模型
 with app.app_context():
     current_dir = os.path.dirname(os.path.realpath(__file__))
-    log_dir = os.path.join(current_dir, 'logs')
+    log_dir = os.path.join(current_dir, 'plugin_logs')
     os.makedirs(log_dir, exist_ok=True)
     phishpedia_cls = PhishpediaWrapper()
 
@@ -55,10 +55,11 @@ def analyze():
         result = {
             "isPhishing": bool(phish_category),
             "brand": pred_target,
-            "legitUrl": "https://"+matched_domain[0],
+            "legitUrl": "https://" + matched_domain[0],
             "confidence": float(siamese_conf)
         }
-        print(matched_domain)
+        if os.path.exists(screenshot_path):
+            os.remove(screenshot_path)
         return jsonify(result)
     
     except Exception as e:
