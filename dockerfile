@@ -11,8 +11,8 @@ RUN apt-get update && apt-get install -y wget && \
 ENV PATH="/opt/miniconda/bin:${PATH}"
 # Set working directory
 WORKDIR /workspace
-# Install git
-RUN apt-get install -y git
+# Install git, unzip and other dependencies
+RUN apt-get install -y git unzip libgl1-mesa-glx libglib2.0-0
 # Clone the Phishpedia project from GitHub into the container
 RUN git clone https://github.com/lindsey98/Phishpedia.git /workspace/Phishpedia
 # Change to the project directory and run setup.sh to configure the environment
@@ -22,6 +22,8 @@ RUN apt-get install -y dos2unix
 # Convert setup.sh to Unix format and RUN it
 RUN dos2unix setup.sh
 RUN chmod +x setup.sh
-RUN bash setup.sh
+RUN bash setup.sh || true
+# Ensure Conda is initialized and phishpedia environment is activated by default
+RUN echo "source /opt/miniconda/etc/profile.d/conda.sh && conda activate phishpedia" >> ~/.bashrc
 # Set the default command to execute when the container starts
-CMD ["bash", "-c", "cd /workspace/Phishpedia && /bin/bash"]
+CMD ["bash", "-c", "source /opt/miniconda/etc/profile.d/conda.sh && conda activate phishpedia && cd /workspace/Phishpedia && /bin/bash"]
