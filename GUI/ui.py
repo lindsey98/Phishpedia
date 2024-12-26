@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit, QHBoxLayout, QTabWidget, QSizePolicy
-from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit, QHBoxLayout, QTabWidget, QSizePolicy, QTreeWidget, QTreeWidgetItem, QDialog
+from PyQt5.QtGui import QFont, QImage, QPixmap
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 from .function import PhishpediaFunction
@@ -25,11 +25,6 @@ class PhishpediaUI(QWidget):
         self.phish_test_page = QWidget()
         self.init_phish_test_page()
         self.tab_widget.addTab(self.phish_test_page, "PhishTest")
-
-        # Import Model Page
-        self.import_model_page = QWidget()
-        self.init_import_model_page()
-        self.tab_widget.addTab(self.import_model_page, "Import Model")
 
         # Dataset Page
         self.dataset_page = QWidget()
@@ -112,8 +107,8 @@ class PhishpediaUI(QWidget):
     def set_dynamic_font_size(self):
         screen = QApplication.primaryScreen()
         dpi = screen.logicalDotsPerInch()
-        base_font_size = 16  # Base font size for 150 DPI
-        font_size = base_font_size * (dpi / 150)
+        base_font_size = 16  # Base font size for 200 DPI
+        font_size = base_font_size * (dpi / 175)
 
         font = QFont()
         font.setPointSizeF(font_size)
@@ -175,12 +170,67 @@ class PhishpediaUI(QWidget):
 
         self.phish_test_page.setLayout(layout)
 
-    def init_import_model_page(self):
-        layout = QVBoxLayout()
-        self.import_model_page.setLayout(layout)
-
     def init_dataset_page(self):
         layout = QVBoxLayout()
+
+        # Get directory structure
+        directory_structure = self.function.get_directory_structure('models/expand_targetlist')
+
+        # Create button layout
+        button_layout = QHBoxLayout()
+        
+        # Create buttons
+        self.add_brand_btn = QPushButton("Add Brand")
+        self.delete_brand_btn = QPushButton("Delete Brand")
+        self.add_logo_btn = QPushButton("Add Logo")
+        self.delete_logo_btn = QPushButton("Delete Logo")
+
+        # Add buttons to layout
+        button_layout.addWidget(self.add_brand_btn)
+        button_layout.addWidget(self.delete_brand_btn)
+        button_layout.addWidget(self.add_logo_btn)
+        button_layout.addWidget(self.delete_logo_btn)
+
+        # Connect button click events
+        self.add_brand_btn.clicked.connect(self.function.add_brand)
+        self.delete_brand_btn.clicked.connect(self.function.delete_brand)
+        self.add_logo_btn.clicked.connect(self.function.add_logo)
+        self.delete_logo_btn.clicked.connect(self.function.delete_logo)
+
+        # Create tree view
+        self.tree_widget = QTreeWidget()
+        self.tree_widget.setHeaderLabel("Brand Logos")
+        self.tree_widget.itemDoubleClicked.connect(self.function.on_item_clicked)
+
+        # Populate tree view
+        self.function.populate_tree(self.tree_widget, directory_structure)
+
+        # Create reload model button
+        reload_layout = QHBoxLayout()
+        self.reload_model_btn = QPushButton("Reload Model")
+        self.reload_model_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                padding: 8px 16px;
+                border-radius: 6px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+        """)
+        reload_layout.addStretch()
+        reload_layout.addWidget(self.reload_model_btn)
+        
+        # Connect reload model button event
+        self.reload_model_btn.clicked.connect(self.function.reload_models)
+
+        # Add all components to main layout
+        layout.addLayout(button_layout)
+        layout.addWidget(self.tree_widget)
+        layout.addLayout(reload_layout)  # Add reload button layout
+
         self.dataset_page.setLayout(layout)
 
     def resizeEvent(self, event):
