@@ -6,6 +6,7 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 from .function import PhishpediaFunction
 
+
 class PhishpediaUI(QWidget):
     def __init__(self):
         super().__init__()
