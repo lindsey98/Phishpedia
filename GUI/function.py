@@ -1,12 +1,14 @@
-from PyQt5.QtWidgets import QFileDialog, QDialog, QVBoxLayout, QLabel, QTreeWidgetItem, QInputDialog, QMessageBox
+from PyQt5.QtWidgets import (
+    QMessageBox, QFileDialog, QTreeWidgetItem, QInputDialog, QLineEdit, QDialog, QVBoxLayout, QLabel
+)
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import Qt
-from phishpedia import PhishpediaWrapper
 import cv2
 import os
 import shutil
-from configs import load_config
 import pickle
+from configs import load_config
+from phishpedia import PhishpediaWrapper
 
 
 class PhishpediaFunction:
@@ -148,22 +150,26 @@ class PhishpediaFunction:
             tree_widget.addTopLevelItem(brand_item)
 
     def add_brand(self):
-        from PyQt5.QtWidgets import QInputDialog, QLineEdit
-        import os
-        
         # Get brand name
         brand_name, ok = QInputDialog.getText(self.ui, 'Add Brand', 'Enter brand name:')
         
         if ok and brand_name:
             # Validate brand name
             if not all(c.isalnum() or c.isspace() or c in '-_' for c in brand_name):
-                QMessageBox.warning(self.ui, "Warning", "Brand name can only contain letters, numbers, spaces, hyphens and underscores!")
+                QMessageBox.warning(
+                    self.ui,
+                    "Warning",
+                    "Brand name can only contain letters, numbers, spaces, hyphens and underscores!"
+                )
                 return
 
             # Get domain names (supports multiple domains separated by commas)
-            domains, ok = QInputDialog.getText(self.ui, 'Add Domains', 
-                                            'Enter domain names, separated by commas\nExample: example.com, test.example.com', 
-                                            QLineEdit.Normal)
+            domains, ok = QInputDialog.getText(
+                self.ui,
+                'Add Domains',
+                'Enter domain names, separated by commas\nExample: example.com, test.example.com',
+                QLineEdit.Normal
+            )
             if not ok or not domains:
                 QMessageBox.warning(self.ui, "Warning", "Domain name is required!")
                 return
@@ -179,8 +185,11 @@ class PhishpediaFunction:
                     
                     # Update domain mapping
                     if self.domain_map_add(brand_name, domains):
-                        QMessageBox.information(self.ui, "Success", 
-                            "Brand and domains added successfully!\nPlease click 'Reload Model' button to reload the models.")
+                        QMessageBox.information(
+                            self.ui,
+                            "Success",
+                            "Brand and domains added successfully!\nPlease click 'Reload Model' button to reload the models."
+                        )
                 else:
                     QMessageBox.warning(self.ui, "Warning", "Brand already exists!")
             except Exception as e:
@@ -200,9 +209,14 @@ class PhishpediaFunction:
                 return
 
             # Confirm deletion
-            reply = QMessageBox.question(self.ui, 'Confirm Delete', 
-                                       f'Are you sure you want to delete brand "{brand_name}" and all its logos?\nThis will also delete the corresponding domain mapping.',
-                                       QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            reply = QMessageBox.question(
+                self.ui,
+                'Confirm Delete',
+                f'Are you sure you want to delete brand "{brand_name}" and all its logos?\n'
+                'This will also delete the corresponding domain mapping.',
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.No
+            )
             
             if reply == QMessageBox.Yes:
                 try:
@@ -210,13 +224,18 @@ class PhishpediaFunction:
                     shutil.rmtree(brand_path)
                     # Remove from tree view
                     self.ui.tree_widget.takeTopLevelItem(
-                        self.ui.tree_widget.indexOfTopLevelItem(selected_item))
+                        self.ui.tree_widget.indexOfTopLevelItem(selected_item)
+                    )
                     
                     # Update domain mapping
                     self.domain_map_delete(brand_name)
                     
-                    QMessageBox.information(self.ui, "Success", 
-                        "Brand and domains deleted successfully!\nPlease click 'Reload Model' button to reload the models.")
+                    QMessageBox.information(
+                        self.ui,
+                        "Success",
+                        "Brand and domains deleted successfully!\n"
+                        "Please click 'Reload Model' button to reload the models."
+                    )
                 except Exception as e:
                     QMessageBox.critical(self.ui, "Error", f"Failed to delete brand: {str(e)}")
         else:
@@ -276,9 +295,13 @@ class PhishpediaFunction:
             logo_name = selected_item.text(0)
             
             # Confirm deletion
-            reply = QMessageBox.question(self.ui, 'Confirm Delete', 
-                                       f'Are you sure you want to delete logo "{logo_name}"?',
-                                       QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            reply = QMessageBox.question(
+                self.ui,
+                'Confirm Delete',
+                f'Are you sure you want to delete logo "{logo_name}"?',
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.No
+            )
             
             if reply == QMessageBox.Yes:
                 # Build file path
@@ -337,13 +360,20 @@ class PhishpediaFunction:
             
             # Display added domains
             domains_added = '\n'.join(f"  - {d}" for d in domains)
-            QMessageBox.information(self.ui, "Success", 
-                f"Added the following domains to brand '{brand_name}':\n{domains_added}")
+            QMessageBox.information(
+                self.ui,
+                "Success",
+                f"Added the following domains to brand '{brand_name}':\n{domains_added}"
+            )
             
             return True
             
         except Exception as e:
-            QMessageBox.critical(self.ui, "Error", f"Failed to update domain mapping: {str(e)}")
+            QMessageBox.critical(
+                self.ui,
+                "Error",
+                f"Failed to update domain mapping: {str(e)}"
+            )
             return False
 
     def domain_map_delete(self, brand_name: str) -> bool:
@@ -371,5 +401,9 @@ class PhishpediaFunction:
             return True
             
         except Exception as e:
-            QMessageBox.critical(self.ui, "Error", f"Failed to delete domain mapping: {str(e)}")
+            QMessageBox.critical(
+                self.ui,
+                "Error",
+                f"Failed to delete domain mapping: {str(e)}"
+            )
             return False

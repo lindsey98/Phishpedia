@@ -1,7 +1,10 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QTextEdit, QHBoxLayout, QTabWidget, QSizePolicy, QTreeWidget, QTreeWidgetItem, QDialog
+from PyQt5.QtWidgets import (
+    QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit, 
+    QPushButton, QTextEdit, QTabWidget, QSizePolicy, QTreeWidget, 
+    QTreeWidgetItem, QDialog
+)
 from PyQt5.QtGui import QFont, QImage, QPixmap
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication
 from .function import PhishpediaFunction
 
 
