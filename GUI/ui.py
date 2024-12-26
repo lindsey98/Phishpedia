@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit,
-    QPushButton, QTextEdit, QTabWidget, QSizePolicy, QTreeWidget
+    QPushButton, QTextEdit, QTabWidget, QSizePolicy, QTreeWidget, QDialog
 )
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
@@ -310,6 +310,113 @@ class PhishpediaUI(QWidget):
         layout.addLayout(reload_layout)  # Add reload button layout
 
         self.dataset_page.setLayout(layout)
+
+    def create_add_brand_dialog(self, function_instance):
+        # Create a custom dialog for adding brand
+        dialog = QDialog(self)
+        dialog.setWindowTitle('Add Brand')
+        dialog.setModal(True)
+        
+        # Main layout
+        layout = QVBoxLayout()
+        
+        # Brand name input
+        brand_label = QLabel('Brand Name:')
+        brand_input = QLineEdit()
+        brand_input.setPlaceholderText('Enter brand name')
+        
+        # Domain names input
+        domain_label = QLabel('Domain Names:')
+        domain_input = QLineEdit()
+        domain_input.setPlaceholderText('Example: www.example1.com, www.example2.com')
+        
+        # Add input fields to layout
+        layout.addWidget(brand_label)
+        layout.addWidget(brand_input)
+        layout.addWidget(domain_label)
+        layout.addWidget(domain_input)
+        
+        # Button layout
+        button_layout = QHBoxLayout()
+        add_btn = QPushButton('Add')
+        cancel_btn = QPushButton('Cancel')
+        button_layout.addWidget(add_btn)
+        button_layout.addWidget(cancel_btn)
+        layout.addLayout(button_layout)
+        
+        dialog.setLayout(layout)
+        
+        # Apply StyleSheet to dialog
+        dialog.setStyleSheet("""
+            QWidget {
+                font-family: 'Segoe UI', 'Arial', sans-serif;
+                color: #424242;
+                background-color: #ffffff;
+            }
+            
+            QLabel {
+                color: #424242;
+                font-weight: 500;
+            }
+            
+            QLineEdit, QTextEdit {
+                background-color: #f8f9fa;
+                border: 1px solid #e9ecef;
+                padding: 8px 12px;
+                border-radius: 6px;
+                color: #424242;
+            }
+            
+            QLineEdit:focus, QTextEdit:focus {
+                border: 2px solid #6c757d;
+                background-color: #ffffff;
+            }
+            
+            QPushButton {
+                background-color: #495057;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 6px;
+                font-weight: 500;
+            }
+            
+            QPushButton:hover {
+                background-color: #5a6268;
+            }
+            
+            QPushButton:pressed {
+                background-color: #3d4246;
+            }
+            
+            QTabWidget::pane {
+                border: 1px solid #e9ecef;
+                border-radius: 6px;
+                background: white;
+            }
+            
+            QTabBar::tab {
+                background: #f8f9fa;
+                color: #424242;
+                padding: 8px 16px;
+                margin-right: 2px;
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
+            }
+            
+            QTabBar::tab:selected {
+                background: #495057;
+                color: white;
+            }
+            
+            QTabBar::tab:hover:!selected {
+                background: #e9ecef;
+            }
+        """)
+
+        dialog.setStyleSheet
+        
+        return dialog, brand_input, domain_input, add_btn, cancel_btn
 
     def resizeEvent(self, event):
         super().resizeEvent(event)

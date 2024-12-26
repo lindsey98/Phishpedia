@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import (
-    QMessageBox, QFileDialog, QTreeWidgetItem, QInputDialog, QLineEdit, QDialog, QVBoxLayout, QLabel
+    QMessageBox, QFileDialog, QTreeWidgetItem, QInputDialog, QLineEdit, QDialog, QVBoxLayout, QLabel,
+    QPushButton, QHBoxLayout
 )
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import Qt
@@ -145,30 +146,36 @@ class PhishpediaFunction:
             tree_widget.addTopLevelItem(brand_item)
 
     def add_brand(self):
-        # Get brand name
-        brand_name, ok = QInputDialog.getText(self.ui, 'Add Brand', 'Enter brand name:')
+        # Create dialog using UI method
+        dialog, brand_input, domain_input, add_btn, cancel_btn = self.ui.create_add_brand_dialog(self)
         
-        if ok and brand_name:
+        # Button connections
+        def on_add():
+            brand_name = brand_input.text().strip()
+            domains = domain_input.text().strip()
+            
             # Validate brand name
+            if not brand_name:
+                QMessageBox.warning(
+                    dialog,
+                    "Warning",
+                    "Brand name is required!"
+                )
+                return
+            
             if not all(c.isalnum() or c.isspace() or c in '-_' for c in brand_name):
                 QMessageBox.warning(
-                    self.ui,
+                    dialog,
                     "Warning",
                     "Brand name can only contain letters, numbers, spaces, hyphens and underscores!"
                 )
                 return
-
-            # Get domain names (supports multiple domains separated by commas)
-            domains, ok = QInputDialog.getText(
-                self.ui,
-                'Add Domains',
-                'Enter domain names, separated by commas\nExample: example.com, test.example.com',
-                QLineEdit.Normal
-            )
-            if not ok or not domains:
-                QMessageBox.warning(self.ui, "Warning", "Domain name is required!")
+            
+            # Validate domains
+            if not domains:
+                QMessageBox.warning(dialog, "Warning", "Domain name is required!")
                 return
-
+            
             # Create brand directory
             brand_path = os.path.join('models/expand_targetlist', brand_name)
             try:
@@ -181,14 +188,24 @@ class PhishpediaFunction:
                     # Update domain mapping
                     if self.domain_map_add(brand_name, domains):
                         QMessageBox.information(
-                            self.ui,
+                            dialog,
                             "Success",
                             "Brand and domains added successfully!\nPlease click 'Reload Model' button to reload the models."
                         )
+                        dialog.accept()
                 else:
-                    QMessageBox.warning(self.ui, "Warning", "Brand already exists!")
+                    QMessageBox.warning(dialog, "Warning", "Brand already exists!")
             except Exception as e:
-                QMessageBox.critical(self.ui, "Error", f"Failed to create brand: {str(e)}")
+                QMessageBox.critical(dialog, "Error", f"Failed to create brand: {str(e)}")
+        
+        def on_cancel():
+            dialog.reject()
+        
+        add_btn.clicked.connect(on_add)
+        cancel_btn.clicked.connect(on_cancel)
+        
+        # Show dialog
+        dialog.exec_()
 
     def delete_brand(self):
         # Get selected item
