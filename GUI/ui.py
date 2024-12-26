@@ -187,11 +187,42 @@ class PhishpediaUI(QWidget):
         self.add_logo_btn = QPushButton("Add Logo")
         self.delete_logo_btn = QPushButton("Delete Logo")
 
+        # 设置按钮样式
+        button_style = """
+            QPushButton {
+                background-color: #F0F0F0;
+                color: #333;
+                padding: 10px 20px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 500;
+                border: 1px solid #D0D0D0;
+                margin: 0 5px;
+            }
+            QPushButton:hover {
+                background-color: #E0E0E0;
+            }
+            QPushButton:pressed {
+                background-color: #D0D0D0;
+            }
+        """
+        
+        self.add_brand_btn.setStyleSheet(button_style)
+        self.delete_brand_btn.setStyleSheet(button_style)
+        self.add_logo_btn.setStyleSheet(button_style)
+        self.delete_logo_btn.setStyleSheet(button_style)
+
+        # 设置按钮大小策略
+        for btn in [self.add_brand_btn, self.delete_brand_btn, self.add_logo_btn, self.delete_logo_btn]:
+            btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+            btn.setMinimumHeight(40)
+
         # Add buttons to layout
         button_layout.addWidget(self.add_brand_btn)
         button_layout.addWidget(self.delete_brand_btn)
         button_layout.addWidget(self.add_logo_btn)
         button_layout.addWidget(self.delete_logo_btn)
+        button_layout.setSpacing(10)  # 设置按钮之间的间距
 
         # Connect button click events
         self.add_brand_btn.clicked.connect(self.function.add_brand)
@@ -204,24 +235,69 @@ class PhishpediaUI(QWidget):
         self.tree_widget.setHeaderLabel("Brand Logos")
         self.tree_widget.itemDoubleClicked.connect(self.function.on_item_clicked)
 
+        # 优化树形控件样式
+        tree_style = """
+            QTreeWidget {
+                background-color: #FFFFFF;
+                alternate-background-color: #F5F5F5;
+                border: 1px solid #E0E0E0;
+                border-radius: 8px;
+                padding: 5px;
+                font-size: 13px;
+            }
+            QTreeWidget::item {
+                padding: 6px;
+                margin: 2px 0;
+                border-radius: 4px;
+            }
+            QTreeWidget::item:hover {
+                background-color: #F0F0F0;
+            }
+            QTreeWidget::item:selected {
+                background-color: #E0E0E0;
+                color: #333;
+            }
+            QHeaderView::section {
+                background-color: #F0F0F0;
+                color: #333;
+                padding: 5px;
+                font-weight: bold;
+                border: none;
+                border-bottom: 1px solid #D0D0D0;
+            }
+        """
+        self.tree_widget.setStyleSheet(tree_style)
+        self.tree_widget.setAlternatingRowColors(True)
+        self.tree_widget.setIndentation(15)  # 调整缩进
+
         # Populate tree view
         self.function.populate_tree(self.tree_widget, directory_structure)
 
         # Create reload model button
         reload_layout = QHBoxLayout()
         self.reload_model_btn = QPushButton("Reload Model")
-        self.reload_model_btn.setStyleSheet("""
+        reload_btn_style = """
             QPushButton {
                 background-color: #4CAF50;
                 color: white;
-                padding: 8px 16px;
-                border-radius: 6px;
+                padding: 10px 20px;
+                border-radius: 8px;
+                font-size: 14px;
                 font-weight: bold;
+                border: none;
+                margin-top: 10px;
             }
             QPushButton:hover {
                 background-color: #45a049;
             }
-        """)
+            QPushButton:pressed {
+                background-color: #3D8B40;
+            }
+        """
+        self.reload_model_btn.setStyleSheet(reload_btn_style)
+        self.reload_model_btn.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.reload_model_btn.setMinimumWidth(150)
+        self.reload_model_btn.setMinimumHeight(40)
         reload_layout.addStretch()
         reload_layout.addWidget(self.reload_model_btn)
         

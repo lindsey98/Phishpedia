@@ -88,16 +88,11 @@ class PhishpediaFunction:
         self.update_image_display()
 
     def get_directory_structure(self, path):
-        import os
         directory_structure = {}
-        for root, dirs, files in os.walk(path):
-            # Get relative path
-            relative_path = os.path.relpath(root, path)
-            # Skip the root directory (.)
-            if relative_path == '.':
-                continue
-            # Store directory structure
-            directory_structure[relative_path] = files
+        for item in os.listdir(path):
+            item_path = os.path.join(path, item)
+            if os.path.isdir(item_path):
+                directory_structure[item] = [f for f in os.listdir(item_path) if os.path.isfile(os.path.join(item_path, f))]
         return directory_structure
 
     def on_item_clicked(self, item, column):
