@@ -1,6 +1,5 @@
 from PyQt5.QtWidgets import (
-    QMessageBox, QFileDialog, QTreeWidgetItem, QInputDialog, QLineEdit, QDialog, QVBoxLayout, QLabel,
-    QPushButton, QHBoxLayout
+    QMessageBox, QFileDialog, QTreeWidgetItem, QDialog, QVBoxLayout, QLabel
 )
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import Qt
