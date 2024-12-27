@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit,
-    QPushButton, QTextEdit, QTabWidget, QSizePolicy, QTreeWidget, QDialog
+    QPushButton, QTabWidget, QSizePolicy, QTreeWidget, QDialog,
+    QComboBox, QTabBar
 )
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
@@ -11,6 +12,8 @@ class PhishpediaUI(QWidget):
     def __init__(self):
         super().__init__()
         self.function = PhishpediaFunction(self)
+        self.default_font_size = 10  # 默认字体大小
+        self.current_font_size = self.default_font_size
         self.initUI()
 
     def initUI(self):
@@ -19,21 +22,71 @@ class PhishpediaUI(QWidget):
 
         main_layout = QVBoxLayout()
 
-        # Navigation Bar
-        self.tab_widget = QTabWidget()
-        main_layout.addWidget(self.tab_widget)
+        # Top Bar: Tab Labels and Font Size Control
+        top_bar = QHBoxLayout()
+        
+        # Tab Labels (left side)
+        tab_labels = QHBoxLayout()
+        self.phish_test_btn = QPushButton("PhishTest")
+        self.dataset_btn = QPushButton("Dataset")
+        self.phish_test_btn.setCheckable(True)
+        self.dataset_btn.setCheckable(True)
+        self.phish_test_btn.setChecked(True)
+        
+        # 连接按钮点击事件
+        self.phish_test_btn.clicked.connect(lambda: self.switch_page(0))
+        self.dataset_btn.clicked.connect(lambda: self.switch_page(1))
+        
+        tab_labels.addWidget(self.phish_test_btn)
+        tab_labels.addWidget(self.dataset_btn)
+        tab_labels.addStretch()
+        top_bar.addLayout(tab_labels)
+        
+        # Font Size Control (right side)
+        font_control = QHBoxLayout()
+        font_size_label = QLabel("Word Size:")
+        self.font_size_combo = QComboBox()
+        font_sizes = [str(size) for size in range(5, 31)]
+        self.font_size_combo.addItems(font_sizes)
+        self.font_size_combo.setCurrentText(str(self.default_font_size))
+        self.font_size_combo.currentTextChanged.connect(self.update_global_font_size)
+        
+        # 设置下拉框自适应内容宽度
+        self.font_size_combo.setSizeAdjustPolicy(QComboBox.AdjustToContents)
+        # 计算最宽的选项需要的宽度
+        max_width = 0
+        fm = self.font_size_combo.fontMetrics()
+        for size in font_sizes:
+            width = fm.horizontalAdvance(size) + 30  # 30是额外的padding和箭头的空间
+            max_width = max(max_width, width)
+        self.font_size_combo.setMinimumWidth(max_width)
+        
+        font_control.addWidget(font_size_label)
+        font_control.addWidget(self.font_size_combo)
+        top_bar.addLayout(font_control)
+        
+        main_layout.addLayout(top_bar)
+
+        # Content Stack
+        self.content_stack = QTabWidget()
+        self.content_stack.setTabBar(QTabBar())  # 创建一个空的TabBar
+        self.content_stack.tabBar().setVisible(False)  # 隐藏TabBar
+        main_layout.addWidget(self.content_stack)
 
         # PhishTest Page
         self.phish_test_page = QWidget()
         self.init_phish_test_page()
-        self.tab_widget.addTab(self.phish_test_page, "PhishTest")
+        self.content_stack.addTab(self.phish_test_page, "")  # 空标题，因为我们使用自定义按钮
 
         # Dataset Page
         self.dataset_page = QWidget()
         self.init_dataset_page()
-        self.tab_widget.addTab(self.dataset_page, "Dataset")
+        self.content_stack.addTab(self.dataset_page, "")
 
         self.setLayout(main_layout)
+
+        # Apply initial font size
+        self.update_global_font_size(str(self.default_font_size))
 
         # Apply stylesheet
         self.setStyleSheet("""
@@ -41,6 +94,24 @@ class PhishpediaUI(QWidget):
                 font-family: 'Segoe UI', 'Arial', sans-serif;
                 color: #424242;
                 background-color: #ffffff;
+            }
+            
+            QPushButton {
+                background-color: #495057;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 4px;
+                margin: 0px;
+            }
+            
+            QPushButton:checked {
+                background-color: #E0E0E0;
+                color: #424242;
+            }
+            
+            QPushButton:hover:!checked {
+                background-color: #5a6268;
             }
             
             QLabel {
@@ -101,30 +172,88 @@ class PhishpediaUI(QWidget):
             QTabBar::tab:hover:!selected {
                 background: #e9ecef;
             }
+            
+            QComboBox {
+                padding: 5px 25px 5px 5px; /* 使用CSS注释格式 */
+                border: 1px solid #e9ecef;
+                border-radius: 4px;
+                background: white;
+            }
+            
+            QComboBox::drop-down {
+                border: none;
+                width: 20px;
+            }
+            
+            QComboBox::down-arrow {
+                image: none;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-top: 5px solid #424242;
+            }
+            
+            QComboBox:on {
+                border: 2px solid #6c757d;
+            }
+            
+            QComboBox QAbstractItemView {
+                border: 1px solid #e9ecef;
+                selection-background-color: #f8f9fa;
+                selection-color: #424242;
+                background: white;
+                padding: 5px;
+            }
         """)
 
-        # Set dynamic font size based on screen DPI
-        self.set_dynamic_font_size()
+    def switch_page(self, index):
+        """切换页面并更新按钮状态"""
+        self.content_stack.setCurrentIndex(index)
+        self.phish_test_btn.setChecked(index == 0)
+        self.dataset_btn.setChecked(index == 1)
 
-    def set_dynamic_font_size(self):
-        screen = QApplication.primaryScreen()
-        dpi = screen.logicalDotsPerInch()
-        base_font_size = 16  # Base font size for 200 DPI
-        font_size = base_font_size * (dpi / 175)
+    def update_global_font_size(self, size):
+        """更新所有UI元素的字体大小"""
+        try:
+            size = int(size)
+            font = QFont()
+            font.setPointSize(size)
+            
+            # 更新所有部件的字体
+            self.update_widget_fonts(self, font)
+            
+            # 更新标签页字体
+            self.content_stack.setFont(font)
+            
+            # 保存当前字体大小，用于新创建的对话框
+            QApplication.instance().setFont(font)
+            
+        except ValueError as e:
+            print(f"Error updating font size: {e}")
+    
+    def update_widget_fonts(self, widget, font):
+        """递归更新所有子部件的字体"""
+        for child in widget.findChildren(QWidget):
+            child.setFont(font)
+            if isinstance(child, QTreeWidget):
+                # 更新树形控件的所有项目字体
+                for i in range(child.topLevelItemCount()):
+                    item = child.topLevelItem(i)
+                    self.update_tree_item_font(item, font)
+            self.update_widget_fonts(child, font)
 
-        font = QFont()
-        font.setPointSizeF(font_size)
-
-        for widget in self.findChildren(QLabel) + self.findChildren(QLineEdit) + self.findChildren(QPushButton) + [
-                self.result_display]:
-            widget.setFont(font)
+    def update_tree_item_font(self, item, font):
+        """更新树形控件项目的字体"""
+        item.setFont(0, font)
+        for i in range(item.childCount()):
+            child_item = item.child(i)
+            self.update_tree_item_font(child_item, font)
 
     def init_phish_test_page(self):
         layout = QVBoxLayout()
 
         # URL Input
         url_layout = QHBoxLayout()
-        self.url_label = QLabel('Enter URL:')
+        self.url_label = QLabel('URL:')
         url_layout.addWidget(self.url_label)
         self.url_input = QLineEdit()
         url_layout.addWidget(self.url_input)
@@ -132,7 +261,7 @@ class PhishpediaUI(QWidget):
 
         # Image Upload
         image_layout = QHBoxLayout()
-        self.image_label = QLabel('Upload Screenshot:')
+        self.image_label = QLabel('Screenshot:')
         image_layout.addWidget(self.image_label)
         self.image_input = QLineEdit()
         image_layout.addWidget(self.image_input)
@@ -146,20 +275,45 @@ class PhishpediaUI(QWidget):
         self.detect_button.clicked.connect(self.function.detect_phishing)
         layout.addWidget(self.detect_button)
 
-        # Result Display
-        result_layout = QHBoxLayout()
-        self.result_label = QLabel('Detection Result:')
-        result_layout.addWidget(self.result_label)
-        self.result_display = QTextEdit()
-        self.result_display.setReadOnly(True)
-        self.result_display.setFixedHeight(100)
-        result_layout.addWidget(self.result_display)
+        # Result Display Section
+        result_layout = QVBoxLayout()  # 主结果布局为垂直
+        
+        # 第一行：检测结果
+        detection_layout = QHBoxLayout()
+        self.result_label = QLabel('Result:')
+        self.category_display = QLineEdit()
+        self.category_display.setReadOnly(True)
+        detection_layout.addWidget(self.result_label)
+        detection_layout.addWidget(self.category_display)
+        result_layout.addLayout(detection_layout)
+
+        # 第二行：预测目标和匹配域名（水平排列）
+        details_layout = QHBoxLayout()
+        
+        # 预测目标
+        target_layout = QHBoxLayout()
+        self.target_label = QLabel('Target:')
+        self.target_display = QLineEdit()
+        self.target_display.setReadOnly(True)
+        target_layout.addWidget(self.target_label)
+        target_layout.addWidget(self.target_display)
+        details_layout.addLayout(target_layout)
+        
+        # 匹配域名
+        domain_layout = QHBoxLayout()
+        self.domain_label = QLabel('Domain:')
+        self.domain_display = QLineEdit()
+        self.domain_display.setReadOnly(True)
+        domain_layout.addWidget(self.domain_label)
+        domain_layout.addWidget(self.domain_display)
+        details_layout.addLayout(domain_layout)
+        
+        result_layout.addLayout(details_layout)
         layout.addLayout(result_layout)
 
         # Visualization Display
         visualization_layout = QVBoxLayout()
         self.visualization_label = QLabel('Visualization Result:')
-        self.visualization_label.setFixedHeight(self.visualization_label.fontMetrics().height())
         visualization_layout.addWidget(self.visualization_label)
         
         self.visualization_display = QLabel()
@@ -194,7 +348,6 @@ class PhishpediaUI(QWidget):
                 color: #333;
                 padding: 10px 20px;
                 border-radius: 8px;
-                font-size: 14px;
                 font-weight: 500;
                 border: 1px solid #D0D0D0;
                 margin: 0 5px;
@@ -215,7 +368,7 @@ class PhishpediaUI(QWidget):
         # 设置按钮大小策略
         for btn in [self.add_brand_btn, self.delete_brand_btn, self.add_logo_btn, self.delete_logo_btn]:
             btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-            btn.setMinimumHeight(40)
+            btn.setMinimumHeight(60)
 
         # Add buttons to layout
         button_layout.addWidget(self.add_brand_btn)
@@ -243,7 +396,6 @@ class PhishpediaUI(QWidget):
                 border: 1px solid #E0E0E0;
                 border-radius: 8px;
                 padding: 5px;
-                font-size: 13px;
             }
             QTreeWidget::item {
                 padding: 6px;
@@ -282,7 +434,6 @@ class PhishpediaUI(QWidget):
                 color: white;
                 padding: 10px 20px;
                 border-radius: 8px;
-                font-size: 14px;
                 font-weight: bold;
                 border: none;
                 margin-top: 10px;
@@ -413,8 +564,8 @@ class PhishpediaUI(QWidget):
                 background: #e9ecef;
             }
         """)
-
-        dialog.setStyleSheet
+        
+        dialog.setFont(QFont('Segoe UI', self.current_font_size))
         
         return dialog, brand_input, domain_input, add_btn, cancel_btn
 

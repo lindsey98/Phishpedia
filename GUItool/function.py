@@ -29,22 +29,31 @@ class PhishpediaFunction:
         screenshot_path = self.ui.image_input.text()
 
         if not url or not screenshot_path:
-            self.ui.result_display.setText("Please enter URL and upload a screenshot.")
+            self.ui.category_display.setText("Please enter URL and upload a screenshot.")
+            self.ui.target_display.clear()
+            self.ui.domain_display.clear()
             return
 
         phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time = self.phishpedia_cls.test_orig_phishpedia(
             url, screenshot_path, None)
 
-        # 根据 phish_category 改变颜色
-        phish_category_color = 'green' if phish_category == 0 else 'red'
-        result_text = f'<span style="color: {phish_category_color};">Phish Category(0 for benign, 1 for phish, default is benign): {phish_category}</span><br>'
-        result_text += f"Predicted Target: {pred_target}<br>"
-        result_text += f"Matched Domain: {matched_domain}<br>"
-        result_text += f"Siamese Confidence: {siamese_conf}<br>"
-        result_text += f"Logo Recognition Time: {logo_recog_time} seconds<br>"
-        result_text += f"Logo Match Time: {logo_match_time} seconds<br>"
-
-        self.ui.result_display.setText(result_text)
+        # 设置检测结果类别和颜色
+        if phish_category == 0:
+            self.ui.category_display.setStyleSheet("color: green;")
+            self.ui.category_display.setText("Benign")
+        elif phish_category == 1:
+            self.ui.category_display.setStyleSheet("color: red;")
+            self.ui.category_display.setText("Phish")
+        
+        # 如果没有匹配到目标，显示黄色的No match
+        if pred_target is None or pred_target == "":
+            self.ui.category_display.setStyleSheet("color: orange;")
+            self.ui.category_display.setText("No Match")
+            pred_target = "None"
+        
+        # 更新其他显示框的内容
+        self.ui.target_display.setText(str(pred_target))
+        self.ui.domain_display.setText(str(matched_domain))
 
         if phish_category == 1 and plotvis is not None:
             self.display_image(plotvis)

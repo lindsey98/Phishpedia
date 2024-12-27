@@ -13,4 +13,3 @@ lxml
 gdown
 memory-profiler
 psutil
-PyQt5 # GUI框架
