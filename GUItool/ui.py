@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit,
-    QPushButton, QTextEdit, QTabWidget, QSizePolicy, QTreeWidget, QDialog,
+    QPushButton, QTabWidget, QSizePolicy, QTreeWidget, QDialog,
     QComboBox, QTabBar
 )
-from PyQt5.QtGui import QFont, QFontMetrics
+from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 from .function import PhishpediaFunction
 
@@ -278,7 +278,6 @@ class PhishpediaUI(QWidget):
         # Result Display Section
         result_layout = QVBoxLayout()  # 主结果布局为垂直
         
-        
         # 第一行：检测结果
         detection_layout = QHBoxLayout()
         self.result_label = QLabel('Result:')
@@ -287,7 +286,7 @@ class PhishpediaUI(QWidget):
         detection_layout.addWidget(self.result_label)
         detection_layout.addWidget(self.category_display)
         result_layout.addLayout(detection_layout)
-        
+
         # 第二行：预测目标和匹配域名（水平排列）
         details_layout = QHBoxLayout()
         
@@ -499,7 +498,7 @@ class PhishpediaUI(QWidget):
         dialog.setLayout(layout)
         
         # Apply StyleSheet to dialog
-        dialog.setStyleSheet(""" 
+        dialog.setStyleSheet("""
             QWidget {
                 font-family: 'Segoe UI', 'Arial', sans-serif;
                 color: #424242;
