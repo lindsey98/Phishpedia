@@ -45,7 +45,6 @@ def upload_file():
         file_path = os.path.normpath(file_path)
         if not file_path.startswith(app.config['UPLOAD_FOLDER']):
             return jsonify({'error': 'Invalid file path'}), 400
-        
         file.save(file_path)
         return jsonify({'success': True, 'imageUrl': f'/uploads/{filename}'}), 200
 
@@ -71,6 +70,8 @@ def delete_image():
         filename = image_url.split('/')[-1]
         image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         image_path = os.path.normpath(image_path)
+        if not image_path.startswith(app.config['UPLOAD_FOLDER']):
+            return jsonify({'success': False, 'error': 'Invalid file path'}), 400
         os.remove(image_path)
         return jsonify({'success': True}), 200
     except Exception:
@@ -86,8 +87,10 @@ def detect():
     filename = imageUrl.split('/')[-1]
     screenshot_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     screenshot_path = os.path.normpath(screenshot_path)
+    if not screenshot_path.startswith(app.config['UPLOAD_FOLDER']):
+        return jsonify({'success': False, 'error': 'Invalid file path'}), 400
 
-    phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time = phishpedia_cls.test_orig_phishpedia(
+    phish_category, pred_target, matched_domain, plotvis, siamese_conf, _, logo_recog_time, logo_match_time = phishpedia_cls.test_orig_phishpedia(
         url, screenshot_path, None)
     
     # 处理检测结果
@@ -124,6 +127,8 @@ def get_file_tree():
             for entry in os.listdir(path):
                 entry_path = os.path.join(path, entry)
                 entry_path = os.path.normpath(entry_path)
+                if not entry_path.startswith(path):
+                    continue
                 if os.path.isdir(entry_path):
                     tree.append({
                         'name': entry,
@@ -154,6 +159,8 @@ def view_file():
     file_name = request.args.get('file')
     file_path = os.path.join(app.config['FILE_TREE_ROOT'], file_name)
     file_path = os.path.normpath(file_path)
+    if not file_path.startswith(app.config['FILE_TREE_ROOT']):
+        return jsonify({'error': 'Invalid file path'}), 400
 
     if not os.path.exists(file_path):
         return jsonify({'error': 'File not found'}), 404
@@ -180,12 +187,16 @@ def add_logo():
 
         directory_path = os.path.join(app.config['FILE_TREE_ROOT'], directory)
         directory_path = os.path.normpath(directory_path)
+        if not directory_path.startswith(app.config['FILE_TREE_ROOT']):
+            return jsonify({'success': False, 'error': 'Invalid directory path'}), 400
         
         if not os.path.exists(directory_path):
             return jsonify({'success': False, 'error': 'Directory does not exist'}), 400
 
         file_path = os.path.join(directory_path, logo.filename)
         file_path = os.path.normpath(file_path)
+        if not file_path.startswith(directory_path):
+            return jsonify({'success': False, 'error': 'Invalid file path'}), 400
         logo.save(file_path)
         return jsonify({'success': True, 'message': 'Logo added successfully'}), 200
 
@@ -202,8 +213,12 @@ def del_logo():
 
     directory_path = os.path.join(app.config['FILE_TREE_ROOT'], directory)
     directory_path = os.path.normpath(directory_path)
+    if not directory_path.startswith(app.config['FILE_TREE_ROOT']):
+        return jsonify({'success': False, 'error': 'Invalid directory path'}), 400
     file_path = os.path.join(directory_path, filename)
     file_path = os.path.normpath(file_path)
+    if not file_path.startswith(directory_path):
+        return jsonify({'success': False, 'error': 'Invalid file path'}), 400
 
     if not os.path.exists(file_path):
         return jsonify({'success': False, 'error': 'File does not exist'}), 400
@@ -226,6 +241,8 @@ def add_brand():
     # 创建品牌目录
     brand_directory_path = os.path.join(app.config['FILE_TREE_ROOT'], brand_name)
     brand_directory_path = os.path.normpath(brand_directory_path)
+    if not brand_directory_path.startswith(app.config['FILE_TREE_ROOT']):
+        return jsonify({'success': False, 'error': 'Invalid brand directory path'}), 400
     
     if os.path.exists(brand_directory_path):
         return jsonify({'success': False, 'error': 'Brand already exists'}), 400
@@ -247,6 +264,8 @@ def del_brand():
 
     directory_path = os.path.join(app.config['FILE_TREE_ROOT'], directory)
     directory_path = os.path.normpath(directory_path)
+    if not directory_path.startswith(app.config['FILE_TREE_ROOT']):
+        return jsonify({'success': False, 'error': 'Invalid directory path'}), 400
 
     if not os.path.exists(directory_path):
         return jsonify({'success': False, 'error': 'Directory does not exist'}), 400
