@@ -8,6 +8,7 @@ import io
 from PIL import Image
 import cv2
 
+
 def check_port_inuse(port, host):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -89,4 +90,3 @@ def domain_map_delete(brand_name, domain_map_path):
     # Save updated mapping
     with open(domain_map_path, 'wb') as f:
         pickle.dump(domain_map, f)
-        

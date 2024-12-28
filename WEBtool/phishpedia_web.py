@@ -1,5 +1,4 @@
 import os
-import sys
 import shutil
 from flask import request, Flask, jsonify, render_template, send_from_directory
 from flask_cors import CORS
@@ -37,6 +36,7 @@ def upload_file():
     if file and allowed_file(file.filename):
         filename = file.filename
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file_path = os.path.normpath(file_path)
         file.save(file_path)
         return jsonify({'success': True, 'imageUrl': f'/uploads/{filename}'}), 200
 
@@ -61,10 +61,11 @@ def delete_image():
         # 假设 image_url 是相对于静态目录的路径
         filename = image_url.split('/')[-1]
         image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        image_path = os.path.normpath(image_path)
         os.remove(image_path)
-        return jsonify({'success': True})
-    except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
+        return jsonify({'success': True}), 200
+    except Exception:
+        return jsonify({'success': False}), 500
 
 
 @app.route('/detect', methods=['POST'])
@@ -75,6 +76,7 @@ def detect():
     
     filename = imageUrl.split('/')[-1]
     screenshot_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    screenshot_path = os.path.normpath(screenshot_path)
 
     phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time = phishpedia_cls.test_orig_phishpedia(
         url, screenshot_path, None)
@@ -112,6 +114,7 @@ def get_file_tree():
         try:
             for entry in os.listdir(path):
                 entry_path = os.path.join(path, entry)
+                entry_path = os.path.normpath(entry_path)
                 if os.path.isdir(entry_path):
                     tree.append({
                         'name': entry,
@@ -141,7 +144,7 @@ def get_file_tree():
 def view_file():
     file_name = request.args.get('file')
     file_path = os.path.join(app.config['FILE_TREE_ROOT'], file_name)
-    print(file_name)
+    file_path = os.path.normpath(file_path)
 
     if not os.path.exists(file_path):
         return jsonify({'error': 'File not found'}), 404
@@ -167,11 +170,13 @@ def add_logo():
             return jsonify({'success': False, 'error': 'No directory specified'}), 400
 
         directory_path = os.path.join(app.config['FILE_TREE_ROOT'], directory)
+        directory_path = os.path.normpath(directory_path)
         
         if not os.path.exists(directory_path):
             return jsonify({'success': False, 'error': 'Directory does not exist'}), 400
 
         file_path = os.path.join(directory_path, logo.filename)
+        file_path = os.path.normpath(file_path)
         logo.save(file_path)
         return jsonify({'success': True, 'message': 'Logo added successfully'}), 200
 
@@ -187,7 +192,9 @@ def del_logo():
         return jsonify({'success': False, 'error': 'Directory and filename must be specified'}), 400
 
     directory_path = os.path.join(app.config['FILE_TREE_ROOT'], directory)
+    directory_path = os.path.normpath(directory_path)
     file_path = os.path.join(directory_path, filename)
+    file_path = os.path.normpath(file_path)
 
     if not os.path.exists(file_path):
         return jsonify({'success': False, 'error': 'File does not exist'}), 400
@@ -195,8 +202,8 @@ def del_logo():
     try:
         os.remove(file_path)
         return jsonify({'success': True, 'message': 'Logo deleted successfully'}), 200
-    except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
+    except Exception:
+        return jsonify({'success': False}), 500
 
 
 @app.route('/add-brand', methods=['POST'])
@@ -209,6 +216,8 @@ def add_brand():
 
     # 创建品牌目录
     brand_directory_path = os.path.join(app.config['FILE_TREE_ROOT'], brand_name)
+    brand_directory_path = os.path.normpath(brand_directory_path)
+    
     if os.path.exists(brand_directory_path):
         return jsonify({'success': False, 'error': 'Brand already exists'}), 400
 
@@ -216,8 +225,8 @@ def add_brand():
         os.makedirs(brand_directory_path)
         domain_map_add(brand_name, brand_domain, app.config['DOMAIN_MAP_PATH'])
         return jsonify({'success': True, 'message': 'Brand added successfully'}), 200
-    except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
+    except Exception:
+        return jsonify({'success': False}), 500
 
 
 @app.route('/del-brand', methods=['POST'])
@@ -228,6 +237,7 @@ def del_brand():
         return jsonify({'success': False, 'error': 'Directory must be specified'}), 400
 
     directory_path = os.path.join(app.config['FILE_TREE_ROOT'], directory)
+    directory_path = os.path.normpath(directory_path)
 
     if not os.path.exists(directory_path):
         return jsonify({'success': False, 'error': 'Directory does not exist'}), 400
@@ -236,8 +246,8 @@ def del_brand():
         shutil.rmtree(directory_path)
         domain_map_delete(directory, app.config['DOMAIN_MAP_PATH'])
         return jsonify({'success': True, 'message': 'Brand deleted successfully'}), 200
-    except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
+    except Exception:
+        return jsonify({'success': False}), 500
 
 
 @app.route('/reload-model', methods=['POST'])
@@ -248,8 +258,8 @@ def reload_model():
         # Reinitialize Phishpedia
         phishpedia_cls = PhishpediaWrapper()
         return jsonify({'success': True, 'message': 'Brand deleted successfully'}), 200
-    except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
+    except Exception:
+        return jsonify({'success': False}), 500
 
 
 if __name__ == "__main__":
@@ -264,4 +274,3 @@ if __name__ == "__main__":
     initial_upload_folder(app.config['UPLOAD_FOLDER'])
     
     app.run(host=ip_address, port=port)
-    
