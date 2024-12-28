@@ -16,6 +16,7 @@ Before using, make sure all necessary dependencies are installed:
 Run the following command in the web tool directory:
 
 ```bash
+~Phishpedia/WEBtool$ export PYTHONPATH=..
 ~Phishpedia/WEBtool$ python phishpedia_gui.py
 ```
 
