@@ -77,7 +77,7 @@ def is_running_in_docker():
     try:
         with open('/proc/1/cgroup', 'r') as f:
             return docker_env or 'docker' in f.read()
-    except:
+    except (IOError, OSError):  # 明确指定可能的异常类型
         return docker_env
 
 
