@@ -69,5 +69,20 @@ def analyze():
         return jsonify("ERROR"), 500
 
 
+def is_running_in_docker():
+    """检查是否在 Docker 环境中运行"""
+    # 方法1：检查 /.dockerenv 文件是否存在
+    docker_env = os.path.exists('/.dockerenv')
+    # 方法2：检查 cgroup 中是否包含 docker 字符串
+    try:
+        with open('/proc/1/cgroup', 'r') as f:
+            return docker_env or 'docker' in f.read()
+    except:
+        return docker_env
+
+
 if __name__ == '__main__':
-    app.run(debug=False)
+    if is_running_in_docker():
+        app.run(host='0.0.0.0', port=5000, debug=False)
+    else:
+        app.run(debug=False)
