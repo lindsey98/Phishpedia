@@ -35,6 +35,12 @@ def upload_file():
 
     if file and allowed_file(file.filename):
         filename = file.filename
+        if filename.count('.') > 1:
+            return jsonify({'error': 'Invalid file name'}), 400
+        elif any(sep in filename for sep in (os.sep, os.altsep)):
+            return jsonify({'error': 'Invalid file name'}), 400
+        elif '..' in filename:
+            return jsonify({'error': 'Invalid file name'}), 400
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file_path = os.path.normpath(file_path)
         file.save(file_path)
