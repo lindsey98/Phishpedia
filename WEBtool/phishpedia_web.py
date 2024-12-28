@@ -43,6 +43,9 @@ def upload_file():
             return jsonify({'error': 'Invalid file name'}), 400
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file_path = os.path.normpath(file_path)
+        if not file_path.startswith(app.config['UPLOAD_FOLDER']):
+            return jsonify({'error': 'Invalid file path'}), 400
+        
         file.save(file_path)
         return jsonify({'success': True, 'imageUrl': f'/uploads/{filename}'}), 200
 
