@@ -20,7 +20,7 @@
 - Existing reference-based phishing detectors:
   - :x: Lack of **interpretability**, only give binary decision (legit or phish)
   - :x: **Not robust against distribution shift**, because the classifier is biased towards the phishing training set
-  - :x: Lack of a large-scale phishing benchmark dataset
+  - :x: **Lack of a large-scale phishing benchmark** dataset
     
 - The contributions of our paper:
    - :white_check_mark: We propose a phishing identification system Phishpedia, which has high identification accuracy and low runtime overhead, outperforming the relevant state-of-the-art identification approaches. 
@@ -59,30 +59,26 @@
 ```
 
 ## Instructions
-Requirements: 
-- Anaconda installed, please refer to the official installation guide: https://docs.anaconda.com/free/anaconda/install/index.html 
 
-1. Create a local clone of Phishpedia
-```bash
-git clone https://github.com/lindsey98/Phishpedia.git
-```
+Prerequisite: [Anaconda installed](https://docs.anaconda.com/free/anaconda/install/index.html) 
 
-2. Setup the phishpedia conda environment. 
+<details>
+  <summary>Running Inference from the Command Line</summary>
+Step 1. Create a local clone of Phishpedia, and setup the phishpedia conda environment.
 In this step, we would be installing the core dependencies of Phishpedia such as pytorch, and detectron2. 
 In addition, we would also download the model checkpoints and brand reference list.
 This step may take some time.
 ```bash
+git clone https://github.com/lindsey98/Phishpedia.git
 chmod +x ./setup.sh
-export ENV_NAME="phishpedia" 
 ./setup.sh
 ```
-
-3. 
+Step 2. Activate conda environment _phishpedia_:
 ```bash
 conda activate phishpedia
 ```
 
-4. Run in bash 
+Step 3. Run in bash 
 ```bash
 python phishpedia.py --folder <folder you want to test e.g. ./datasets/test_sites>
 ```
@@ -98,7 +94,23 @@ test_site_2
 |__ shot.png (Save the screenshot)
 ......
 ```
+</details>
 
+<details>
+  <summary>Running Phishpedia as a GUI tool (PyQt5-based)</summary>
+  Refer to (GUItool/)[GUItool/]
+</details>
+
+<details>
+  <summary>Running Phishpedia as a GUI tool (web-browser-based)</summary>
+  Refer to (WEBtool/)[WEBtool/]
+</details>
+
+<details>
+  <summary>Running Phishpedia as a Chrome plugin</summary>
+  Refer to (Plugin_for_Chrome/)[Plugin_for_Chrome/]
+</details>
+  
 ## Miscellaneous
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
 - The logo targetlist described in our paper includes 181 brands, we have further expanded the targetlist to include 277 brands in this code repository 
