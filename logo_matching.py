@@ -88,24 +88,29 @@ def cache_reference_list(model, targetlist_path: str, grayscale=False):
     :return file_name_list: targetlist paths
     '''
 
-    #     Prediction for targetlists
+    # Prediction for targetlists
     logo_feat_list = []
     file_name_list = []
 
-    for target in tqdm(os.listdir(targetlist_path)):
+    target_list = os.listdir(targetlist_path)
+    for target in tqdm(target_list):
         if target.startswith('.'):  # skip hidden files
             continue
-        for logo_path in os.listdir(os.path.join(targetlist_path, target)):
-            if logo_path.endswith('.png') or logo_path.endswith('.jpeg') or logo_path.endswith(
-                    '.jpg') or logo_path.endswith('.PNG') \
-                    or logo_path.endswith('.JPG') or logo_path.endswith('.JPEG'):
-                if logo_path.startswith('loginpage') or logo_path.startswith('homepage'):  # skip homepage/loginpage
+        logo_list = os.listdir(os.path.join(targetlist_path, target))
+        for logo_path in logo_list:
+            # List of valid image extensions
+            valid_extensions = ['.png', '.jpeg', '.jpg', 'PNG','.JPG', '.JPEG']
+            if any(logo_path.endswith(ext) for ext in valid_extensions):
+                skip_prefixes = ['loginpage', 'homepage']
+                if any(logo_path.startswith(prefix) for prefix in skip_prefixes):  # skip homepage/loginpage
                     continue
-                logo_feat_list.append(get_embedding(img=os.path.join(targetlist_path, target, logo_path),
-                                                    model=model, grayscale=grayscale))
-                file_name_list.append(str(os.path.join(targetlist_path, target, logo_path)))
-
-    return np.asarray(logo_feat_list), np.asarray(file_name_list)
+                try:
+                    logo_feat_list.append(get_embedding(img=os.path.join(targetlist_path, target, logo_path),
+                                                        model=model, grayscale=grayscale))
+                    file_name_list.append(str(os.path.join(targetlist_path, target, logo_path)))
+                except OSError:
+                    print(f"Error opening image: {os.path.join(targetlist_path, target, logo_path)}")
+                    continue
 
 
 @torch.no_grad()
@@ -133,9 +138,16 @@ def get_embedding(img, model, grayscale=False):
 
     ## Resize the image while keeping the original aspect ratio
     pad_color = 255 if grayscale else (255, 255, 255)
-    img = ImageOps.expand(img, (
-        (max(img.size) - img.size[0]) // 2, (max(img.size) - img.size[1]) // 2,
-        (max(img.size) - img.size[0]) // 2, (max(img.size) - img.size[1]) // 2), fill=pad_color)
+    img = ImageOps.expand(
+        img,
+        (
+            (max(img.size) - img.size[0]) // 2,
+            (max(img.size) - img.size[1]) // 2,
+            (max(img.size) - img.size[0]) // 2,
+            (max(img.size) - img.size[1]) // 2
+        ),
+        fill=pad_color
+    )
 
     img = img.resize((img_size, img_size))
 
