@@ -64,21 +64,24 @@ Prerequisite: [Anaconda installed](https://docs.anaconda.com/free/anaconda/insta
 
 <details>
   <summary>Running Inference from the Command Line</summary>
-Step 1. Create a local clone of Phishpedia, and setup the phishpedia conda environment.
-In this step, we would be installing the core dependencies of Phishpedia such as pytorch, and detectron2. 
+
+- Step 1. Create a local clone of Phishpedia, and setup the phishpedia conda environment.
+In this step, we would be installing the core dependencies of Phishpedia such as pytorch, and detectron2.
 In addition, we would also download the model checkpoints and brand reference list.
 This step may take some time.
 ```bash
 git clone https://github.com/lindsey98/Phishpedia.git
+cd Phishpedia
 chmod +x ./setup.sh
 ./setup.sh
 ```
-Step 2. Activate conda environment _phishpedia_:
+
+- Step 2. Activate conda environment _phishpedia_:
 ```bash
 conda activate phishpedia
 ```
 
-Step 3. Run in bash 
+- Step 3. Run in bash 
 ```bash
 python phishpedia.py --folder <folder you want to test e.g. ./datasets/test_sites>
 ```
@@ -98,17 +101,20 @@ test_site_2
 
 <details>
   <summary>Running Phishpedia as a GUI tool (PyQt5-based)</summary>
-  Refer to (GUItool/)[GUItool/]
+  
+  Refer to [GUItool/](GUItool/])
 </details>
 
 <details>
   <summary>Running Phishpedia as a GUI tool (web-browser-based)</summary>
-  Refer to (WEBtool/)[WEBtool/]
+  
+  Refer to [WEBtool/](WEBtool/)
 </details>
 
 <details>
   <summary>Running Phishpedia as a Chrome plugin</summary>
-  Refer to (Plugin_for_Chrome/)[Plugin_for_Chrome/]
+  
+  Refer to [Plugin_for_Chrome/](Plugin_for_Chrome/)
 </details>
   
 ## Miscellaneous
