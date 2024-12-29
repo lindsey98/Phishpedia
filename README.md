@@ -102,7 +102,7 @@ test_site_2
 <details>
   <summary>Running Phishpedia as a GUI tool (PyQt5-based)</summary>
   
-  Refer to [GUItool/](GUItool/])
+  Refer to [GUItool/](GUItool/)
 </details>
 
 <details>
