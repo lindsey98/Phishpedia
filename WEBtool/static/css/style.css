@@ -1,0 +1,431 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #faf4f2;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin: 5px 0;
+}
+
+#header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#logo-icon {
+    height: 60px;
+    width: auto;
+    margin-right: 20px;
+}
+
+#logo-text {
+    display: flex;
+    align-items: center;
+    height: 80px;
+    line-height: 80px;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, #3498db, #f9f388);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    font-size: 35px;
+    font-weight: bold;
+}
+
+
+#main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 130px;
+}
+
+#input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 1200px;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #dff0fb;
+}
+
+.inner-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 5px;
+    border: 3px dashed white;
+    background-color: #eaf4fb;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#output-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 1240px;
+    margin-top: 10px;
+}
+
+/* ============================= URL输入区域 =============================*/
+#url-input-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 500px;
+}
+
+.custom-label {
+    background-color: #87CEFA;
+    color: white;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    text-align: center;
+    white-space: nowrap;
+}
+
+#url-input {
+    background-color: #dcdcdc;
+    color: #333;
+    border: none;
+    border-radius: 15px;
+    padding: 10px 20px;
+    font-size: 16px;
+    outline: none;
+    width: 300px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#url-input::placeholder {
+    color: #888;
+    font-style: italic;
+}
+
+/* ============================= 图片上传区域 =============================*/
+#image-upload-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 410px;
+}
+
+.drop-area {
+    border: 2px dashed #007BFF;
+    border-radius: 8px;
+    background-color: #ffffff;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.2em;
+    color: #004085;
+    margin-top: 10px;
+    width: 100%;
+    height: 20vh;
+    margin: 20px auto;
+    transition: background-color 0.3s ease;
+}
+
+
+.upload-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.upload-label {
+    cursor: pointer;
+    margin-bottom: -10px;
+    background-color: white;
+    color: black;
+    padding: 10px 20px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    border-radius: 6px;
+    text-align: center;
+    font-size: small;
+    display: inline-block;
+    line-height: 1;
+    font-family: Arial,
+        sans-serif;
+}
+
+.upload-label:hover {
+    background-color: #f0f0f0;
+}
+
+.upload-success-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border: 2px dashed #007BFF;
+    border-radius: 8px;
+    background-color: #ffffff;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.success-message {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: larger;
+}
+
+.success-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+
+.success-text {
+    font-size: 16px;
+}
+
+.uploaded-thumbnail {
+    width: 400px;
+    height: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.clear-button {
+    padding: 10px 20px;
+    background-color: #888888;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.clear-button:hover {
+    background-color: #555555;
+}
+
+#start-detection-button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 0px;
+    width: 410px;
+    transition: background-color 0.3s ease;
+}
+
+#start-detection-button:hover {
+    background-color: #0056b3;
+}
+
+/* ============================= 结果容器样式 =============================*/
+#result-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1500px;
+    gap: 20px;
+}
+
+#original-image-container,
+#detection-result-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    height: 450px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+#original-image-container:hover,
+#detection-result-container:hover {
+    transform: scale(1.02);
+    transition: transform 0.3s ease;
+}
+
+.result_title {
+    width: 100%;
+    height: 20px;
+    margin-top: 0px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    font-family: Arial,
+        sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#logo-extraction-result {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-top: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+#original-image {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+#detection-result {
+    width: 100%;
+    height: 100%;
+    margin-top: 10px;
+    text-align: left;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+#detection-label {
+    display: inline-block;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    padding: 3px 6px;
+    border-radius: 16px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#detection-label.benign {
+    background: linear-gradient(90deg, #4CAF50, #4CAF50);
+}
+
+#detection-label.phishing {
+    background: linear-gradient(90deg, #F44336, #F44336);
+}
+
+#detection-label.unknown {
+    background: linear-gradient(90deg, #9E9E9E, #9E9E9E);
+}
+
+#detection-explanation {
+    font-size: 14px;
+    color: #333;
+}
+
+.separator {
+    width: 100%;
+    height: 2px;
+    background-color: #ddd;
+    margin: 10px 0;
+}
+
+
+.tasks-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tasks-list li {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.tasks-list li:last-child {
+    border-bottom: none;
+}
+
+.icon {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.task {
+    font-size: 14px;
+    color: #555;
+    margin-right: 12px;
+}
+
+.result {
+    font-size: 14px;
+    color: #5b5b5b;
+    background-color: #cdcdcd;
+    padding: 3px 6px;
+    border-radius: 10px;
+}
+
+#detection-explanation {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #333;
+    background-color: #f9f9f9;
+    padding: 16px;
+    border-left: 4px solid #0078d4;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin: 16px 0;
+}
+
+#detection-explanation p {
+    margin: 0;
+}
+
+#detection-explanation strong {
+    color: #d9534f;
+    font-weight: bold;
+    background-color: #fff0f0;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
