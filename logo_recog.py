@@ -52,13 +52,15 @@ def config_rcnn(cfg_path, weights_path, conf_threshold):
     predictor = DefaultPredictor(cfg)
     return predictor
 
+
 COLORS = {
-    0: (255, 255, 0), # logo
-    1: (36, 255, 12), # input
-    2: (0, 255, 255), # button
-    3: (0, 0, 255), # label
-    4: (255, 0, 0) # block
+    0: (255, 255, 0),  # logo
+    1: (36, 255, 12),  # input
+    2: (0, 255, 255),  # button
+    3: (0, 0, 255),  # label
+    4: (255, 0, 0)  # block
 }
+
 
 def vis(img_path, pred_boxes):
     '''
