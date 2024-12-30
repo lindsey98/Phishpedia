@@ -98,6 +98,14 @@ Plugin_for_Chrome/
     ```sh
     python app.py
     ```
+**或者**
+
+使用Docker进行部署
+```sh
+docker build -t phishpedia-app .
+
+docker run -p 5000:5000 phishpedia-app
+```
 
 ### 使用插件
 
