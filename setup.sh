@@ -6,6 +6,7 @@ set -e
 # Function to display error messages and exit
 error_exit() {
   echo "$1" >&2
+  echo "$(date): $1" >> error.log  # Log error to a file for debugging
   exit 1
 }
 
