@@ -99,7 +99,7 @@ def cache_reference_list(model, targetlist_path: str, grayscale=False):
         logo_list = os.listdir(os.path.join(targetlist_path, target))
         for logo_path in logo_list:
             # List of valid image extensions
-            valid_extensions = ['.png', '.jpeg', '.jpg', 'PNG','.JPG', '.JPEG']
+            valid_extensions = ['.png', 'PNG', '.jpeg', '.jpg', '.JPG', '.JPEG']
             if any(logo_path.endswith(ext) for ext in valid_extensions):
                 skip_prefixes = ['loginpage', 'homepage']
                 if any(logo_path.startswith(prefix) for prefix in skip_prefixes):  # skip homepage/loginpage
@@ -185,17 +185,17 @@ def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str
         print('Screenshot cannot be open')
         return None, None, None
 
-    ## get predicted box --> crop from screenshot
+    # get predicted box --> crop from screenshot
     cropped = img.crop((gt_bbox[0], gt_bbox[1], gt_bbox[2], gt_bbox[3]))
     img_feat = get_embedding(cropped, model, grayscale=grayscale)
 
-    ## get cosine similarity with every protected logo
+    # get cosine similarity with every protected logo
     sim_list = logo_feat_list @ img_feat.T  # take dot product for every pair of embeddings (Cosine Similarity)
     pred_brand_list = file_name_list
 
     assert len(sim_list) == len(pred_brand_list)
 
-    ## get top 3 brands
+    # get top 3 brands
     idx = np.argsort(sim_list)[::-1][:3]
     pred_brand_list = np.array(pred_brand_list)[idx]
     sim_list = np.array(sim_list)[idx]
