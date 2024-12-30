@@ -24,8 +24,8 @@ def pred_rcnn(im, predictor):
     outputs = predictor(im)
 
     instances = outputs['instances']
-    pred_classes = instances.pred_classes # tensor
-    pred_boxes = instances.pred_boxes # Boxes object
+    pred_classes = instances.pred_classes  # tensor
+    pred_boxes = instances.pred_boxes  # Boxes object
 
     logo_boxes = pred_boxes[pred_classes == 1].tensor
 

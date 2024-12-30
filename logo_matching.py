@@ -208,17 +208,17 @@ def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str
     for j in range(3):
         predicted_brand, predicted_domain = None, None
 
-        ## If we are trying those lower rank logo, the predicted brand of them should be the same as top1 logo, otherwise might be false positive
+        # If we are trying those lower rank logo, the predicted brand of them should be the same as top1 logo, otherwise might be false positive
         if top3_brandlist[j] != top3_brandlist[0]:
             continue
 
-        ## If the largest similarity exceeds threshold
+        # If the largest similarity exceeds threshold
         if top3_simlist[j] >= similarity_threshold:
             predicted_brand = top3_brandlist[j]
             predicted_domain = top3_domainlist[j]
             final_sim = top3_simlist[j]
 
-        ## Else if not exceed, try resolution alignment, see if can improve
+        # Else if not exceed, try resolution alignment, see if can improve
         elif do_resolution_alignment:
             orig_candidate_logo = Image.open(pred_brand_list[j])
             cropped, candidate_logo = resolution_alignment(cropped, orig_candidate_logo)
