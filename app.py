@@ -7,10 +7,8 @@ from datetime import datetime
 import os
 from phishpedia import PhishpediaWrapper, result_file_write
 
-
 app = Flask(__name__)
 CORS(app)
-
 
 # 在创建应用时初始化模型
 with app.app_context():
@@ -27,7 +25,7 @@ def analyze():
         data = request.get_json()
         url = data.get('url')
         screenshot_data = data.get('screenshot')
-        
+
         # 解码Base64图片数据
         image_data = base64.b64decode(screenshot_data.split(',')[1])
         image = Image.open(BytesIO(image_data))
@@ -38,7 +36,7 @@ def analyze():
         phish_category, pred_target, matched_domain, \
             plotvis, siamese_conf, pred_boxes, \
             logo_recog_time, logo_match_time = phishpedia_cls.test_orig_phishpedia(url, screenshot_path, None)
-        
+
         # 添加结果处理逻辑
         result = {
             "isPhishing": bool(phish_category),
@@ -50,25 +48,25 @@ def analyze():
         # 记录日志
         today = datetime.now().strftime('%Y%m%d')
         log_file_path = os.path.join(log_dir, f'{today}_results.txt')
-        
+
         try:
             with open(log_file_path, "a+", encoding='ISO-8859-1') as f:
                 result_file_write(f, current_dir, url, phish_category, pred_target,
-                                matched_domain if matched_domain else ["unknown"],
-                                siamese_conf if siamese_conf is not None else 0.0,
-                                logo_recog_time, logo_match_time)
+                                  matched_domain if matched_domain else ["unknown"],
+                                  siamese_conf if siamese_conf is not None else 0.0,
+                                  logo_recog_time, logo_match_time)
         except UnicodeError:
             with open(log_file_path, "a+", encoding='utf-8') as f:
                 result_file_write(f, current_dir, url, phish_category, pred_target,
-                                matched_domain if matched_domain else ["unknown"],
-                                siamese_conf if siamese_conf is not None else 0.0,
-                                logo_recog_time, logo_match_time)
+                                  matched_domain if matched_domain else ["unknown"],
+                                  siamese_conf if siamese_conf is not None else 0.0,
+                                  logo_recog_time, logo_match_time)
 
         if os.path.exists(screenshot_path):
             os.remove(screenshot_path)
-            
+
         return jsonify(result)
-    
+
     except Exception as e:
         print(f"Error in analyze: {str(e)}")
         log_error_path = os.path.join(log_dir, 'log_error.txt')
