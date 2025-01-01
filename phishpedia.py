@@ -167,7 +167,7 @@ if __name__ == '__main__':
 
         with open(info_path, 'r') as file:
             url = file.read()
-
+        
         if os.path.exists(result_txt):
             with open(result_txt, 'r', encoding='ISO-8859-1') as file:
                 if url in file.read():
@@ -192,3 +192,4 @@ if __name__ == '__main__':
         if phish_category:
             os.makedirs(os.path.join(request_dir, folder), exist_ok=True)
             cv2.imwrite(os.path.join(request_dir, folder, "predict.png"), plotvis)
+    

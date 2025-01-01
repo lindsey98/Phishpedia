@@ -1,0 +1,55 @@
+name: Pytest CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 第一步：检出代码
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 第二步：设置 Miniconda
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true            # 自动更新 Conda
+          python-version: '3.9'              # 指定 Python 版
+
+      # 第三步：升级 pip
+      - name: Upgrade pip
+        run: |
+          python -m pip install --upgrade pip
+        
+
+      # 第四步：克隆 Phishpedia 仓库并运行 setup.sh
+      - name: Clone Phishpedia repo and run setup.sh
+        run: |
+          git clone https://github.com/lindsey98/Phishpedia.git
+          cd Phishpedia
+          chmod +x ./setup.sh
+          ./setup.sh
+        
+
+      # 第五步：安装项目依赖和 pytest
+      - name: Install dependencies and pytest
+        run: |
+          
+          conda run -n phishpedia pip install -r requirements.txt
+          conda run -n phishpedia pip install pytest
+          conda run -n phishpedia pip install validators
+
+
+      # 步骤 6：运行 Pytest 测试
+      - name: Run Pytest
+        run: |
+        
+          conda run -n phishpedia pytest tests/test_logo_matching.py
+          conda run -n phishpedia pytest tests/test_logo_recog.py
+          conda run -n phishpedia pytest tests/test_phishpedia.py
