@@ -3,8 +3,6 @@ from unittest.mock import patch, MagicMock
 from logo_recog import pred_rcnn, config_rcnn, vis
 import torch
 import numpy as np
-import os
-import sys
 
 def test_pred_rcnn_image_not_found():
     with patch('phishpedia.cv2.imread', return_value=None) as mock_imread:

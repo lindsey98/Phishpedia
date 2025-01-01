@@ -1,24 +1,7 @@
-from PIL import Image, ImageOps
-from torchvision import transforms
-from utils import brand_converter, resolution_alignment, l2_norm
-from models import KNOWN_MODELS
-import torch
-import os
-import numpy as np
-from collections import OrderedDict
-from tqdm import tqdm
-from tldextract import tldextract
 import pickle
-import pytest
 from unittest.mock import mock_open, patch, MagicMock
-from logo_matching import check_domain_brand_inconsistency, pred_brand
-
-# test_logo_matching.py
-
-import pytest
-from unittest.mock import mock_open, patch, MagicMock
+from logo_matching import check_domain_brand_inconsistency
 import pickle
-
 # 从 logo_matching 模块导入被测试的函数和需要模拟的函数
 from logo_matching import check_domain_brand_inconsistency
 

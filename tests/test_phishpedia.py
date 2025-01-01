@@ -2,6 +2,7 @@ import pytest
 from unittest.mock import mock_open, patch, MagicMock
 from phishpedia import PhishpediaWrapper, result_file_write
 
+
 def test_result_file_write():
     mock = mock_open()
     with patch('builtins.open', mock):
@@ -28,6 +29,7 @@ def test_result_file_write():
     handle.write.assert_any_call("0.1234\t")
     handle.write.assert_any_call("0.5678\n")
 
+
 @pytest.fixture
 def phishpedia_wrapper():
     with patch('phishpedia.load_config') as mock_load_config:
@@ -41,6 +43,7 @@ def phishpedia_wrapper():
         )
         wrapper = PhishpediaWrapper()
     return wrapper
+
 
 @patch('phishpedia.pred_rcnn')
 @patch('phishpedia.vis')
@@ -71,4 +74,3 @@ def test_test_orig_phishpedia_no_logo(mock_check_inconsistency, mock_vis, mock_p
     mock_pred_rcnn.assert_called_once_with(im="path/to/shot.png", predictor=phishpedia_wrapper.ELE_MODEL)
     mock_vis.assert_called_once_with("path/to/shot.png", None)
     mock_check_inconsistency.assert_not_called()
-
