@@ -1,6 +1,4 @@
-import pickle
 from unittest.mock import mock_open, patch, MagicMock
-from logo_matching import check_domain_brand_inconsistency
 import pickle
 # 从 logo_matching 模块导入被测试的函数和需要模拟的函数
 from logo_matching import check_domain_brand_inconsistency
@@ -14,6 +12,7 @@ logo_boxes_sample = [
 ]
 
 domain_map_sample = {"example.com": "brandA"}
+
 
 # 测试用例 1：无 logo 框
 def test_no_logo_boxes():
@@ -48,10 +47,10 @@ def test_no_logo_boxes():
         # 断言 pred_brand 未被调用
         mock_pred_brand.assert_not_called()
 
+
 # 测试用例 2：有 logo 框但 pred_brand 不返回匹配
 def test_logo_boxes_no_match():
-    with patch("builtins.open", mock_open(read_data=pickle.dumps(domain_map_sample))) as mock_file, \
-         patch("logo_matching.tldextract.extract") as mock_extract, \
+    with patch("logo_matching.tldextract.extract") as mock_extract, \
          patch("logo_matching.pred_brand") as mock_pred_brand, \
          patch("logo_matching.brand_converter") as mock_brand_converter:
         
@@ -81,10 +80,10 @@ def test_logo_boxes_no_match():
         # 断言 pred_brand 被调用且次数等于 logo_boxes 数量或 topk
         assert mock_pred_brand.call_count == min(len(logo_boxes_sample), 3)
 
+
 # 测试用例 3：有 logo 框且域名一致
 def test_logo_boxes_domain_consistent():
-    with patch("builtins.open", mock_open(read_data=pickle.dumps(domain_map_sample))) as mock_file, \
-         patch("logo_matching.tldextract.extract") as mock_extract, \
+    with patch("logo_matching.tldextract.extract") as mock_extract, \
          patch("logo_matching.pred_brand") as mock_pred_brand, \
          patch("logo_matching.brand_converter") as mock_brand_converter:
         
@@ -125,10 +124,10 @@ def test_logo_boxes_domain_consistent():
         # 断言 pred_brand 被调用三次（一次匹配，之后两次无匹配）
         assert mock_pred_brand.call_count == 3
 
+
 # 测试用例 4：有 logo 框且域名不一致
 def test_logo_boxes_domain_inconsistent():
-    with patch("builtins.open", mock_open(read_data=pickle.dumps(domain_map_sample))) as mock_file, \
-         patch("logo_matching.tldextract.extract") as mock_extract, \
+    with patch("logo_matching.tldextract.extract") as mock_extract, \
          patch("logo_matching.pred_brand") as mock_pred_brand, \
          patch("logo_matching.brand_converter") as mock_brand_converter:
         
@@ -158,10 +157,10 @@ def test_logo_boxes_domain_inconsistent():
         # 断言 pred_brand 被调用一次（因为域名不一致，提前退出）
         assert mock_pred_brand.call_count == 1
 
+
 # 测试用例 5：超过 topk 的 logo 框
 def test_logo_boxes_exceed_topk():
-    with patch("builtins.open", mock_open(read_data=pickle.dumps(domain_map_sample))) as mock_file, \
-         patch("logo_matching.tldextract.extract") as mock_extract, \
+    with patch("logo_matching.tldextract.extract") as mock_extract, \
          patch("logo_matching.pred_brand") as mock_pred_brand, \
          patch("logo_matching.brand_converter") as mock_brand_converter:
         
