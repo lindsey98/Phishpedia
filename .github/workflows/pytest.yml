@@ -19,7 +19,15 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'  # 根据你的项目需要选择 Python 版本
+          python-version: '3.9'  # 根据你的项目需要选择 Python 版本
+          
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       # 步骤 3：安装依赖项
       - name: Install dependencies
