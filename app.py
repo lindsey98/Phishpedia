@@ -53,14 +53,14 @@ def analyze():
         
         try:
             with open(log_file_path, "a+", encoding='ISO-8859-1') as f:
-                result_file_write(f, current_dir, url, phish_category, pred_target, 
-                                matched_domain if matched_domain else ["unknown"], 
+                result_file_write(f, current_dir, url, phish_category, pred_target,
+                                matched_domain if matched_domain else ["unknown"],
                                 siamese_conf if siamese_conf is not None else 0.0,
                                 logo_recog_time, logo_match_time)
         except UnicodeError:
             with open(log_file_path, "a+", encoding='utf-8') as f:
-                result_file_write(f, current_dir, url, phish_category, pred_target, 
-                                matched_domain if matched_domain else ["unknown"], 
+                result_file_write(f, current_dir, url, phish_category, pred_target,
+                                matched_domain if matched_domain else ["unknown"],
                                 siamese_conf if siamese_conf is not None else 0.0,
                                 logo_recog_time, logo_match_time)
 
