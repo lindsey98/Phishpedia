@@ -50,10 +50,12 @@ def test_no_logo_boxes():
 
 # 测试用例 2：有 logo 框但 pred_brand 不返回匹配
 def test_logo_boxes_no_match():
-    with patch("logo_matching.tldextract.extract") as mock_extract, \
+    with patch("builtins.open", mock_open(read_data=pickle.dumps(domain_map_sample))) as mock_file, \
+         patch("logo_matching.tldextract.extract") as mock_extract, \
          patch("logo_matching.pred_brand") as mock_pred_brand, \
          patch("logo_matching.brand_converter") as mock_brand_converter:
         
+        mock_file = mock_file
         # 设置 tldextract.extract 返回值
         mock_extract.return_value = MagicMock(domain="example", suffix="com")
         
@@ -83,10 +85,12 @@ def test_logo_boxes_no_match():
 
 # 测试用例 3：有 logo 框且域名一致
 def test_logo_boxes_domain_consistent():
-    with patch("logo_matching.tldextract.extract") as mock_extract, \
+    with patch("builtins.open", mock_open(read_data=pickle.dumps(domain_map_sample))) as mock_file, \
+         patch("logo_matching.tldextract.extract") as mock_extract, \
          patch("logo_matching.pred_brand") as mock_pred_brand, \
          patch("logo_matching.brand_converter") as mock_brand_converter:
         
+        mock_file = mock_file
         # 设置 tldextract.extract 返回值
         mock_extract.return_value = MagicMock(domain="example", suffix="com")
         
@@ -127,10 +131,12 @@ def test_logo_boxes_domain_consistent():
 
 # 测试用例 4：有 logo 框且域名不一致
 def test_logo_boxes_domain_inconsistent():
-    with patch("logo_matching.tldextract.extract") as mock_extract, \
+    with patch("builtins.open", mock_open(read_data=pickle.dumps(domain_map_sample))) as mock_file, \
+         patch("logo_matching.tldextract.extract") as mock_extract, \
          patch("logo_matching.pred_brand") as mock_pred_brand, \
          patch("logo_matching.brand_converter") as mock_brand_converter:
         
+        mock_file = mock_file
         # 设置 tldextract.extract 返回值
         mock_extract.return_value = MagicMock(domain="example", suffix="com")
         
@@ -160,10 +166,12 @@ def test_logo_boxes_domain_inconsistent():
 
 # 测试用例 5：超过 topk 的 logo 框
 def test_logo_boxes_exceed_topk():
-    with patch("logo_matching.tldextract.extract") as mock_extract, \
+    with patch("builtins.open", mock_open(read_data=pickle.dumps(domain_map_sample))) as mock_file, \
+         patch("logo_matching.tldextract.extract") as mock_extract, \
          patch("logo_matching.pred_brand") as mock_pred_brand, \
          patch("logo_matching.brand_converter") as mock_brand_converter:
         
+        mock_file = mock_file
         # 设置 tldextract.extract 返回值
         mock_extract.return_value = MagicMock(domain="example", suffix="com")
         

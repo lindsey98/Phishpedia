@@ -33,9 +33,12 @@ def test_pred_rcnn_image_with_alpha_channel():
             mock_instances.pred_classes.__eq__.return_value = MagicMock()
             mock_instances.pred_boxes.__getitem__.return_value = MagicMock()
             
+            result = pred_rcnn('path/to/image_with_alpha.png', mock_predictor)
+
             mock_imread.assert_called_once_with('path/to/image_with_alpha.png')
             mock_cvtColor.assert_called_once()
             mock_predictor.assert_called_once()
+            assert result
             # 根据 mock 的返回值，断言结果
             # 由于我们没有具体的返回值设置，这里仅断言返回值被调用
             # 在实际测试中，您应根据具体的 mock 返回值进行断言
