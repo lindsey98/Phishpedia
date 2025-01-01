@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishPedia</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+</head>
+
+<body>
+    <!-- Logo 和图标部分 -->
+    <div id="header">
+        <img src="{{ url_for('static', filename='icon/fish.png') }}" alt="Logo" id="logo-icon">
+        <span id="logo-text">PhishPedia</span>
+        <button id="sidebar-toggle" class="sidebar-toggle">☰</button>
+    </div>
+
+    <div id="overlay" style="display: none;">
+        <div class="spinner-container">
+            <div id="spinner"></div>
+            <p>Reloading model, this may take some time...</p>
+        </div>
+    </div>
+
+    <!-- 侧边栏 -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <span>DATABASE</span>
+            <button id="close-sidebar" class="close-sidebar">✖</button>
+        </div>
+        <div class="separator"></div>
+        <!-- 按钮组 -->
+        <div class="sidebar-buttons">
+            <button class="sidebar-button" @click="addBrand">ADD Brand</button>
+            <button class="sidebar-button" @click="delBrand">DEL Brand</button>
+            <button class="sidebar-button" @click="addLogo">ADD LOGO</button>
+            <button class="sidebar-button" @click="delLogo">DEL LOGO</button>
+            <button class="sidebar-button" @click="reloadModel">Reload Model</button>
+        </div>
+        <input type="file" id="logo-file-input" style="display: none;" accept=".png,.jpeg,.jpg">
+        <div class="separator"></div>
+
+        <!-- 文件树容器 -->
+        <div class="file-tree">
+            <ul id="file-tree-root" class="file-tree-root">
+                <!-- 文件树的内容将由 JavaScript 动态生成 -->
+            </ul>
+        </div>
+
+        <!-- 添加品牌表单 -->
+        <div v-if="showAddBrandForm" id="add-brand-form" class="form-container">
+            <form @submit.prevent="submitAddBrandForm">
+                <h3>Add A New Brand</h3>
+                <div class="separator"></div>
+
+                <label for="brandName">Brand Name</label>
+                <input type="text" id="brandName" v-model="brandName" required>
+
+                <label for="brandDomain">Domain List</label>
+                <input type="text" id="brandDomain" v-model="brandDomain" required>
+
+                <div class="form-actions">
+                    <button type="submit">ADD</button>
+                    <button type="button" @click="closeAddBrandForm">CANCLE</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 页面居中内容 -->
+    <div id="main-container">
+        <div id="input-container">
+            <div class="inner-container">
+                <!-- URL 输入框 -->
+                <div id="url-input-container">
+                    <label for="url-input" class="custom-label">URL</label>
+                    <input type="text" id="url-input" v-model="url" placeholder="Enter URL:" />
+                </div>
+                <!-- 图片接收区域 -->
+                <div id="image-upload-container">
+                    <div id="image-drop-area" class="drop-area" v-if="!uploadSuccess">
+                        <img src="{{ url_for('static', filename='icon/file1.png') }}" alt="Upload Icon"
+                            class="upload-icon" />
+                        <p></p>
+                        <label for="image-upload" class="upload-label">+ Upload Image</label>
+                        <p style="font-size: 14px;">Or ctrl+v here</p>
+                        <input type="file" id="image-upload" accept="image/*" style="display: none;"
+                            @change="handleImageUpload" />
+                    </div>
+                    <div id="upload-success-area" class="upload-success-area" v-if="uploadSuccess">
+                        <div class="success-message">
+                            <img src="{{ url_for('static', filename='icon/succ.png') }}" alt="Success Icon"
+                                class="success-icon" />
+                            <span class="success-text">Uploaded Successfully!</span>
+                        </div>
+                        <img :src="imageUrl" alt="Uploaded Image" class="uploaded-thumbnail" />
+                        <button class="clear-button" @click="clearUpload">clear</button>
+                    </div>
+                </div>
+                <!-- 新增的开始检测按钮 -->
+                <button id="start-detection-button" @click="startDetection">Start Detection !</button>
+            </div>
+        </div>
+        <div id="output-container">
+            <div id="result-container">
+                <div id="original-image-container">
+                    <span class="result_title">Logo Extraction</span>
+                    <div id="logo-extraction-result">
+                        <img id="original-image" src="{{ url_for('static', filename='icon/noresult1.png') }}"
+                            alt="Original Webpage Screenshot" />
+                    </div>
+                </div>
+                <div id="detection-result-container">
+                    <span class="result_title">Detection Result</span>
+                    <div id="detection-result">
+                        <div>
+                            <span class="icon">📊</span>
+                            <span class="task" style="font-weight: bold;">Result</span>
+                            <div id="detection-label"></div>
+                        </div>
+                        <div class="separator"></div>
+                        <div>
+                            <ul class="tasks-list">
+                                <li>
+                                    <span class="icon">🏷️</span>
+                                    <span class="task">Matched Brand</span>
+                                    <span class="result" id="matched-brand"></span>
+                                </li>
+                                <li>
+                                    <span class="icon">💬</span>
+                                    <span class="task">Siamese Confidence</span>
+                                    <span class="result" id="siamese-conf"></span>
+                                </li>
+                                <li>
+                                    <span class="icon">🌐</span>
+                                    <span class="task">Correct Domain</span>
+                                    <span class="result" id="correct-domain"></span>
+                                </li>
+                                <li>
+                                    <span class="icon">⏱️</span>
+                                    <span class="task">Detection Time</span>
+                                    <span class="result" id="detection-time"></span>
+                                </li>
+                                <li>
+                                    <div id="detection-explanation"></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vue.js 和自定义脚本 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
+</body>
+
+</html>

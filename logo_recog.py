@@ -53,6 +53,15 @@ def config_rcnn(cfg_path, weights_path, conf_threshold):
     return predictor
 
 
+COLORS = {
+    0: (255, 255, 0),  # logo
+    1: (36, 255, 12),  # input
+    2: (0, 255, 255),  # button
+    3: (0, 0, 255),  # label
+    4: (255, 0, 0)  # block
+}
+
+
 def vis(img_path, pred_boxes):
     '''
     Visualize rcnn predictions
@@ -71,8 +80,8 @@ def vis(img_path, pred_boxes):
     # draw rectangle
     for j, box in enumerate(pred_boxes):
         if j == 0:
-            cv2.rectangle(check, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), (255, 255, 0), 2)
+            cv2.rectangle(check, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), COLORS['0'], 2)
         else:
-            cv2.rectangle(check, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), (36, 255, 12), 2)
+            cv2.rectangle(check, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), COLORS['1'], 2)
 
     return check
