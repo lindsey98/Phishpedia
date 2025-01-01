@@ -21,9 +21,7 @@ jobs:
         with:
           auto-update-conda: true            # 自动更新 Conda
           python-version: '3.9'              # 指定 Python 版本
-          environment-file: environment.yml   # 可选：如果有环境文件
           activate-environment: phishpedia   # 指定要激活的环境
-          use-conda: true                     # 使用 Conda 而非 Mamba
 
       # 第三步：升级 pip
       - name: Upgrade pip
