@@ -34,13 +34,16 @@ def analyze():
         screenshot_path = 'temp_screenshot.png'
         image.save(screenshot_path, format='PNG')
 
+        print("hello")
         # 调用Phishpedia模型进行识别
         phish_category, pred_target, matched_domain, \
             plotvis, siamese_conf, pred_boxes, \
             logo_recog_time, logo_match_time = phishpedia_cls.test_orig_phishpedia(url, screenshot_path, None)
-        
+        print("hello")
+ 
         today = datetime.now().strftime('%Y%m%d')
         log_file_path = os.path.join(log_dir, f'{today}_results.txt')
+        
 
         try:
             with open(log_file_path, "a+", encoding='ISO-8859-1') as f:
@@ -69,17 +72,6 @@ def analyze():
         return jsonify("ERROR"), 500
 
 
-def is_running_in_docker():
-    """检查是否在 Docker 环境中运行"""
-    # 方法1：检查 /.dockerenv 文件是否存在
-    docker_env = os.path.exists('/.dockerenv')
-    # 方法2：检查 cgroup 中是否包含 docker 字符串
-    try:
-        with open('/proc/1/cgroup', 'r') as f:
-            return docker_env or 'docker' in f.read()
-    except (IOError, OSError):  # 明确指定可能的异常类型
-        return docker_env
-
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(host='0.0.0.0', port=5000, debug=True)
