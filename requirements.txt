@@ -2,7 +2,7 @@ scipy
 tldextract
 opencv-python
 pandas
-numpy
+numpy==1.23.0
 tqdm
 Pillow==8.4.0
 pathlib
@@ -13,4 +13,3 @@ lxml
 gdown
 memory-profiler
 psutil
-PyQt5 # GUI框架

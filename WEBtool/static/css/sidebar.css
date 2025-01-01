@@ -1,0 +1,337 @@
+/* 侧边栏样式 */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 300px;
+    height: 100%;
+    background-color: #ffffff;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: right 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+/* 侧边栏打开时显示 */
+.sidebar.open {
+    right: 0;
+}
+
+/* 侧边栏标题 */
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* 关闭按钮 */
+.close-sidebar {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #333;
+}
+
+/* 右上角按钮样式 */
+.sidebar-toggle {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #87CEFA;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+    background-color: #0056b3;
+}
+
+/* 按钮容器样式 */
+.sidebar-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: space-between;
+}
+
+/* 按钮基础样式 */
+.sidebar-button {
+    flex: 1 1 calc(50% - 10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #87CEFA;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 10px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* 按钮悬停效果 */
+.sidebar-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* 按钮点击效果 */
+.sidebar-button:active {
+    background-color: #003d80;
+    transform: translateY(0);
+}
+
+/* ============ 文件树 ============ */
+/* 文件树样式 */
+#file-tree-root {
+    list-style-type: none;
+    padding-left: 20px;
+    height: 580px;
+    max-height: 580px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.file-item {
+    margin-bottom: 5px;
+}
+
+.file-folder {
+    cursor: pointer;
+}
+
+.folder-name {
+    display: flex;
+    align-items: center;
+}
+
+.folder-icon {
+    margin-right: 5px;
+}
+
+.file-file {
+    cursor: pointer;
+}
+
+.file-icon {
+    margin-right: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+
+.file-folder>ul {
+    padding-left: 20px;
+}
+
+/* 预览框样式 */
+#image-preview-box {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    max-height: 300px;
+    overflow: hidden;
+}
+
+/* 选中样式 */
+.selected {
+    border: 2px solid #007bff;
+    padding: 2px;
+    box-sizing: border-box;
+}
+
+
+/* ============== 表单 ============= */
+.form-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    max-width: 90%;
+    z-index: 1001;
+}
+
+/* 表单标题 */
+.form-container h3 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+}
+
+input[type="label"] {
+    width: 20%;
+}
+
+/* 输入框样式 */
+input[type="text"] {
+    width: 90%;
+    padding: 12px;
+    margin: 12px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    color: #333;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    text-align: center;
+}
+
+/* 输入框聚焦效果 */
+input[type="text"]:focus {
+    border-color: #3498db;
+    background-color: #fff;
+    outline: none;
+}
+
+/* 提交按钮样式 */
+button[type="submit"] {
+    background-color: #3498db;
+    color: white;
+}
+
+/* 取消按钮样式 */
+button[type="button"] {
+    background-color: #7c7c7c;
+    color: white;
+}
+
+/* 表单按钮容器 */
+.form-actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+/* 提交按钮样式 */
+button[type="submit"] {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* 提交按钮悬停效果 */
+button[type="submit"]:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* 提交按钮点击效果 */
+button[type="submit"]:active {
+    background-color: #1abc9c;
+    transform: translateY(0);
+}
+
+/* 取消按钮样式 */
+button[type="button"] {
+    background-color: #7c7c7c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* 取消按钮悬停效果 */
+button[type="button"]:hover {
+    background-color: #555;
+    transform: translateY(-2px);
+}
+
+/* 取消按钮点击效果 */
+button[type="button"]:active {
+    background-color: #333;
+    transform: translateY(0);
+}
+
+/* 浮层样式 */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1002;
+}
+
+/* 转圈动画样式 */
+#spinner {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 2s linear infinite;
+    margin-right: 10px;
+}
+
+/* 转圈动画 */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* 浮层中的文本样式 */
+#overlay p {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 16px;
+    margin: 0;
+}
+
+#overlay .spinner-container {
+    display: flex;
+    align-items: center;
+}

@@ -6,6 +6,7 @@ set -e
 # Function to display error messages and exit
 error_exit() {
   echo "$1" >&2
+  echo "$(date): $1" >> error.log  # Log error to a file for debugging
   exit 1
 }
 
@@ -53,8 +54,8 @@ source "$CONDA_BASE/etc/profile.d/conda.sh"
 if conda info --envs | grep -w "^$ENV_NAME" > /dev/null 2>&1; then
   echo "Activating existing Conda environment: $ENV_NAME"
 else
-  echo "Creating new Conda environment: $ENV_NAME with Python 3.8"
-  conda create -y -n "$ENV_NAME" python=3.8
+  echo "Creating new Conda environment: $ENV_NAME with Python 3.9"
+  conda create -y -n "$ENV_NAME" python=3.9
 fi
 
 # 8. Activate the Conda environment
@@ -133,9 +134,15 @@ cd expand_targetlist || exit 1  # Exit if the directory doesn't exist
 # Check if there's a nested 'expand_targetlist/' directory
 if [ -d "expand_targetlist" ]; then
   echo "Nested directory 'expand_targetlist/' detected. Moving contents up..."
-  
+
+  # Enable dotglob to include hidden files
+  shopt -s dotglob
+
   # Move everything from the nested directory to the current directory
   mv expand_targetlist/* .
+
+  # Disable dotglob to revert back to normal behavior
+  shopt -u dotglob
 
   # Remove the now-empty nested directory
   rmdir expand_targetlist

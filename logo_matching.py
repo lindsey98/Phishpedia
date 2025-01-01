@@ -88,24 +88,29 @@ def cache_reference_list(model, targetlist_path: str, grayscale=False):
     :return file_name_list: targetlist paths
     '''
 
-    #     Prediction for targetlists
+    # Prediction for targetlists
     logo_feat_list = []
     file_name_list = []
 
-    for target in tqdm(os.listdir(targetlist_path)):
+    target_list = os.listdir(targetlist_path)
+    for target in tqdm(target_list):
         if target.startswith('.'):  # skip hidden files
             continue
-        for logo_path in os.listdir(os.path.join(targetlist_path, target)):
-            if logo_path.endswith('.png') or logo_path.endswith('.jpeg') or logo_path.endswith(
-                    '.jpg') or logo_path.endswith('.PNG') \
-                    or logo_path.endswith('.JPG') or logo_path.endswith('.JPEG'):
-                if logo_path.startswith('loginpage') or logo_path.startswith('homepage'):  # skip homepage/loginpage
+        logo_list = os.listdir(os.path.join(targetlist_path, target))
+        for logo_path in logo_list:
+            # List of valid image extensions
+            valid_extensions = ['.png', 'PNG', '.jpeg', '.jpg', '.JPG', '.JPEG']
+            if any(logo_path.endswith(ext) for ext in valid_extensions):
+                skip_prefixes = ['loginpage', 'homepage']
+                if any(logo_path.startswith(prefix) for prefix in skip_prefixes):  # skip homepage/loginpage
                     continue
-                logo_feat_list.append(get_embedding(img=os.path.join(targetlist_path, target, logo_path),
-                                                    model=model, grayscale=grayscale))
-                file_name_list.append(str(os.path.join(targetlist_path, target, logo_path)))
-
-    return np.asarray(logo_feat_list), np.asarray(file_name_list)
+                try:
+                    logo_feat_list.append(get_embedding(img=os.path.join(targetlist_path, target, logo_path),
+                                                        model=model, grayscale=grayscale))
+                    file_name_list.append(str(os.path.join(targetlist_path, target, logo_path)))
+                except OSError:
+                    print(f"Error opening image: {os.path.join(targetlist_path, target, logo_path)}")
+                    continue
 
 
 @torch.no_grad()
@@ -133,9 +138,16 @@ def get_embedding(img, model, grayscale=False):
 
     ## Resize the image while keeping the original aspect ratio
     pad_color = 255 if grayscale else (255, 255, 255)
-    img = ImageOps.expand(img, (
-        (max(img.size) - img.size[0]) // 2, (max(img.size) - img.size[1]) // 2,
-        (max(img.size) - img.size[0]) // 2, (max(img.size) - img.size[1]) // 2), fill=pad_color)
+    img = ImageOps.expand(
+        img,
+        (
+            (max(img.size) - img.size[0]) // 2,
+            (max(img.size) - img.size[1]) // 2,
+            (max(img.size) - img.size[0]) // 2,
+            (max(img.size) - img.size[1]) // 2
+        ),
+        fill=pad_color
+    )
 
     img = img.resize((img_size, img_size))
 
@@ -173,17 +185,17 @@ def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str
         print('Screenshot cannot be open')
         return None, None, None
 
-    ## get predicted box --> crop from screenshot
+    # get predicted box --> crop from screenshot
     cropped = img.crop((gt_bbox[0], gt_bbox[1], gt_bbox[2], gt_bbox[3]))
     img_feat = get_embedding(cropped, model, grayscale=grayscale)
 
-    ## get cosine similarity with every protected logo
+    # get cosine similarity with every protected logo
     sim_list = logo_feat_list @ img_feat.T  # take dot product for every pair of embeddings (Cosine Similarity)
     pred_brand_list = file_name_list
 
     assert len(sim_list) == len(pred_brand_list)
 
-    ## get top 3 brands
+    # get top 3 brands
     idx = np.argsort(sim_list)[::-1][:3]
     pred_brand_list = np.array(pred_brand_list)[idx]
     sim_list = np.array(sim_list)[idx]
@@ -196,17 +208,17 @@ def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str
     for j in range(3):
         predicted_brand, predicted_domain = None, None
 
-        ## If we are trying those lower rank logo, the predicted brand of them should be the same as top1 logo, otherwise might be false positive
+        # If we are trying those lower rank logo, the predicted brand of them should be the same as top1 logo, otherwise might be false positive
         if top3_brandlist[j] != top3_brandlist[0]:
             continue
 
-        ## If the largest similarity exceeds threshold
+        # If the largest similarity exceeds threshold
         if top3_simlist[j] >= similarity_threshold:
             predicted_brand = top3_brandlist[j]
             predicted_domain = top3_domainlist[j]
             final_sim = top3_simlist[j]
 
-        ## Else if not exceed, try resolution alignment, see if can improve
+        # Else if not exceed, try resolution alignment, see if can improve
         elif do_resolution_alignment:
             orig_candidate_logo = Image.open(pred_brand_list[j])
             cropped, candidate_logo = resolution_alignment(cropped, orig_candidate_logo)
