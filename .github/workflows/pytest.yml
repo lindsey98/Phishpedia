@@ -45,7 +45,8 @@ jobs:
 
           # 返回主项目目录
           cd ..
-
+          conda activate phishpedia
+          pip install -r requirements.txt
           # 安装 pytest（如果 requirements.txt 中已经包含 pytest，可以省略此行）
           pip install pytest
 
