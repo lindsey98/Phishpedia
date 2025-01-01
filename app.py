@@ -34,17 +34,14 @@ def analyze():
         screenshot_path = 'temp_screenshot.png'
         image.save(screenshot_path, format='PNG')
 
-        print("hello")
         # 调用Phishpedia模型进行识别
         phish_category, pred_target, matched_domain, \
             plotvis, siamese_conf, pred_boxes, \
             logo_recog_time, logo_match_time = phishpedia_cls.test_orig_phishpedia(url, screenshot_path, None)
-        print("hello")
  
         today = datetime.now().strftime('%Y%m%d')
         log_file_path = os.path.join(log_dir, f'{today}_results.txt')
         
-
         try:
             with open(log_file_path, "a+", encoding='ISO-8859-1') as f:
                 result_file_write(f, current_dir, url, phish_category, pred_target, matched_domain, siamese_conf,
@@ -70,7 +67,6 @@ def analyze():
         with open(log_error_path, "a+", encoding='utf-8') as f:
             f.write(f'{datetime.now().strftime("%Y-%m-%d %H:%M:%S")} - {str(e)}\n')
         return jsonify("ERROR"), 500
-
 
 
 if __name__ == '__main__':
