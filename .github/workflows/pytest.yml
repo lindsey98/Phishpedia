@@ -20,14 +20,13 @@ jobs:
         uses: conda-incubator/setup-miniconda@v2
         with:
           auto-update-conda: true            # 自动更新 Conda
-          python-version: '3.9'              # 指定 Python 版本
-          activate-environment: phishpedia   # 指定要激活的环境
+          python-version: '3.9'              # 指定 Python 版
 
       # 第三步：升级 pip
       - name: Upgrade pip
         run: |
           python -m pip install --upgrade pip
-        shell: bash
+        
 
       # 第四步：克隆 Phishpedia 仓库并运行 setup.sh
       - name: Clone Phishpedia repo and run setup.sh
@@ -36,22 +35,19 @@ jobs:
           cd Phishpedia
           chmod +x ./setup.sh
           ./setup.sh
-        shell: bash
+        
 
       # 第五步：安装项目依赖和 pytest
       - name: Install dependencies and pytest
         run: |
-          source "${{ steps.setup-miniconda.outputs.conda-prefix }}/etc/profile.d/conda.sh"
           conda activate phishpedia
           pip install -r requirements.txt
           pip install pytest
-        shell: bash
 
 
       # 步骤 6：运行 Pytest 测试
       - name: Run Pytest
         run: |
-          source "${{ steps.setup-miniconda.outputs.conda-prefix }}/etc/profile.d/conda.sh"
           conda activate phishpedia
           pytest tests/test_logo_matching.py
           pytest tests/test_logo_recog.py
