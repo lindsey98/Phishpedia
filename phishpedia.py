@@ -168,7 +168,6 @@ if __name__ == '__main__':
         with open(info_path, 'r') as file:
             url = file.read()
         
-
         if os.path.exists(result_txt):
             with open(result_txt, 'r', encoding='ISO-8859-1') as file:
                 if url in file.read():
