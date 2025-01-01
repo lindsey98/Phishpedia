@@ -7,52 +7,54 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      # 步骤 1：检出代码
-      - name: Checkout repository
+      # 第一步：检出代码
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      # 步骤 2：设置 Python 环境
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      # 第二步：设置 Miniconda
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: '3.9'  # 根据你的项目需要选择 Python 版本
-          
-      - name: Cache pip
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          auto-update-conda: true            # 自动更新 Conda
+          python-version: '3.9'              # 指定 Python 版本
+          environment-file: environment.yml   # 可选：如果有环境文件
+          activate-environment: phishpedia   # 指定要激活的环境
+          use-conda: true                     # 使用 Conda 而非 Mamba
 
-      # 步骤 3：安装依赖项
-      - name: Install dependencies
+      # 第三步：升级 pip
+      - name: Upgrade pip
         run: |
-          # 升级 pip
           python -m pip install --upgrade pip
+        shell: bash
 
-          # 克隆 Phishpedia 仓库
+      # 第四步：克隆 Phishpedia 仓库并运行 setup.sh
+      - name: Clone Phishpedia repo and run setup.sh
+        run: |
           git clone https://github.com/lindsey98/Phishpedia.git
-
-          # 进入 Phishpedia 目录并运行 setup.sh
           cd Phishpedia
           chmod +x ./setup.sh
           ./setup.sh
+        shell: bash
 
-          # 返回主项目目录
-          cd ..
+      # 第五步：安装项目依赖和 pytest
+      - name: Install dependencies and pytest
+        run: |
+          source ~/miniconda/etc/profile.d/conda.sh
           conda activate phishpedia
           pip install -r requirements.txt
-          # 安装 pytest（如果 requirements.txt 中已经包含 pytest，可以省略此行）
           pip install pytest
+        shell: bash
 
-      # 步骤 4：运行 Pytest 测试
+
+      # 步骤 6：运行 Pytest 测试
       - name: Run Pytest
         run: |
+          source ~/miniconda/etc/profile.d/conda.sh
+          conda activate phishpedia
           pytest tests/test_logo_matching.py
           pytest tests/test_logo_recog.py
           pytest tests/test_phishpedia.py
