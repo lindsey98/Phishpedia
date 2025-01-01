@@ -43,6 +43,7 @@ jobs:
           
           conda run -n phishpedia pip install -r requirements.txt
           conda run -n phishpedia pip install pytest
+          conda run -n phishpedia pip install validators
 
 
       # 步骤 6：运行 Pytest 测试
