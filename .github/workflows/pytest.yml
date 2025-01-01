@@ -40,17 +40,15 @@ jobs:
       # 第五步：安装项目依赖和 pytest
       - name: Install dependencies and pytest
         run: |
-          source $HOME/miniconda/etc/profile.d/conda.sh
-          conda activate phishpedia
-          pip install -r requirements.txt
-          pip install pytest
+          
+          conda run -n phishpedia pip install -r requirements.txt
+          conda run -n phishpedia pip install pytest
 
 
       # 步骤 6：运行 Pytest 测试
       - name: Run Pytest
         run: |
-          source $HOME/miniconda/etc/profile.d/conda.sh
-          conda activate phishpedia
-          pytest tests/test_logo_matching.py
-          pytest tests/test_logo_recog.py
-          pytest tests/test_phishpedia.py
+        
+          conda run -n phishpedia pytest tests/test_logo_matching.py
+          conda run -n phishpedia pytest tests/test_logo_recog.py
+          conda run -n phishpedia pytest tests/test_phishpedia.py
