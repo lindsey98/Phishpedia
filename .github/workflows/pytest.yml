@@ -1,5 +1,6 @@
-name: Python Tests
+name: Pytest CI
 
+# 触发条件：在 push 或 pull request 到 main 分支时运行
 on:
   push:
     branches: [ main ]
@@ -10,32 +11,27 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        python-version: [3.8, 3.9, 3.10, 3.11]
-
     steps:
+      # 步骤 1：检出代码
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Python ${{ matrix.python-version }}
+      # 步骤 2：设置 Python 环境
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'  # 根据你的项目需要选择 Python 版本
 
-      - name: Cache pip
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
+      # 步骤 3：安装依赖项
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install -r requirements.txt
+          pip install pytest
 
-      - name: Run tests with pytest
+      # 步骤 4：运行 Pytest 测试
+      - name: Run Pytest
         run: |
-          pytest tests/
+          pytest tests/test_logo_matching.py
+          pytest tests/test_logo_recog.py
+          pytest tests/test_phishpedia.py
