@@ -47,7 +47,7 @@ def test_pred_rcnn_image_notwith_alpha_channel():
     mock_image.shape = (100, 100, 3)  # 包含 alpha 通道
 
     with patch('logo_recog.cv2.imread', return_value=mock_image) as mock_imread:
-    # 模拟 predictor 的输出
+        # 模拟 predictor 的输出
         mock_instances = MagicMock()
         mock_instances.pred_classes = MagicMock()
         mock_instances.pred_classes.__getitem__.return_value = MagicMock()
@@ -214,4 +214,3 @@ def test_vis_pred_boxes_not_tensor_or_numpy(dummy_image):
     with pytest.raises(AttributeError):
         # 因为函数尝试对列表调用 .numpy()，应引发 AttributeError
         vis(img_path, invalid_pred_boxes)
-        

@@ -74,4 +74,3 @@ def test_test_orig_phishpedia_no_logo(mock_check_inconsistency, mock_vis, mock_p
     mock_pred_rcnn.assert_called_once_with(im="path/to/shot.png", predictor=phishpedia_wrapper.ELE_MODEL)
     mock_vis.assert_called_once_with("path/to/shot.png", None)
     mock_check_inconsistency.assert_not_called()
-    
