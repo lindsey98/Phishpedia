@@ -111,6 +111,8 @@ def cache_reference_list(model, targetlist_path: str, grayscale=False):
                 except OSError:
                     print(f"Error opening image: {os.path.join(targetlist_path, target, logo_path)}")
                     continue
+    
+    return logo_feat_list, file_name_list
 
 
 @torch.no_grad()
