@@ -54,7 +54,6 @@ jobs:
       - name: Install dependencies and pytest
         run: |
           
-          conda run -n phishpedia pip install -r requirements.txt
           conda run -n phishpedia pip install pytest
           conda run -n phishpedia pip install validators
 
