@@ -21,6 +21,19 @@ jobs:
         with:
           auto-update-conda: true            # 自动更新 Conda
           python-version: '3.9'              # 指定 Python 版
+          activate-environment: phishpedia
+
+      # 保存cache
+      - name: Cache Conda packages and pip cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.conda/pkgs               # 缓存 Conda 包
+            ~/.cache/pip                # 缓存 pip 包
+            phishpedia/lib/python3.9/site-packages  # 可选：缓存虚拟环境的 site-packages
+          key: ${{ runner.os }}-conda-${{ hashFiles('**/environment.yml', '**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-conda-
 
       # 第三步：升级 pip
       - name: Upgrade pip
