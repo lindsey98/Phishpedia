@@ -105,7 +105,7 @@ def cache_reference_list(model, targetlist_path: str, grayscale=False, data_augm
                 full_path = os.path.join(targetlist_path, target, logo_path)
 
                 if data_augmentation:
-                # 对每张图片进行数据增强
+                    # 对每张图片进行数据增强
                     augmented_images = apply_augmentations(full_path)
                 else:
                     augmented_images = [Image.open(full_path).convert('RGB')]
