@@ -51,7 +51,8 @@ def load_config(reload_targetlist=False):
 
     if reload_targetlist or (not os.path.exists(os.path.join(os.path.dirname(__file__), LOGO_FEATS_NAME))):
         LOGO_FEATS, LOGO_FILES = cache_reference_list(model=SIAMESE_MODEL,
-                                                      targetlist_path=full_targetlist_folder_dir)
+                                                      targetlist_path=full_targetlist_folder_dir,
+                                                      data_augmentation=configs['SIAMESE_MODEL']['DATA_AUGMENTATION'])
         print('Finish loading protected logo list')
         np.save(os.path.join(os.path.dirname(__file__), LOGO_FEATS_NAME), LOGO_FEATS)
         np.save(os.path.join(os.path.dirname(__file__), LOGO_FILES_NAME), LOGO_FILES)

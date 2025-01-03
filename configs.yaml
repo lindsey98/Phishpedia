@@ -9,3 +9,4 @@ SIAMESE_MODEL:
   WEIGHTS_PATH: models/resnetv2_rgb_new.pth.tar
   TARGETLIST_PATH: models/expand_targetlist.zip
   DOMAIN_MAP_PATH: models/domain_map.pkl
+  DATA_AUGMENTATION: False # whether to use data augmentation, default is False, 1 logo generate 7 embeddings
