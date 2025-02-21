@@ -284,9 +284,9 @@ def check_domain_brand_inconsistency(logo_boxes,
         domain_map = pickle.load(handle)
 
     print('number of logo boxes:', len(logo_boxes))
-    suffix_part = tldextract.extract(url).suffix
+    suffix_part = '.'+ tldextract.extract(url).suffix
     domain_part = tldextract.extract(url).domain
-    extracted_domain = domain_part + '.' + suffix_part
+    extracted_domain = domain_part + suffix_part
     matched_target, matched_domain, matched_coord, this_conf = None, None, None, None
 
     if len(logo_boxes) > 0:
@@ -305,19 +305,18 @@ def check_domain_brand_inconsistency(logo_boxes,
                                                                    grayscale=False,
                                                                    do_aspect_ratio_check=False,
                                                                    do_resolution_alignment=False)
-            matched_domain_part = tldextract.extract(matched_domain).domain
-            matched_suffix_part = tldextract.extract(matched_domain).suffix
+            matched_domain_parts = [tldextract.extract(x).domain for x in matched_domain]
+            matched_suffix_parts = [tldextract.extract(x).suffix for x in matched_domain]
 
             # print(target_this, domain_this, this_conf)
             # domain matcher to avoid FP
             if matched_target and matched_domain:
                 matched_coord = coord
-                # Check if the domain is part of any domain listed under the brand
+                # If the webpage domain exactly aligns with the target website's domain => Benign
                 if extracted_domain in matched_domain:
                     matched_target, matched_domain = None, None  # Clear if domains are consistent
-                elif matched_domain_part == domain_part: # handle regional TLDs
-                    if '.'+suffix_part.split('.')[-1] in COUNTRY_TLDs or \
-                        '.'+matched_suffix_part.split('.')[-1] in COUNTRY_TLDs:
+                elif domain_part in matched_domain_parts: # # If only the 2nd-level-domains align, and the tld is regional  => Benign
+                    if "." + suffix_part.split('.')[-1] in COUNTRY_TLDs:
                         matched_target, matched_domain = None, None
                 else:
                     break  # Inconsistent domain found, break the loop
