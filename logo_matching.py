@@ -319,6 +319,8 @@ def check_domain_brand_inconsistency(logo_boxes,
                 elif domain_part in matched_domain_parts: # # elIf only the 2nd-level-domains align, and the tld is regional  => Benign
                     if "." + suffix_part.split('.')[-1] in COUNTRY_TLDs:
                         matched_target, matched_domain = None, None
+                    else:
+                        break # Inconsistent domain found, break the loop
                 else:
                     break  # Inconsistent domain found, break the loop
 
