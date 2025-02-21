@@ -305,17 +305,18 @@ def check_domain_brand_inconsistency(logo_boxes,
                                                                    grayscale=False,
                                                                    do_aspect_ratio_check=False,
                                                                    do_resolution_alignment=False)
-            matched_domain_parts = [tldextract.extract(x).domain for x in matched_domain]
-            matched_suffix_parts = [tldextract.extract(x).suffix for x in matched_domain]
 
             # print(target_this, domain_this, this_conf)
             # domain matcher to avoid FP
             if matched_target and matched_domain:
                 matched_coord = coord
+                matched_domain_parts = [tldextract.extract(x).domain for x in matched_domain]
+                matched_suffix_parts = [tldextract.extract(x).suffix for x in matched_domain]
+                
                 # If the webpage domain exactly aligns with the target website's domain => Benign
                 if extracted_domain in matched_domain:
                     matched_target, matched_domain = None, None  # Clear if domains are consistent
-                elif domain_part in matched_domain_parts: # # If only the 2nd-level-domains align, and the tld is regional  => Benign
+                elif domain_part in matched_domain_parts: # # elIf only the 2nd-level-domains align, and the tld is regional  => Benign
                     if "." + suffix_part.split('.')[-1] in COUNTRY_TLDs:
                         matched_target, matched_domain = None, None
                 else:
