@@ -7,6 +7,7 @@ This is a web tool for Phishpedia which provides a user-friendly interface with 
 Before using, make sure all necessary dependencies are installed:
 
 ```bash
+~Phishpedia$ pip install -r requirements.txt
 ~Phishpedia$ cd WEBtool
 ~Phishpedia/WEBtool$ pip install -r requirements.txt
 ```
@@ -17,7 +18,7 @@ Run the following command in the web tool directory:
 
 ```bash
 ~Phishpedia/WEBtool$ export PYTHONPATH=..
-~Phishpedia/WEBtool$ python phishpedia_gui.py
+~Phishpedia/WEBtool$ python phishpedia_web.py
 ```
 
 you should see an URL after the server is started (http://127.0.0.1:500x). Visit it in your browser.
@@ -37,8 +38,6 @@ you should see an URL after the server is started (http://127.0.0.1:500x). Visit
    - The original image with logo extracted will be displayed in the "Logo Extraction" box
    - Detection results will be displayed in the "Detection Result" box, together with a synthetic explanation
    - You can clearly see the detected brand identifiers and related information
-
-
 
 ### 2. Sidebar (For database management)
 
@@ -61,6 +60,7 @@ Click the sidebar button "☰" at top right corner, this will trigger a sidebar 
 ## Main Features
 
 1. **Phishing Detection**
+
    - URL input and detection
    - Screenshot upload and analysis
    - Detection result visualization
@@ -76,7 +76,7 @@ Click the sidebar button "☰" at top right corner, this will trigger a sidebar 
 ```
 WEBtool/
 ├── static/             # Static resources like css,icon
-├── templates/          # Web page 
+├── templates/          # Web page
 ├── phishpedia_web.py   # A flask server
 ├── utils_web.py        # Help functions for server
 ├── readme.md           # Documentation

@@ -8,6 +8,8 @@ Before using, make sure all necessary dependencies are installed:
 
 ```bash
 pip install -r requirements.txt
+cd GUItool
+pip install -r requirements.txt
 ```
 
 ## How to Run
@@ -23,6 +25,7 @@ python phishpedia_gui.py
 ### 1. Phishing Detection Page (PhishTest)
 
 1. **URL Detection**
+
    - Enter the URL to be tested in the "Enter URL" input box
    - Click the "Browse" button to select the corresponding website screenshot
    - Click the "Detect" button to start detection
@@ -38,11 +41,13 @@ python phishpedia_gui.py
 ### 2. Dataset Management Page (Dataset)
 
 1. **Brand Management**
+
    - Click "Add Brand" to add a new brand
    - Enter brand name and corresponding domains in the popup window
    - Click "Delete Brand" to remove the selected brand
 
 2. **Logo Management**
+
    - After selecting a brand, click "Add Logo" to add brand logos
    - Click "Delete Logo" to remove selected logos
    - All logo files will be displayed in the tree view
@@ -54,6 +59,7 @@ python phishpedia_gui.py
 ## Main Features
 
 1. **Phishing Detection**
+
    - URL input and detection
    - Screenshot upload and analysis
    - Detection result visualization
@@ -76,20 +82,22 @@ GUItool/
 
 ### File Description
 
-- **ui.py**: 
+- **ui.py**:
+
   - Defines main window layout
   - Contains all UI component styles
   - Implements dynamic font size adjustment
   - Manages two main tabs: PhishTest and Dataset
 
-- **function.py**: 
+- **function.py**:
+
   - Implements all core functionalities
   - Handles brand and logo addition/deletion
   - Manages domain mapping
   - Executes phishing detection logic
   - Handles file upload and visualization
 
-- **requirements.txt**: 
+- **requirements.txt**:
   - Lists all required Python packages
   - Contains PyQt5 UI dependencies
 
@@ -120,11 +128,11 @@ python phishpedia_gui.py
 ### 1. 钓鱼检测页面（PhishTest）
 
 1. **URL检测**
+
    - 在"Enter URL"输入框中输入待检测的网址
    - 点击"Browse"按钮选择对应的网站截图
    - 点击"Detect"按钮开始检测
    - 检测结果将在下方显示，包括文字结果和可视化展示
-
 
 2. **结果展示**
    - 检测结果会显示在"Result"文本框中
@@ -136,11 +144,13 @@ python phishpedia_gui.py
 ### 2. 数据集管理页面（Dataset）
 
 1. **品牌管理**
+
    - 点击"Add Brand"添加新的品牌
    - 在弹出窗口中输入品牌名称和对应的域名
    - 点击"Delete Brand"可删除选中的品牌
 
 2. **Logo管理**
+
    - 选择品牌后，点击"Add Logo"添加品牌Logo
    - 点击"Delete Logo"可删除选中的Logo
    - 所有Logo文件会在树形视图中显示
@@ -152,6 +162,7 @@ python phishpedia_gui.py
 ## 主要功能
 
 1. **钓鱼检测**
+
    - URL输入和检测
    - 截图上传和分析
    - 检测结果可视化展示
@@ -174,19 +185,21 @@ GUItool/
 
 ### 文件说明
 
-- **ui.py**: 
+- **ui.py**:
+
   - 定义了主窗口界面布局
   - 包含所有UI组件的样式设置
   - 实现了动态字体大小调整
   - 管理界面的两个主要标签页：PhishTest和Dataset
 
-- **function.py**: 
+- **function.py**:
+
   - 实现所有核心功能
   - 处理品牌和Logo的添加/删除
   - 管理域名映射
   - 执行钓鱼检测逻辑
   - 处理文件上传和可视化
 
-- **requirements.txt**: 
+- **requirements.txt**:
   - 列出所有必需的Python包
   - 包含PyQt5 UI相关依赖
