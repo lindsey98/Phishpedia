@@ -13,3 +13,5 @@ lxml
 gdown
 memory-profiler
 psutil
+torch==1.10.2
+torchvision

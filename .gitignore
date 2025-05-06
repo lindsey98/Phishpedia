@@ -1,3 +1,5 @@
 *.zip
 *.pkl
 *.pth*
+venv/
+__pycache__/
