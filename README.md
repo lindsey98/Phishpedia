@@ -45,28 +45,27 @@
 
 Prerequisite: [Pixi installed](https://pixi.sh/latest/)
 
-- Step 1. Install dependencies 
+For Linux/Mac,
 
-For Linux/MacOS
+  ```bash
+  export KMP_DUPLICATE_LIB_OK=TRUE
+  git clone https://github.com/lindsey98/Phishpedia.git
+  cd Phishpedia
+  pixi install
+  chmod +x setup.sh
+  ./setup.sh
+  ```
 
-```bash
-git clone https://github.com/lindsey98/Phishpedia.git
-cd Phishpedia
-pixi install
-chmod +x setup.sh
-./setup.sh
-```
+For Windows, in PowerShell,
 
-For Windows
+  ```bash
+  git clone https://github.com/lindsey98/Phishpedia.git
+  cd Phishpedia
+  pixi install
+  setup.bat
+  ```
 
-```bash
-git clone https://github.com/lindsey98/Phishpedia.git
-cd Phishpedia
-pixi install
-setup.bat
-```
-
-- Step 2. Run inference in bash
+## Running Phishpedia from Command Line
 
 ```bash
 pixi run python phishpedia.py --folder <folder you want to test e.g. ./datasets/test_sites>
@@ -84,14 +83,13 @@ test_site_2
 ......
 ```
 
-### Running Phishpedia as a GUI tool (web-browser-based)
+## Running Phishpedia as a GUI tool (web-browser-based)
   
-Refer to [WEBtool/](WEBtool/)
+See [WEBtool/](WEBtool/)
 
-### Running Phishpedia as a Chrome plugin
+## Install Phishpedia as a Chrome plugin
   
-Refer to [Plugin_for_Chrome/](Plugin_for_Chrome/)
-
+See [Plugin_for_Chrome/](Plugin_for_Chrome/)
 
 
 ## Project structure
