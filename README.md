@@ -27,10 +27,6 @@
   - :white_check_mark: We release a **30k phishing benchmark dataset**, each website is annotated with its URL, HTML, screenshot, and target brand: https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=drive_link.
   - :white_check_mark: We set up a **phishing monitoring system**, investigating emerging domains fed from CertStream, and we have discovered 1,704 real phishing, out of which 1133 are zero-days not reported by industrial antivirus engine (Virustotal).
 
-## Requirements
-
-**Max python version:** 3.9
-**Note:** Detectron2 does not support macOS, so it will not work on this operating system.
 
 ## Framework
 
@@ -44,9 +40,63 @@
   - If Siamese report no target, `Return  Benign, None`
   - Else Siamese report a target, `Return Phish, Phishing target`
 
-## Project structure
 
-:pushpin: We need to move everything under expand_targetlist/expand_targetlist to expand_targetlist/ so that there are no nested directories.
+## Setup
+
+Prerequisite: [Pixi installed](https://pixi.sh/latest/)
+
+- Step 1. Install dependencies 
+
+For Ubuntu
+
+```bash
+git clone https://github.com/lindsey98/Phishpedia.git
+cd Phishpedia
+pixi install
+bash setup.sh
+```
+
+For Windows
+
+```bash
+git clone https://github.com/lindsey98/Phishpedia.git
+cd Phishpedia
+pixi install
+setup.bat
+```
+
+- Step 3. Run in bash
+
+```bash
+pixi run python phishpedia.py --folder <folder you want to test e.g. ./datasets/test_sites>
+```
+
+The testing folder should be in the structure of:
+
+```
+test_site_1
+|__ info.txt (Write the URL)
+|__ shot.png (Save the screenshot)
+test_site_2
+|__ info.txt (Write the URL)
+|__ shot.png (Save the screenshot)
+......
+```
+
+<details>
+  <summary>Running Phishpedia as a GUI tool (web-browser-based)</summary>
+  
+  Refer to [WEBtool/](WEBtool/)
+</details>
+
+<details>
+  <summary>Running Phishpedia as a Chrome plugin</summary>
+  
+  Refer to [Plugin_for_Chrome/](Plugin_for_Chrome/)
+</details>
+
+
+## Project structure
 
 ```
 - models/
@@ -64,69 +114,6 @@
 - phishpedia.py: Main script
 ```
 
-## Instructions
-
-Prerequisite: [Anaconda installed](https://docs.anaconda.com/free/anaconda/install/index.html)
-
-<details>
-  <summary>Running Inference from the Command Line</summary>
-
-- Step 1. Create a local clone of Phishpedia, and setup the phishpedia conda environment.
-  In this step, we would be installing the core dependencies of Phishpedia such as pytorch, and detectron2.
-  In addition, we would also download the model checkpoints and brand reference list.
-  This step may take some time.
-
-```bash
-git clone https://github.com/lindsey98/Phishpedia.git
-cd Phishpedia
-chmod +x ./setup.sh
-./setup.sh
-```
-
-- Step 2. Activate conda environment _phishpedia_:
-
-```bash
-conda activate phishpedia
-```
-
-- Step 3. Run in bash
-
-```bash
-python phishpedia.py --folder <folder you want to test e.g. ./datasets/test_sites>
-```
-
-The testing folder should be in the structure of:
-
-```
-test_site_1
-|__ info.txt (Write the URL)
-|__ shot.png (Save the screenshot)
-test_site_2
-|__ info.txt (Write the URL)
-|__ shot.png (Save the screenshot)
-......
-```
-
-</details>
-
-<details>
-  <summary>Running Phishpedia as a GUI tool (PyQt5-based)</summary>
-  
-  Refer to [GUItool/](GUItool/)
-</details>
-
-<details>
-  <summary>Running Phishpedia as a GUI tool (web-browser-based)</summary>
-  
-  Refer to [WEBtool/](WEBtool/)
-</details>
-
-<details>
-  <summary>Running Phishpedia as a Chrome plugin</summary>
-  
-  Refer to [Plugin_for_Chrome/](Plugin_for_Chrome/)
-</details>
-  
 ## Miscellaneous
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
 - The logo targetlist described in our paper includes 181 brands, we have further expanded the targetlist to include 277 brands in this code repository 
