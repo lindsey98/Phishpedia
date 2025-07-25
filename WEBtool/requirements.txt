@@ -1,4 +1,0 @@
-Flask
-flask_cors
-Pillow
-opencv-python

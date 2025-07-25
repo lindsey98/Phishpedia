@@ -2,23 +2,12 @@
 
 This is a web tool for Phishpedia which provides a user-friendly interface with brand and domain management capabilities, as well as visualization features for phishing detection.
 
-## Installation Requirements
-
-Before using, make sure all necessary dependencies are installed:
-
-```bash
-~Phishpedia$ pip install -r requirements.txt
-~Phishpedia$ cd WEBtool
-~Phishpedia/WEBtool$ pip install -r requirements.txt
-```
-
 ## How to Run
 
 Run the following command in the web tool directory:
 
 ```bash
-~Phishpedia/WEBtool$ export PYTHONPATH=..
-~Phishpedia/WEBtool$ python phishpedia_web.py
+pixi run python WEBtool/phishpedia_web.py
 ```
 
 you should see an URL after the server is started (http://127.0.0.1:500x). Visit it in your browser.

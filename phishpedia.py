@@ -7,8 +7,6 @@ import cv2
 from configs import load_config
 from logo_recog import pred_rcnn, vis
 from logo_matching import check_domain_brand_inconsistency
-# from text_recog import check_email_credential_taking
-# import pickle
 from tqdm import tqdm
 
 import re
@@ -45,32 +43,6 @@ class PhishpediaWrapper:
     def _to_device(self):
         self.SIAMESE_MODEL.to(self._DEVICE)
 
-    # def simple_input_box_regex(self, html_path):
-    #     with open(html_path, 'r', encoding='ISO-8859-1') as f:
-    #         page = f.read()
-    #         tree = html.fromstring(page)
-    #     if tree is None:  # parsing into tree failed
-    #         return False
-
-    #     ## filter out search boxes
-    #     inputs = tree.xpath(
-    #         './/input[not(@type="hidden") and not(contains(@name, "search"))'
-    #         ' and not(contains(@placeholder, "search"))]'
-    #     )
-    #     search_pattern = re.compile(r'\b(search|query|find|keyword)\b', re.IGNORECASE)
-    #     sensitive_inputs = [
-    #         inp for inp in inputs
-    #         if not search_pattern.search(inp.get('name', '') + inp.get('placeholder', ''))
-    #     ]
-
-    #     ## a login form will have at least 1 input box
-    #     if len(sensitive_inputs) > 0:
-    #         return True
-    #     return False
-
-    '''Phishpedia'''
-
-    # @profile
     def test_orig_phishpedia(self, url, screenshot_path, html_path):
         # 0 for benign, 1 for phish, default is benign
         phish_category = 0
@@ -113,12 +85,6 @@ class PhishpediaWrapper:
             print('Did not match to any brand, report as benign')
             return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
 
-        ######################## Step3: Simple input box check ###############
-        # has_input_box = self.simple_input_box_regex(html_path=html_path)
-        # if not has_input_box:
-        # print('No input box')
-        # return phish_category, pred_target, matched_domain, plotvis, siamese_conf, pred_boxes, logo_recog_time, logo_match_time
-        # else:
         print('Match to Target: {} with confidence {:.4f}'.format(pred_target, siamese_conf))
         phish_category = 1
         # Visualize, add annotations
@@ -130,16 +96,6 @@ class PhishpediaWrapper:
 
 
 if __name__ == '__main__':
-
-    '''update domain map'''
-    # with open('./lib/phishpedia/models/domain_map.pkl', "rb") as handle:
-    #     domain_map = pickle.load(handle)
-    #
-    # domain_map['weibo'] = ['sina', 'weibo']
-    #
-    # with open('./lib/phishpedia/models/domain_map.pkl', "wb") as handle:
-    #     pickle.dump(domain_map, handle)
-    # exit()
 
     '''run'''
     today = datetime.now().strftime('%Y%m%d')
