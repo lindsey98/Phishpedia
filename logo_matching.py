@@ -9,12 +9,6 @@ from collections import OrderedDict
 from tqdm import tqdm
 from tldextract import tldextract
 import pickle
-from concurrent.futures import ThreadPoolExecutor
-
-executor = ThreadPoolExecutor(max_workers=2)
-
-def compute_similarity(logo_feat_list, img_feat):
-    return np.dot(logo_feat_list, img_feat.T)
 
 COUNTRY_TLDs = [
     ".af",
@@ -442,6 +436,16 @@ def get_embedding(img, model, grayscale=False):
 
     return logo_feat
 
+def chunked_dot(logo_feat_list, img_feat, chunk_size=128):
+    sim_list = []
+
+    for start in range(0, logo_feat_list.shape[0], chunk_size):
+        end = start + chunk_size
+        chunk = logo_feat_list[start:end]
+        sim_chunk = np.dot(chunk, img_feat.T)  # shape: (chunk_size, M)
+        sim_list.extend(sim_chunk)
+
+    return sim_list
 
 def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str, gt_bbox, similarity_threshold,
                grayscale=False,
@@ -471,12 +475,10 @@ def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str
     # get predicted box --> crop from screenshot
     cropped = img.crop((gt_bbox[0], gt_bbox[1], gt_bbox[2], gt_bbox[3]))
     img_feat = get_embedding(cropped, model, grayscale=grayscale)
-    print(img_feat)
 
     # get cosine similarity with every protected logo
-    sim_list = compute_similarity(logo_feat_list, img_feat) # take dot product for every pair of embeddings (Cosine Similarity)
+    sim_list = chunked_dot(logo_feat_list, img_feat) # take dot product for every pair of embeddings (Cosine Similarity)
     pred_brand_list = file_name_list
-    print(sim_list)
 
     assert len(sim_list) == len(pred_brand_list)
 
