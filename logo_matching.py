@@ -9,6 +9,12 @@ from collections import OrderedDict
 from tqdm import tqdm
 from tldextract import tldextract
 import pickle
+from concurrent.futures import ThreadPoolExecutor
+
+executor = ThreadPoolExecutor(max_workers=2)
+
+def compute_similarity(logo_feat_list, img_feat):
+    return np.dot(logo_feat_list, img_feat.T)
 
 COUNTRY_TLDs = [
     ".af",
@@ -283,7 +289,7 @@ def check_domain_brand_inconsistency(logo_boxes,
     with open(domain_map_path, 'rb') as handle:
         domain_map = pickle.load(handle)
 
-    print('number of logo boxes:', len(logo_boxes))
+    print('Number of logo boxes:', len(logo_boxes))
     suffix_part = '.'+ tldextract.extract(url).suffix
     domain_part = tldextract.extract(url).domain
     extracted_domain = domain_part + suffix_part
@@ -465,10 +471,12 @@ def pred_brand(model, domain_map, logo_feat_list, file_name_list, shot_path: str
     # get predicted box --> crop from screenshot
     cropped = img.crop((gt_bbox[0], gt_bbox[1], gt_bbox[2], gt_bbox[3]))
     img_feat = get_embedding(cropped, model, grayscale=grayscale)
+    print(img_feat)
 
     # get cosine similarity with every protected logo
-    sim_list = logo_feat_list @ img_feat.T  # take dot product for every pair of embeddings (Cosine Similarity)
+    sim_list = compute_similarity(logo_feat_list, img_feat) # take dot product for every pair of embeddings (Cosine Similarity)
     pred_brand_list = file_name_list
+    print(sim_list)
 
     assert len(sim_list) == len(pred_brand_list)
 

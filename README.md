@@ -47,13 +47,14 @@ Prerequisite: [Pixi installed](https://pixi.sh/latest/)
 
 - Step 1. Install dependencies 
 
-For Ubuntu
+For Linux/MacOS
 
 ```bash
 git clone https://github.com/lindsey98/Phishpedia.git
 cd Phishpedia
 pixi install
-bash setup.sh
+chmod +x setup.sh
+./setup.sh
 ```
 
 For Windows
@@ -65,7 +66,7 @@ pixi install
 setup.bat
 ```
 
-- Step 3. Run in bash
+- Step 2. Run inference in bash
 
 ```bash
 pixi run python phishpedia.py --folder <folder you want to test e.g. ./datasets/test_sites>
@@ -83,17 +84,14 @@ test_site_2
 ......
 ```
 
-<details>
-  <summary>Running Phishpedia as a GUI tool (web-browser-based)</summary>
+### Running Phishpedia as a GUI tool (web-browser-based)
   
-  Refer to [WEBtool/](WEBtool/)
-</details>
+Refer to [WEBtool/](WEBtool/)
 
-<details>
-  <summary>Running Phishpedia as a Chrome plugin</summary>
+### Running Phishpedia as a Chrome plugin
   
-  Refer to [Plugin_for_Chrome/](Plugin_for_Chrome/)
-</details>
+Refer to [Plugin_for_Chrome/](Plugin_for_Chrome/)
+
 
 
 ## Project structure
