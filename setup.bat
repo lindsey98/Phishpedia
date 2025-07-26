@@ -1,11 +1,14 @@
 @echo off
 setlocal enabledelayedexpansion
 
-:: Logging function
-set LOGTIME=%DATE% %TIME%
-echo [%LOGTIME%] Starting setup...
+:: ------------------------------------------------------------------------------
+:: Initialization and Logging
+:: ------------------------------------------------------------------------------
+echo [%DATE% %TIME%] Starting setup...
 
-:: Check required tools
+:: ------------------------------------------------------------------------------
+:: Tool Checks
+:: ------------------------------------------------------------------------------
 where pixi >nul 2>nul || (
     echo [ERROR] pixi not found. Please install Pixi.
     exit /b 1
@@ -19,23 +22,29 @@ where unzip >nul 2>nul || (
     exit /b 1
 )
 
-:: Set up directories
-set FILEDIR=%cd%
-set MODELS_DIR=%FILEDIR%\models
+:: ------------------------------------------------------------------------------
+:: Setup Directories
+:: ------------------------------------------------------------------------------
+set "FILEDIR=%cd%"
+set "MODELS_DIR=%FILEDIR%\models"
 if not exist "%MODELS_DIR%" mkdir "%MODELS_DIR%"
 cd /d "%MODELS_DIR%"
 
-:: Detectron2 install
-echo Installing detectron2...
+:: ------------------------------------------------------------------------------
+:: Install Detectron2
+:: ------------------------------------------------------------------------------
+echo [%DATE% %TIME%] Installing detectron2...
 pixi run pip install --no-build-isolation git+https://github.com/facebookresearch/detectron2.git || (
     echo [ERROR] Failed to install detectron2.
     exit /b 1
 )
 
-:: Define model files and IDs
+:: ------------------------------------------------------------------------------
+:: File Metadata
+:: ------------------------------------------------------------------------------
 set RETRY_COUNT=3
-set FILE_COUNT=5
 
+:: Model files and Google Drive IDs
 set file1=rcnn_bet365.pth
 set id1=1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH
 
@@ -51,43 +60,52 @@ set id4=1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I
 set file5=domain_map.pkl
 set id5=1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1
 
-:: Download loop
-for /L %%i in (1,1,%FILE_COUNT%) do (
-    call set FILENAME=%%file%%i%%
-    call set FILEID=%%id%%i%%
+:: ------------------------------------------------------------------------------
+:: Download Loop
+:: ------------------------------------------------------------------------------
+for /L %%i in (1,1,5) do (
+    call set "FILENAME=%%file%%i%%"
+    call set "FILEID=%%id%%i%%"
 
     if exist "!FILENAME!" (
-        echo !FILENAME! already exists. Skipping.
+        echo [INFO] !FILENAME! already exists. Skipping.
     ) else (
-        set /A count=0
-        :retry
-        echo Downloading !FILENAME! (Attempt !count!/!RETRY_COUNT!)...
-        pixi run gdown --id !FILEID! -O "!FILENAME!" && goto next
+        set /A count=1
+        :retry_%%i
+        echo [%DATE% %TIME%] Downloading !FILENAME! (Attempt !count!/%RETRY_COUNT%)...
+        pixi run gdown --id !FILEID! -O "!FILENAME!" && goto downloaded_%%i
+
         set /A count+=1
-        if !count! LSS %RETRY_COUNT% (
+        if !count! LEQ %RETRY_COUNT% (
             timeout /t 2 >nul
-            goto retry
+            goto retry_%%i
         ) else (
             echo [ERROR] Failed to download !FILENAME! after %RETRY_COUNT% attempts.
             exit /b 1
         )
-        :next
+        :downloaded_%%i
     )
 )
 
-:: Extract expand_targetlist.zip
-echo Extracting expand_targetlist.zip...
+:: ------------------------------------------------------------------------------
+:: Extraction
+:: ------------------------------------------------------------------------------
+echo [%DATE% %TIME%] Extracting expand_targetlist.zip...
 unzip -o expand_targetlist.zip -d expand_targetlist || (
     echo [ERROR] Failed to unzip file.
     exit /b 1
 )
 
+:: Flatten nested folder if necessary
 cd expand_targetlist
 if exist expand_targetlist\ (
-    echo Flattening nested expand_targetlist directory...
+    echo [INFO] Flattening nested expand_targetlist directory...
     move expand_targetlist\*.* . >nul
     rmdir expand_targetlist
 )
-cd "%MODELS_DIR%"
 
-echo [SUCCESS] Model setup and extraction complete.
+:: ------------------------------------------------------------------------------
+:: Done
+:: ------------------------------------------------------------------------------
+echo [%DATE% %TIME%] [SUCCESS] Model setup and extraction complete.
+endlocal
