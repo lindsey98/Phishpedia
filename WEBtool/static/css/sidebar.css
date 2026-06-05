@@ -1,4 +1,4 @@
-/* 侧边栏样式 */
+/* Sidebar styles */
 .sidebar {
     position: fixed;
     top: 0;
@@ -14,12 +14,12 @@
     padding: 20px;
 }
 
-/* 侧边栏打开时显示 */
+/* Shown when the sidebar is open */
 .sidebar.open {
     right: 0;
 }
 
-/* 侧边栏标题 */
+/* Sidebar title */
 .sidebar-header {
     display: flex;
     justify-content: space-between;
@@ -29,7 +29,7 @@
     margin-bottom: 20px;
 }
 
-/* 关闭按钮 */
+/* Close button */
 .close-sidebar {
     background: none;
     border: none;
@@ -38,7 +38,7 @@
     color: #333;
 }
 
-/* 右上角按钮样式 */
+/* Top-right toggle button */
 .sidebar-toggle {
     position: absolute;
     top: 15px;
@@ -59,7 +59,7 @@
     background-color: #0056b3;
 }
 
-/* 按钮容器样式 */
+/* Button container */
 .sidebar-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -68,7 +68,7 @@
     justify-content: space-between;
 }
 
-/* 按钮基础样式 */
+/* Base button styles */
 .sidebar-button {
     flex: 1 1 calc(50% - 10px);
     display: flex;
@@ -86,20 +86,20 @@
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* 按钮悬停效果 */
+/* Button hover effect */
 .sidebar-button:hover {
     background-color: #0056b3;
     transform: translateY(-2px);
 }
 
-/* 按钮点击效果 */
+/* Button active effect */
 .sidebar-button:active {
     background-color: #003d80;
     transform: translateY(0);
 }
 
-/* ============ 文件树 ============ */
-/* 文件树样式 */
+/* ============ File tree ============ */
+/* File-tree styles */
 #file-tree-root {
     list-style-type: none;
     padding-left: 20px;
@@ -145,7 +145,7 @@
     padding-left: 20px;
 }
 
-/* 预览框样式 */
+/* Preview box styles */
 #image-preview-box {
     position: absolute;
     background-color: white;
@@ -157,7 +157,7 @@
     overflow: hidden;
 }
 
-/* 选中样式 */
+/* Selected state */
 .selected {
     border: 2px solid #007bff;
     padding: 2px;
@@ -165,7 +165,7 @@
 }
 
 
-/* ============== 表单 ============= */
+/* ============== Form ============= */
 .form-container {
     position: fixed;
     top: 50%;
@@ -180,7 +180,7 @@
     z-index: 1001;
 }
 
-/* 表单标题 */
+/* Form title */
 .form-container h3 {
     font-size: 22px;
     font-weight: bold;
@@ -194,7 +194,7 @@ input[type="label"] {
     width: 20%;
 }
 
-/* 输入框样式 */
+/* Input field styles */
 input[type="text"] {
     width: 90%;
     padding: 12px;
@@ -209,26 +209,26 @@ input[type="text"] {
     text-align: center;
 }
 
-/* 输入框聚焦效果 */
+/* Input focus effect */
 input[type="text"]:focus {
     border-color: #3498db;
     background-color: #fff;
     outline: none;
 }
 
-/* 提交按钮样式 */
+/* Submit button styles */
 button[type="submit"] {
     background-color: #3498db;
     color: white;
 }
 
-/* 取消按钮样式 */
+/* Cancel button styles */
 button[type="button"] {
     background-color: #7c7c7c;
     color: white;
 }
 
-/* 表单按钮容器 */
+/* Form button container */
 .form-actions {
     width: 100%;
     display: flex;
@@ -237,7 +237,7 @@ button[type="button"] {
     margin-top: 20px;
 }
 
-/* 提交按钮样式 */
+/* Submit button styles */
 button[type="submit"] {
     background-color: #3498db;
     color: white;
@@ -249,19 +249,19 @@ button[type="submit"] {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* 提交按钮悬停效果 */
+/* Submit button hover effect */
 button[type="submit"]:hover {
     background-color: #2980b9;
     transform: translateY(-2px);
 }
 
-/* 提交按钮点击效果 */
+/* Submit button active effect */
 button[type="submit"]:active {
     background-color: #1abc9c;
     transform: translateY(0);
 }
 
-/* 取消按钮样式 */
+/* Cancel button styles */
 button[type="button"] {
     background-color: #7c7c7c;
     color: white;
@@ -273,19 +273,19 @@ button[type="button"] {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* 取消按钮悬停效果 */
+/* Cancel button hover effect */
 button[type="button"]:hover {
     background-color: #555;
     transform: translateY(-2px);
 }
 
-/* 取消按钮点击效果 */
+/* Cancel button active effect */
 button[type="button"]:active {
     background-color: #333;
     transform: translateY(0);
 }
 
-/* 浮层样式 */
+/* Overlay styles */
 #overlay {
     position: fixed;
     top: 0;
@@ -299,7 +299,7 @@ button[type="button"]:active {
     z-index: 1002;
 }
 
-/* 转圈动画样式 */
+/* Spinner styles */
 #spinner {
     border: 2px solid #f3f3f3;
     border-top: 2px solid #3498db;
@@ -310,7 +310,7 @@ button[type="button"]:active {
     margin-right: 10px;
 }
 
-/* 转圈动画 */
+/* Spinner animation */
 @keyframes spin {
     0% {
         transform: rotate(0deg);
@@ -321,7 +321,7 @@ button[type="button"]:active {
     }
 }
 
-/* 浮层中的文本样式 */
+/* Overlay text styles */
 #overlay p {
     color: white;
     font-size: 16px;

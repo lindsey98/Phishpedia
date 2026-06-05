@@ -92,22 +92,41 @@ See [WEBtool/](WEBtool/)
 See [Plugin_for_Chrome/](Plugin_for_Chrome/)
 
 
+## Running the tests
+
+The unit tests cover the pure helper functions and do not require the model
+weights, so they run quickly:
+
+```bash
+pixi run pip install pytest
+pixi run pytest tests/ -v
+```
+
 ## Project structure
 
 ```
-- models/
-|___ rcnn_bet365.pth
-|___ faster_rcnn.yaml
-|___ resnetv2_rgb_new.pth.tar
-|___ expand_targetlist/
-  |___ Adobe/
-  |___ Amazon/
-  |___ ......
-|___ domain_map.pkl
-- logo_recog.py: Deep Object Detection Model
-- logo_matching.py: Deep Siamese Model
-- configs.yaml: Configuration file
-- phishpedia.py: Main script
+Phishpedia/
+├── phishpedia.py         # Command-line entry point (PhishpediaWrapper)
+├── configs.py            # Loads configs.yaml and the models (auto-extracts the target list)
+├── configs.yaml          # Model paths and thresholds
+├── logo_recog.py         # Step 1: deep object-detection model (logo detector)
+├── logo_matching.py      # Step 2: deep Siamese model (logo matcher)
+├── models.py             # BiT ResNetV2 backbone for the Siamese model
+├── utils.py              # Shared helper functions
+├── setup.sh / setup.bat  # Download the model weights into models/
+├── tests/                # Unit tests
+├── WEBtool/              # Browser-based GUI (Flask + Vue)
+├── Plugin_for_Chrome/    # Chrome extension + its Flask detection server
+├── datasets/             # Example test sites
+└── models/               # Downloaded at setup time (git-ignored)
+    ├── rcnn_bet365.pth
+    ├── faster_rcnn.yaml
+    ├── resnetv2_rgb_new.pth.tar
+    ├── domain_map.pkl
+    └── expand_targetlist/   # extracted from expand_targetlist.zip on first run
+        ├── Adobe/
+        ├── Amazon/
+        └── ...
 ```
 
 ## Miscellaneous

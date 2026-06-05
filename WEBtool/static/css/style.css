@@ -92,7 +92,7 @@ li {
     margin-top: 10px;
 }
 
-/* ============================= URL输入区域 =============================*/
+/* ============================= URL input area =============================*/
 #url-input-container {
     display: flex;
     justify-content: center;
@@ -130,7 +130,7 @@ li {
     font-style: italic;
 }
 
-/* ============================= 图片上传区域 =============================*/
+/* ============================= Image upload area =============================*/
 #image-upload-container {
     display: flex;
     justify-content: center;
@@ -253,7 +253,7 @@ li {
     background-color: #0056b3;
 }
 
-/* ============================= 结果容器样式 =============================*/
+/* ============================= Result container =============================*/
 #result-container {
     display: flex;
     flex-direction: row;

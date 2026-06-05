@@ -7,19 +7,20 @@ import torch
 
 def pred_rcnn(im, predictor):
     '''
-    Perform inference for RCNN
-    :param im:
-    :param predictor:
-    :return:
+    Perform logo detection inference with the Faster R-CNN model.
+    :param im: path to the screenshot image
+    :param predictor: detectron2 DefaultPredictor
+    :return: Nx4 tensor of logo bounding boxes, or None if the image cannot be read
     '''
-    im = cv2.imread(im)
+    image_path = im
+    im = cv2.imread(image_path)
 
-    if im is not None:
-        if im.shape[-1] == 4:
-            im = cv2.cvtColor(im, cv2.COLOR_BGRA2BGR)
-    else:
-        print(f"Image at path {im} is None")
+    if im is None:
+        print(f"Image at path {image_path} could not be read")
         return None
+
+    if im.shape[-1] == 4:
+        im = cv2.cvtColor(im, cv2.COLOR_BGRA2BGR)
 
     outputs = predictor(im)
 

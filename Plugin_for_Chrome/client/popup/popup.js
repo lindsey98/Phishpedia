@@ -7,20 +7,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const legitUrlLink = document.getElementById('legitUrlLink');
   const error = document.getElementById('error');
   
-  // 点击分析按钮
+  // Handle the analyze button click
   analyzeBtn.addEventListener('click', () => {
-    // 显示加载状态
+    // Show the loading state
     loading.classList.remove('hidden');
     result.classList.add('hidden');
     error.classList.add('hidden');
-    
-    // 发送消息给background script
+
+    // Notify the background script
     chrome.runtime.sendMessage({
       type: 'analyze'
     });
   });
-  
-  // 监听来自background的消息
+
+  // Listen for messages from the background script
   chrome.runtime.onMessage.addListener((message) => {
     loading.classList.add('hidden');
     
@@ -28,14 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
       result.classList.remove('hidden');
       
       if (message.data.isPhishing) {
-        status.innerHTML = '<span class="dangerous">⚠️ 警告：这可能是一个钓鱼网站！</span>';
+        status.innerHTML = '<span class="dangerous">⚠️ Warning: this may be a phishing website!</span>';
         if (message.data.legitUrl) {
           legitUrl.classList.remove('hidden');
           legitUrlLink.href = message.data.legitUrl;
           legitUrlLink.textContent = message.data.brand;
         }
       } else {
-        status.innerHTML = '<span class="safe">✓ 这是一个安全的网站</span>';
+        status.innerHTML = '<span class="safe">✓ This appears to be a safe website</span>';
         legitUrl.classList.add('hidden');
       }
     } else if (message.type === 'error') {

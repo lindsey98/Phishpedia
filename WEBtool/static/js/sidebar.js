@@ -3,17 +3,17 @@ new Vue({
     el: '#sidebar',
     data() {
         return {
-            selectedDirectory: null, // 记录当前选中的目录
-            selectedFile: null,      // 记录当前选中的文件
+            selectedDirectory: null, // currently selected directory
+            selectedFile: null,      // currently selected file
             selectedDirectoryName: '',
             selectedFileName: '',
-            showAddBrandForm: false, // 控制表单显示与隐藏
-            brandName: '',           // 品牌名称
-            brandDomain: '',         // 品牌域名
+            showAddBrandForm: false, // toggle the add-brand form
+            brandName: '',           // brand name
+            brandDomain: '',         // brand domain
         }
     },
     mounted() {
-        // 网页加载时调用 fetchFileTree 函数
+        // Load the file tree when the page loads
         this.fetchFileTree();
         document.getElementById('logo-file-input').addEventListener('change', this.handleLogoFileSelect);
 
@@ -21,18 +21,18 @@ new Vue({
         const sidebarToggle = document.getElementById("sidebar-toggle");
         const closeSidebar = document.getElementById("close-sidebar");
 
-        // 点击打开侧边栏
+        // Open the sidebar
         sidebarToggle.addEventListener("click", () => {
             sidebar.classList.add("open");
         });
 
-        // 点击关闭侧边栏
+        // Close the sidebar
         closeSidebar.addEventListener("click", () => {
             sidebar.classList.remove("open");
             this.clearSelected();
         });
 
-        // 点击侧边栏外部关闭
+        // Close the sidebar when clicking outside of it
         document.addEventListener("click", (event) => {
             if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
                 sidebar.classList.remove("open");
@@ -41,13 +41,13 @@ new Vue({
         });
     },
     methods: {
-        // 递归渲染文件树
+        // Recursively render the file tree
         renderFileTree(directory, parentPath = '') {
-            // 获取文件树容器
+            // Get the file-tree container
             const fileTreeRoot = document.getElementById('file-tree-root');
-            fileTreeRoot.innerHTML = ''; // 清空现有内容
+            fileTreeRoot.innerHTML = ''; // clear existing content
 
-            // 递归生成文件树节点
+            // Recursively build a file-tree node
             const createFileTreeNode = (item, parentPath) => {
                 const li = document.createElement('li');
                 li.classList.add('file-item');
@@ -64,19 +64,19 @@ new Vue({
 
                     if (item.children) {
                         const ul = document.createElement('ul');
-                        ul.classList.add('hidden'); // 默认隐藏子目录
+                        ul.classList.add('hidden'); // hide subdirectories by default
                         item.children.forEach((child) => {
-                            ul.appendChild(createFileTreeNode(child, currentPath)); // 传递当前目录的路径
+                            ul.appendChild(createFileTreeNode(child, currentPath)); // pass the current path
                         });
                         li.appendChild(ul);
 
-                        // 单击选中目录
+                        // Single click selects the directory
                         folderNameContainer.addEventListener('click', (e) => {
                             e.stopPropagation();
                             this.selectDirectory(e, item.name);
                         });
 
-                        // 双击展开/隐藏目录
+                        // Double click expands/collapses the directory
                         folderNameContainer.addEventListener('dblclick', (e) => {
                             e.stopPropagation();
                             ul.classList.toggle('hidden');
@@ -86,7 +86,7 @@ new Vue({
                     li.classList.add('file-file');
                     li.innerHTML = `<i class="file-icon">📄</i><span>${item.name}</span>`;
 
-                    // 单击选中文件
+                    // Single click selects the file
                     li.addEventListener('click', (event) => {
                         this.selectFile(event, item.name, parentPath);
                     });
@@ -95,32 +95,32 @@ new Vue({
                 return li;
             };
 
-            // 遍历顶层文件和目录
+            // Iterate over the top-level files and directories
             directory.forEach((item) => {
                 fileTreeRoot.appendChild(createFileTreeNode(item, parentPath));
             });
         },
-        // 获取文件树数据
+        // Fetch the file-tree data
         fetchFileTree() {
-            // 发送请求获取文件树数据
-            fetch('/get-directory') // 后端文件树接口
+            // Request the file-tree data from the backend
+            fetch('/get-directory') // backend file-tree endpoint
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.file_tree) {
-                        this.fileTree = data.file_tree; // 存储文件树数据
-                        this.renderFileTree(this.fileTree); // 渲染文件树
+                        this.fileTree = data.file_tree; // store the file-tree data
+                        this.renderFileTree(this.fileTree); // render the file tree
                     } else {
                         console.error('Invalid file tree data');
-                        alert('文件树加载失败');
+                        alert('Failed to load the file tree.');
                     }
                 })
                 .catch((error) => {
                     console.error('Error fetching file tree:', error);
-                    alert('无法加载文件树，请稍后重试。');
+                    alert('Unable to load the file tree, please try again later.');
                 });
         },
 
-        // 选中目录
+        // Select a directory
         selectDirectory(event, directoryName) {
             const folderNameContainer = event.currentTarget;
 
@@ -131,7 +131,7 @@ new Vue({
                 this.selectedFile.classList.remove('selected');
             }
 
-            // 设置当前选中的目录
+            // Set the currently selected directory
             this.selectedDirectory = folderNameContainer;
             this.selectedDirectoryName = directoryName;
             folderNameContainer.classList.add('selected');
@@ -139,7 +139,7 @@ new Vue({
             this.selectedFileName = '';
         },
 
-        // 选中文件
+        // Select a file
         selectFile(event, fileName, parentPath) {
             const fileElement = event.currentTarget;
 
@@ -150,7 +150,7 @@ new Vue({
                 this.selectedFile.classList.remove('selected');
             }
 
-            // 设置当前选中的文件
+            // Set the currently selected file
             this.selectedFile = fileElement;
             this.selectedFileName = fileName;
             fileElement.classList.add('selected');
@@ -158,23 +158,23 @@ new Vue({
             this.selectedDirectoryName = parentPath;
         },
 
-        // 增加品牌
+        // Add a brand
         addBrand() {
             this.showAddBrandForm = true;
         },
 
-        // 关闭添加品牌的表单
+        // Close the add-brand form
         closeAddBrandForm() {
             this.showAddBrandForm = false;
             this.brandName = '';
             this.brandDomain = '';
         },
 
-        // 提交添加品牌的表单
+        // Submit the add-brand form
         submitAddBrandForm() {
             if (!this.brandName || !this.brandDomain) {
                 alert('Please fill in all fields.');
-                closeAddBrandForm()
+                this.closeAddBrandForm();
                 return;
             }
 
@@ -202,7 +202,7 @@ new Vue({
                 });
         },
 
-        // 删除品牌
+        // Delete a brand
         delBrand() {
             if (this.selectedDirectory == null) {
                 alert('Please select a brand first.');
@@ -223,13 +223,13 @@ new Vue({
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Brand deletedsuccessfully.');
+                        alert('Brand deleted successfully.');
                         this.fetchFileTree();
                     }
                 })
         },
 
-        // 增加logo
+        // Add a logo
         addLogo() {
             console.log('addLogo');
             if (this.selectedDirectory == null) {
@@ -265,7 +265,7 @@ new Vue({
             }
         },
 
-        // 删除logo
+        // Delete a logo
         delLogo() {
             if (this.selectedFile == null) {
                 alert('Please select a logo first.');

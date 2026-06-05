@@ -16,7 +16,7 @@ new Vue({
                 return;
             }
 
-            // 发送 POST 请求到 /detect 路由
+            // Send a POST request to the /detect route
             fetch('/detect', {
                 method: 'POST',
                 headers: {
@@ -82,40 +82,40 @@ new Vue({
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('检测失败，请稍后重试。');
+                    alert('Detection failed, please try again later.');
                 });
         },
-        handleImageUpload(event) {  // 处理图片上传事件
+        handleImageUpload(event) {  // Handle the image upload event
             const file = event.target.files[0];
             if (file) {
                 this.uploadedImage = file;
                 this.uploadImage();
             }
         },
-        uploadImage() {  // 上传图片到服务器
+        uploadImage() {  // Upload the image to the server
             const formData = new FormData();
             formData.append('image', this.uploadedImage);
 
-            fetch('/upload', {  // 假设上传图片的路由是 /upload
+            fetch('/upload', {  // upload route
                 method: 'POST',
                 body: formData
             })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        this.imageUrl = data.imageUrl;  // 更新图片URL
-                        this.uploadSuccess = true;  // 标记上传成功
+                        this.imageUrl = data.imageUrl;  // update the image URL
+                        this.uploadSuccess = true;  // mark upload as successful
                     } else {
-                        alert('上传图片失败: ' + data.error);
+                        alert('Failed to upload image: ' + data.error);
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('上传图片失败，请稍后重试。');
+                    alert('Failed to upload image, please try again later.');
                 });
         },
-        clearUpload() {  // 清除上传的图像
-            fetch('/clear_upload', {  // 假设删除图片的路由是 /delete-image
+        clearUpload() {  // Clear the uploaded image
+            fetch('/clear_upload', {  // clear-upload route
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -126,14 +126,14 @@ new Vue({
                 .then(data => {
                     if (data.success) {
                         this.imageUrl = '';
-                        this.uploadSuccess = false;  // 重置上传状态
+                        this.uploadSuccess = false;  // reset upload state
                     } else {
-                        alert('删除图片失败: ' + data.error);
+                        alert('Failed to delete image: ' + data.error);
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('删除图片失败，请稍后重试。');
+                    alert('Failed to delete image, please try again later.');
                 });
         }
     }

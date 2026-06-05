@@ -17,10 +17,6 @@ where gdown >nul 2>nul || (
     echo [ERROR] gdown not found. Please install gdown (via pixi).
     exit /b 1
 )
-where unzip >nul 2>nul || (
-    echo [ERROR] unzip not found. Please install unzip utility.
-    exit /b 1
-)
 
 :: ------------------------------------------------------------------------------
 :: Setup Directories
@@ -88,24 +84,9 @@ for /L %%i in (1,1,5) do (
 )
 
 :: ------------------------------------------------------------------------------
-:: Extraction
-:: ------------------------------------------------------------------------------
-echo [%DATE% %TIME%] Extracting expand_targetlist.zip...
-unzip -o expand_targetlist.zip -d expand_targetlist || (
-    echo [ERROR] Failed to unzip file.
-    exit /b 1
-)
-
-:: Flatten nested folder if necessary
-cd expand_targetlist
-if exist expand_targetlist\ (
-    echo [INFO] Flattening nested expand_targetlist directory...
-    move expand_targetlist\*.* . >nul
-    rmdir expand_targetlist
-)
-
-:: ------------------------------------------------------------------------------
 :: Done
 :: ------------------------------------------------------------------------------
-echo [%DATE% %TIME%] [SUCCESS] Model setup and extraction complete.
+:: The target-list archive (expand_targetlist.zip) is extracted automatically on
+:: the first run by configs.py, so no manual unzip step is required here.
+echo [%DATE% %TIME%] [SUCCESS] Model download complete.
 endlocal

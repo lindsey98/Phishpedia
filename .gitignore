@@ -1,5 +1,30 @@
+# Models and large binaries (downloaded via setup script)
+models/
 *.zip
 *.pkl
 *.pth*
+*.tar
+
+# Cached reference-list embeddings (regenerated on first run)
+LOGO_FEATS.npy
+LOGO_FILES.npy
+
+# Runtime / generated outputs
+*_results.txt
+temp_screenshot.png
+WEBtool/static/uploads/
+**/plugin_logs/
+
+# Python
 venv/
+.venv/
 __pycache__/
+*.py[cod]
+
+# Pixi
+.pixi/
+
+# OS / editor junk
+.DS_Store
+.idea/
+.vscode/

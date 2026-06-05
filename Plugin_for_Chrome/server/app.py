@@ -10,7 +10,7 @@ from phishpedia import PhishpediaWrapper, result_file_write
 app = Flask(__name__)
 CORS(app)
 
-# 在创建应用时初始化模型
+# Initialize the model when the app starts
 with app.app_context():
     current_dir = os.path.dirname(os.path.realpath(__file__))
     log_dir = os.path.join(current_dir, 'plugin_logs')
@@ -26,18 +26,18 @@ def analyze():
         url = data.get('url')
         screenshot_data = data.get('screenshot')
 
-        # 解码Base64图片数据
+        # Decode the base64-encoded screenshot
         image_data = base64.b64decode(screenshot_data.split(',')[1])
         image = Image.open(BytesIO(image_data))
         screenshot_path = 'temp_screenshot.png'
         image.save(screenshot_path, format='PNG')
 
-        # 调用Phishpedia模型进行识别
+        # Run the Phishpedia model
         phish_category, pred_target, matched_domain, \
             plotvis, siamese_conf, pred_boxes, \
             logo_recog_time, logo_match_time = phishpedia_cls.test_orig_phishpedia(url, screenshot_path, None)
 
-        # 添加结果处理逻辑
+        # Build the response payload
         result = {
             "isPhishing": bool(phish_category),
             "brand": pred_target if pred_target else "unknown",
@@ -45,7 +45,7 @@ def analyze():
             "confidence": float(siamese_conf) if siamese_conf is not None else 0.0
         }
 
-        # 记录日志
+        # Append to the daily log
         today = datetime.now().strftime('%Y%m%d')
         log_file_path = os.path.join(log_dir, f'{today}_results.txt')
 

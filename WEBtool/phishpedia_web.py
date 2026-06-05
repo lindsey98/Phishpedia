@@ -13,19 +13,19 @@ app = Flask(__name__)
 cors = CORS(app, supports_credentials=True)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
-app.config['FILE_TREE_ROOT'] = '../models/expand_targetlist'  # 主目录路径
+app.config['FILE_TREE_ROOT'] = '../models/expand_targetlist'  # target-list root directory
 app.config['DOMAIN_MAP_PATH'] = '../models/domain_map.pkl'
 
 
 @app.route('/')
 def index():
-    """渲染主页面"""
+    """Render the main page."""
     return render_template('index.html')
 
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    """处理文件上传请求"""
+    """Handle screenshot upload requests."""
     if 'image' not in request.files:
         return jsonify({'error': 'No file part'}), 400
     file = request.files['image']
@@ -53,7 +53,7 @@ def upload_file():
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
-    """提供上传文件的访问路径"""
+    """Serve an uploaded file."""
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
@@ -66,7 +66,7 @@ def delete_image():
         return jsonify({'success': False, 'error': 'No image URL provided'}), 400
 
     try:
-        # 假设 image_url 是相对于静态目录的路径
+        # image_url is assumed to be relative to the static directory
         filename = image_url.split('/')[-1]
         image_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         image_path = os.path.normpath(image_path)
@@ -93,34 +93,29 @@ def detect():
     phish_category, pred_target, matched_domain, plotvis, siamese_conf, _, logo_recog_time, logo_match_time = phishpedia_cls.test_orig_phishpedia(
         url, screenshot_path, None)
     
-    # 处理检测结果
+    # Interpret the detection result
     if phish_category == 0:
-        if pred_target is None:
-            result = 'Unknown'
-        else:
-            result = 'Benign'
+        result = 'Unknown' if pred_target is None else 'Benign'
     else:
         result = 'Phishing'
 
     plot_base64 = convert_to_base64(plotvis)
 
-    # 返回检测结果
+    # Build the JSON response
     result = {
-        'result': result,  # 检测结果
-        'matched_brand': pred_target,  # 匹配到的品牌
-        'correct_domain': matched_domain,  # 正确的域名
-        'confidence': round(float(siamese_conf), 3),  # 置信度，直接返回百分比
-        'detection_time': round(float(logo_recog_time) + float(logo_match_time), 3),  # 检测时间
-        'logo_extraction': plot_base64  # logo标注结果，直接返回图像
+        'result': result,                                                    # detection verdict
+        'matched_brand': pred_target,                                        # matched brand
+        'correct_domain': matched_domain,                                    # legitimate domain(s)
+        'confidence': round(float(siamese_conf), 3) if siamese_conf is not None else 0.0,  # similarity score
+        'detection_time': round(float(logo_recog_time) + float(logo_match_time), 3),       # total time (s)
+        'logo_extraction': plot_base64                                       # annotated screenshot (base64)
     }
     return jsonify(result)
 
 
 @app.route('/get-directory', methods=['GET'])
 def get_file_tree():
-    """
-    获取主目录的文件树
-    """
+    """Return the file tree of the target-list root directory."""
     def build_file_tree(path):
         tree = []
         try:
@@ -133,7 +128,7 @@ def get_file_tree():
                     tree.append({
                         'name': entry,
                         'type': 'directory',
-                        'children': build_file_tree(entry_path)  # 递归子目录
+                        'children': build_file_tree(entry_path)  # recurse into subdirectories
                     })
                 elif entry.lower().endswith(('.png', '.jpeg', '.jpg')):
                     tree.append({
@@ -143,8 +138,8 @@ def get_file_tree():
                 else:
                     continue
         except PermissionError:
-            pass  # 忽略权限错误
-        return sorted(tree, key=lambda x: x['name'].lower())  # 按 name 字段排序，不区分大小写
+            pass  # ignore permission errors
+        return sorted(tree, key=lambda x: x['name'].lower())  # sort by name, case-insensitive
 
     root_path = app.config['FILE_TREE_ROOT']
     if not os.path.exists(root_path):
@@ -238,7 +233,7 @@ def add_brand():
     if not brand_name or not brand_domain:
         return jsonify({'success': False, 'error': 'Brand name and domain must be specified'}), 400
 
-    # 创建品牌目录
+    # Create the brand directory
     brand_directory_path = os.path.join(app.config['FILE_TREE_ROOT'], brand_name)
     brand_directory_path = os.path.normpath(brand_directory_path)
     if not brand_directory_path.startswith(app.config['FILE_TREE_ROOT']):
@@ -285,7 +280,7 @@ def reload_model():
         load_config(reload_targetlist=True)
         # Reinitialize Phishpedia
         phishpedia_cls = PhishpediaWrapper()
-        return jsonify({'success': True, 'message': 'Brand deleted successfully'}), 200
+        return jsonify({'success': True, 'message': 'Model reloaded successfully'}), 200
     except Exception:
         return jsonify({'success': False}), 500
 
@@ -296,7 +291,7 @@ if __name__ == "__main__":
     while check_port_inuse(port, ip_address):
         port = port + 1
 
-    # 加载核心检测逻辑
+    # Load the core detection model
     phishpedia_cls = PhishpediaWrapper()
 
     initial_upload_folder(app.config['UPLOAD_FOLDER'])

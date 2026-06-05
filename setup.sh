@@ -19,16 +19,6 @@ pixi run gdown --id "1H0Q_DbdKPLFcZee8I14K62qV7TTy7xvS" -O "resnetv2_rgb_new.pth
 pixi run gdown --id "1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I" -O "expand_targetlist.zip"
 pixi run gdown --id "1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1" -O "domain_map.pkl"
 
-# Extract and flatten expand_targetlist
-echo "Extracting expand_targetlist.zip..."
-unzip -o expand_targetlist.zip -d expand_targetlist
-
-cd expand_targetlist || error_exit "Extraction directory missing."
-
-if [ -d "expand_targetlist" ]; then
-  echo "Flattening nested expand_targetlist/ directory..."
-  mv expand_targetlist/* .
-  rm -r expand_targetlist
-fi
-
-echo "Model setup and extraction complete."
+# The target-list archive (expand_targetlist.zip) is extracted automatically on
+# the first run by configs.py, so no manual unzip step is required here.
+echo "Model download complete."

@@ -64,10 +64,12 @@ Click the sidebar button "☰" at top right corner, this will trigger a sidebar 
 
 ```
 WEBtool/
-├── static/             # Static resources like css,icon
-├── templates/          # Web page
-├── phishpedia_web.py   # A flask server
-├── utils_web.py        # Help functions for server
-├── readme.md           # Documentation
-└── requirements.txt    # Dependency list
+├── static/             # Static resources (css, js, icons)
+├── templates/          # HTML templates
+├── phishpedia_web.py   # Flask server
+├── utils_web.py        # Helper functions for the server
+└── readme.md           # Documentation
 ```
+
+> Dependencies are managed from the project root via `pixi` — there is no
+> separate `requirements.txt` for the web tool.

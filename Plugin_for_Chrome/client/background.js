@@ -1,15 +1,15 @@
-// 处理截图和URL获取
+// Capture the screenshot and URL of the active tab, then request analysis
 async function captureTabInfo(tab) {
   try {
-    // 获取截图
+    // Capture the visible tab as a screenshot
     const screenshot = await chrome.tabs.captureVisibleTab(null, {
       format: 'png'
     });
-    
-    // 获取当前URL
+
+    // Get the current URL
     const url = tab.url;
-    
-    // 发送到服务器进行分析
+
+    // Send to the server for analysis
     const response = await fetch('http://localhost:5000/analyze', {
       method: 'POST',
       headers: {
@@ -22,8 +22,8 @@ async function captureTabInfo(tab) {
     });
     
     const result = await response.json();
-    
-    // 将结果发送到popup
+
+    // Forward the result to the popup
     chrome.runtime.sendMessage({
       type: 'analysisResult',
       data: result
@@ -38,7 +38,7 @@ async function captureTabInfo(tab) {
   }
 }
 
-// 监听快捷键命令
+// Listen for the keyboard shortcut command
 chrome.commands.onCommand.addListener(async (command) => {
   if (command === '_execute_action') {
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -48,7 +48,7 @@ chrome.commands.onCommand.addListener(async (command) => {
   }
 });
 
-// 监听来自popup的消息
+// Listen for messages from the popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'analyze') {
     chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
